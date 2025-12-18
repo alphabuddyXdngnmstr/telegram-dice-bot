@@ -2,6 +2,8 @@ import os
 import random
 import re
 import math
+from pathlib import Path
+
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application,
@@ -35,8 +37,6 @@ ODDS_OPTIONS = [
 ]
 
 # Basis Wahrscheinlichkeiten in Prozent
-# Das ist eine saubere, formelbasierte Variante, die sich wie Mythic anfühlt
-# Chaos Rang verschiebt das Ganze danach nach oben oder unten
 BASE_CHANCE = {
     "impossible": 1,
     "no_way": 5,
@@ -118,10 +118,6 @@ def roll_biom(current_biom: str) -> tuple[str, str, str | None]:
     5% Wasser
     5% Unterreich
     Rest gleichmäßig auf andere Biome verteilt
-
-    Rückgabe:
-    (rolled_base, display_text, new_current_biom_or_none)
-    new_current_biom_or_none ist None, wenn Stadt/Dorf gerollt wurde (Biom bleibt gleich)
     """
     if current_biom not in ALL_BIOMES:
         raise ValueError(f"Unbekanntes Biom: {current_biom}")
@@ -133,7 +129,6 @@ def roll_biom(current_biom: str) -> tuple[str, str, str | None]:
     }
     current_weight = 66.0
 
-    # Wenn das aktuelle Biom selbst ein "fixed" Biom ist, nicht doppelt zählen
     fixed_for_roll = dict(fixed)
     if current_biom in fixed_for_roll:
         fixed_for_roll.pop(current_biom)
@@ -200,7 +195,6 @@ async def biom(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(f"🌍 Aktuelles Biom: {current}")
 
 async def rollbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # Optional: /rollbiom Wald setzt vorher
     if context.args:
         biom_raw = " ".join(context.args).strip()
         biom_norm = normalize_biom(biom_raw)
@@ -236,26 +230,268 @@ async def rollbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg)
 
 # -----------------------
+# ENCOUNTER SYSTEM
+# -----------------------
+
+ENCOUNTER_BIOM, ENCOUNTER_LEVEL = range(2)
+
+# Optional: Tabelle direkt hier rein kopieren statt encounters_de.txt
+ENCOUNTER_TABLE_TEXT = ""
+
+ENCOUNTERS: dict[str, dict[str, list[tuple[int, int, str]]]] = {}
+
+def _to_int_w100(token: str) -> int:
+    token = token.strip()
+    if token == "00":
+        return 100
+    return int(token)
+
+def _canonical_level(a: int, b: int) -> str:
+    if a == 1 and b in (4, 5):
+        return "1-4"
+    if a in (5, 6) and b == 10:
+        return "5-10"
+    if a == 11 and b == 16:
+        return "11-16"
+    if a == 17 and b == 20:
+        return "17-20"
+    if a == 11 and b == 20:
+        return "11-20"
+    return f"{a}-{b}"
+
+def _canonical_enc_biom(raw: str) -> str:
+    t = (raw or "").strip().lower()
+
+    if "arktis" in t:
+        return "Arktis"
+    if "berg" in t:
+        return "Berg"
+    if "grasland" in t:
+        return "Grasland"
+    if "hügel" in t or "huegel" in t:
+        return "Hügel"
+    if "küste" in t or "kueste" in t or "küsten" in t or "kuesten" in t:
+        return "Küste"
+    if "sumpf" in t:
+        return "Sumpf"
+    if "wald" in t:
+        return "Wald"
+    if "wüste" in t or "wueste" in t:
+        return "Wüste"
+    if "underdark" in t or "unterreich" in t or "unterwelt" in t:
+        return "Unterreich"
+    if "unterwasser" in t or "wasserbegegn" in t:
+        return "Unterwasser"
+    if "stadt" in t or "dorf" in t:
+        return "Stadt/Dorf"
+
+    return raw.strip()
+
+def _load_encounter_raw_text() -> str:
+    if ENCOUNTER_TABLE_TEXT.strip():
+        return ENCOUNTER_TABLE_TEXT
+
+    path = Path(__file__).with_name("encounters_de.txt")
+    if path.exists():
+        return path.read_text(encoding="utf-8", errors="replace")
+    return ""
+
+def _load_encounters_from_text(text: str) -> dict[str, dict[str, list[tuple[int, int, str]]]]:
+    lines = [ln.strip() for ln in text.splitlines()]
+
+    heading_re = re.compile(
+        r"^(?P<biome>.+?)\s*\(\s*Stufe\s*(?P<a>\d+)\s*(?:-|–|bis)\s*(?P<b>\d+)\s*\)",
+        re.IGNORECASE,
+    )
+
+    range_re = re.compile(
+        r"^(?P<s>\d{2})(?:\s*(?:-|–|bis)\s*(?P<e>\d{2}))?\s*(?P<rest>.*)$",
+        re.IGNORECASE,
+    )
+
+    data: dict[str, dict[str, list[tuple[int, int, str]]]] = {}
+    cur_biome: str | None = None
+    cur_level: str | None = None
+    pending_range: tuple[int, int] | None = None
+    pending_text_parts: list[str] = []
+
+    def flush_pending():
+        nonlocal pending_range, pending_text_parts
+        if cur_biome and cur_level and pending_range and pending_text_parts:
+            s, e = pending_range
+            entry = " ".join(pending_text_parts).strip()
+            if entry:
+                data.setdefault(cur_biome, {}).setdefault(cur_level, []).append((s, e, entry))
+        pending_range = None
+        pending_text_parts = []
+
+    for ln in lines:
+        if not ln:
+            continue
+
+        m_head = heading_re.match(ln)
+        if m_head:
+            flush_pending()
+            cur_biome = _canonical_enc_biom(m_head.group("biome").strip())
+            a = int(m_head.group("a"))
+            b = int(m_head.group("b"))
+            cur_level = _canonical_level(a, b)
+            continue
+
+        low = ln.lower()
+        if low.startswith("w100"):
+            continue
+        if "w100" in low and "begegn" in low:
+            continue
+
+        m_rng = range_re.match(ln)
+        if m_rng and cur_biome and cur_level:
+            s = _to_int_w100(m_rng.group("s"))
+            e_raw = m_rng.group("e")
+            e = _to_int_w100(e_raw) if e_raw else s
+
+            if s > e:
+                s, e = e, s
+
+            rest = (m_rng.group("rest") or "").strip()
+
+            flush_pending()
+            pending_range = (s, e)
+            pending_text_parts = [rest] if rest else []
+            continue
+
+        if pending_range:
+            pending_text_parts.append(ln)
+
+    flush_pending()
+    return data
+
+def init_encounters():
+    global ENCOUNTERS
+    raw = _load_encounter_raw_text()
+    ENCOUNTERS = _load_encounters_from_text(raw) if raw.strip() else {}
+
+def build_encounter_biom_keyboard() -> InlineKeyboardMarkup:
+    choices = [
+        "Arktis", "Berg", "Grasland", "Hügel", "Küste", "Sumpf", "Wald", "Wüste",
+        "Unterreich", "Unterwasser", "Stadt/Dorf"
+    ]
+    rows = []
+    row = []
+    for label in choices:
+        row.append(InlineKeyboardButton(label, callback_data=f"enc_biom:{label}"))
+        if len(row) == 2:
+            rows.append(row)
+            row = []
+    if row:
+        rows.append(row)
+    return InlineKeyboardMarkup(rows)
+
+def build_encounter_level_keyboard() -> InlineKeyboardMarkup:
+    rows = [
+        [
+            InlineKeyboardButton("1-4", callback_data="enc_lvl:1-4"),
+            InlineKeyboardButton("5-10", callback_data="enc_lvl:5-10"),
+        ],
+        [
+            InlineKeyboardButton("11-16", callback_data="enc_lvl:11-16"),
+            InlineKeyboardButton("17-20", callback_data="enc_lvl:17-20"),
+        ],
+    ]
+    return InlineKeyboardMarkup(rows)
+
+def pick_encounter(biom: str, level: str) -> tuple[int, str]:
+    biom = _canonical_enc_biom(biom)
+    tables_for_biom = ENCOUNTERS.get(biom, {})
+    table = tables_for_biom.get(level)
+
+    if table is None and level in ("11-16", "17-20"):
+        table = tables_for_biom.get("11-20")
+
+    if not table:
+        raise KeyError(f"Keine Tabelle für {biom} {level}")
+
+    roll = random.randint(1, 100)
+    for s, e, txt in table:
+        if s <= roll <= e:
+            return roll, txt
+
+    return roll, "Nichts gefunden. Deine Tabelle hat an der Stelle vermutlich eine Lücke."
+
+async def rollencounter_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not ENCOUNTERS:
+        await update.message.reply_text(
+            "Ich habe noch keine Encounter Tabellen geladen.\n"
+            "Lege eine encounters_de.txt neben dein Script oder fülle ENCOUNTER_TABLE_TEXT und starte den Bot neu 🙂"
+        )
+        return ConversationHandler.END
+
+    context.user_data.pop("enc_biom", None)
+    context.user_data.pop("enc_level", None)
+
+    await update.message.reply_text(
+        "⚔️ Welches Biom?",
+        reply_markup=build_encounter_biom_keyboard()
+    )
+    return ENCOUNTER_BIOM
+
+async def rollencounter_pick_biom(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    biom = query.data.split(":", 1)[1]
+    context.user_data["enc_biom"] = biom
+
+    await query.edit_message_text(
+        f"⚔️ Biom: {biom}\nWelche Stufe?",
+        reply_markup=build_encounter_level_keyboard()
+    )
+    return ENCOUNTER_LEVEL
+
+async def rollencounter_pick_level(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    level = query.data.split(":", 1)[1]
+    biom = (context.user_data.get("enc_biom") or "").strip()
+
+    try:
+        roll_value, encounter = pick_encounter(biom, level)
+        msg = (
+            f"⚔️ Encounter\n"
+            f"Biom: {_canonical_enc_biom(biom)}\n"
+            f"Stufe: {level}\n"
+            f"W100: {roll_value:02d}\n\n"
+            f"Begegnung:\n{encounter}"
+        )
+    except KeyError:
+        msg = (
+            f"Für Biom {biom} und Stufe {level} habe ich keine passende Tabelle gefunden.\n"
+            f"Check die Überschrift in deiner Datei encounters_de.txt."
+        )
+
+    await query.edit_message_text(msg)
+    return ConversationHandler.END
+
+async def rollencounter_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Encounter abgebrochen 🙂")
+    return ConversationHandler.END
+
+# -----------------------
 # ORACLE + DICE SYSTEM
 # -----------------------
 def clamp(n: int, lo: int, hi: int) -> int:
     return max(lo, min(hi, n))
 
 def oracle_outcome(odds_key: str, chaos_rank: int) -> dict:
-    """
-    Gibt Ergebnis, Roll, Chance und ob Random Event getriggert wurde zurück.
-    Chaos Rank 5 ist neutral, darüber wird es ja lastiger, darunter nein lastiger.
-    """
     base = BASE_CHANCE[odds_key]
     adjust = (chaos_rank - 5) * 5
     chance = clamp(base + adjust, 0, 100)
 
     roll = random.randint(1, 100)
 
-    # Exceptional Yes ist unteres Fünftel des Erfolgsbereichs
     ex_yes = 0 if chance == 0 else max(1, chance // 5)
 
-    # Exceptional No ist oberes Fünftel des Fehlschlagbereichs
     fail_size = 100 - chance
     ex_no_size = 0 if fail_size == 0 else int(math.ceil(fail_size / 5))
     ex_no_start = 101 if ex_no_size == 0 else 101 - ex_no_size
@@ -269,8 +505,6 @@ def oracle_outcome(odds_key: str, chaos_rank: int) -> dict:
     else:
         result = "Nein"
 
-    # Random Event Trigger
-    # Doppelzahl und Roll ist kleiner gleich Chaos Rang
     doubles = (roll % 11 == 0)
     random_event = bool(doubles and roll <= chaos_rank)
 
@@ -393,7 +627,6 @@ async def rolloracle_pick_chaos(update: Update, context: ContextTypes.DEFAULT_TY
 
     result = oracle_outcome(odds_key, chaos)
 
-    # Labels für Ausgabe
     odds_label = next((lbl for lbl, key in ODDS_OPTIONS if key == odds_key), odds_key)
 
     msg = (
@@ -434,6 +667,9 @@ def main():
 
     app = Application.builder().token(token).build()
 
+    # Encounter Tabellen laden
+    init_encounters()
+
     # Standard Würfel
     app.add_handler(CommandHandler("roll", roll))
 
@@ -442,6 +678,18 @@ def main():
     app.add_handler(CommandHandler("biom", biom))
     app.add_handler(CommandHandler("rollbiom", rollbiom))
     app.add_handler(CallbackQueryHandler(setbiom_pick, pattern=r"^biom_set:"))
+
+    # Encounter Conversation
+    encounter_conv = ConversationHandler(
+        entry_points=[CommandHandler("rollencounter", rollencounter_start)],
+        states={
+            ENCOUNTER_BIOM: [CallbackQueryHandler(rollencounter_pick_biom, pattern=r"^enc_biom:")],
+            ENCOUNTER_LEVEL: [CallbackQueryHandler(rollencounter_pick_level, pattern=r"^enc_lvl:")],
+        },
+        fallbacks=[CommandHandler("cancel", rollencounter_cancel)],
+        allow_reentry=True,
+    )
+    app.add_handler(encounter_conv)
 
     # Orakel Conversation
     oracle_conv = ConversationHandler(
