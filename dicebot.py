@@ -3,7 +3,6 @@ import random
 import re
 import math
 from pathlib import Path
-
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application,
@@ -15,11 +14,14 @@ from telegram.ext import (
     filters,
 )
 
-# Erlaubt z.B. 1d6, 2d20, 3d8+4, 1d10-1
-DICE_PATTERN = re.compile(r"^(\d+)d(\d+)([+-]\d+)?$", re.IGNORECASE)
+# Erlaubt z.B. 1d6, 2d20, 3d8+4, 1d10-1, auch 1w6
+DICE_PATTERN = re.compile(r"^(\d+)[dw](\d+)([+-]\d+)?$", re.IGNORECASE)
 
 # Oracle Conversation States
 ORACLE_QUESTION, ORACLE_ODDS, ORACLE_CHAOS = range(3)
+
+# Encounter Conversation States
+ENC_CONFIRM, ENC_PICK_BIOM, ENC_PICK_LEVEL = range(3)
 
 # Deutsche Odds Auswahl
 ODDS_OPTIONS = [
@@ -51,7 +53,6 @@ BASE_CHANCE = {
     "has_to_be": 99,
 }
 
-# Kleine eigene Random Event Tabellen, frei formuliert
 EVENT_FOCUS = [
     "Fernere Begegnung",
     "Umgebungsereignis",
@@ -87,7 +88,6 @@ def normalize_biom(text: str) -> str | None:
     if not t:
         return None
 
-    # ein paar tolerante Aliase
     if t in {"stadt", "dorf", "stadt dorf", "stadt/dorf", "stadt\\dorf"}:
         return "Stadt/Dorf"
 
@@ -99,7 +99,6 @@ def normalize_biom(text: str) -> str | None:
 def build_biom_keyboard() -> InlineKeyboardMarkup:
     rows = []
     row = []
-    # Stadt/Dorf nicht als "aktuelles Biom" auswählbar, weil es immer auf einem Biom liegt
     choices = SURFACE_BIOMES + ["Wasser", "Unterreich"]
     for label in choices:
         row.append(InlineKeyboardButton(label, callback_data=f"biom_set:{label}"))
@@ -111,14 +110,6 @@ def build_biom_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(rows)
 
 def roll_biom(current_biom: str) -> tuple[str, str, str | None]:
-    """
-    Regeln:
-    66% gleiches Biom
-    10% Stadt/Dorf (auf aktuellem Biom)
-    5% Wasser
-    5% Unterreich
-    Rest gleichmäßig auf andere Biome verteilt
-    """
     if current_biom not in ALL_BIOMES:
         raise ValueError(f"Unbekanntes Biom: {current_biom}")
 
@@ -233,11 +224,6 @@ async def rollbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ENCOUNTER SYSTEM
 # -----------------------
 
-ENCOUNTER_BIOM, ENCOUNTER_LEVEL = range(2)
-
-# Optional: Tabelle direkt hier rein kopieren statt encounters_de.txt
-ENCOUNTER_TABLE_TEXT = ""
-
 ENCOUNTERS: dict[str, dict[str, list[tuple[int, int, str]]]] = {}
 
 def _to_int_w100(token: str) -> int:
@@ -264,8 +250,6 @@ def _canonical_enc_biom(raw: str) -> str:
 
     if "arktis" in t:
         return "Arktis"
-    if "berg" in t:
-        return "Berg"
     if "grasland" in t:
         return "Grasland"
     if "hügel" in t or "huegel" in t:
@@ -278,23 +262,28 @@ def _canonical_enc_biom(raw: str) -> str:
         return "Wald"
     if "wüste" in t or "wueste" in t:
         return "Wüste"
-    if "underdark" in t or "unterreich" in t or "unterwelt" in t:
+    if "underdark" in t or "unterreich" in t:
         return "Unterreich"
-    if "unterwasser" in t or "wasserbegegn" in t:
+    if "unterwasser" in t:
         return "Unterwasser"
     if "stadt" in t or "dorf" in t:
         return "Stadt/Dorf"
+    if "berg" in t:
+        return "Berg"
 
     return raw.strip()
 
-def _load_encounter_raw_text() -> str:
-    if ENCOUNTER_TABLE_TEXT.strip():
-        return ENCOUNTER_TABLE_TEXT
+def _biom_for_encounter_from_current(current: str) -> str:
+    # Biom System hat "Wasser", Encounter System nutzt "Unterwasser"
+    if current == "Wasser":
+        return "Unterwasser"
+    return current
 
+def _load_encounter_raw_text() -> str:
     path = Path(__file__).with_name("encounters_de.txt")
-    if path.exists():
-        return path.read_text(encoding="utf-8", errors="replace")
-    return ""
+    if not path.exists():
+        return ""
+    return path.read_text(encoding="utf-8", errors="replace")
 
 def _load_encounters_from_text(text: str) -> dict[str, dict[str, list[tuple[int, int, str]]]]:
     lines = [ln.strip() for ln in text.splitlines()]
@@ -303,7 +292,6 @@ def _load_encounters_from_text(text: str) -> dict[str, dict[str, list[tuple[int,
         r"^(?P<biome>.+?)\s*\(\s*Stufe\s*(?P<a>\d+)\s*(?:-|–|bis)\s*(?P<b>\d+)\s*\)",
         re.IGNORECASE,
     )
-
     range_re = re.compile(
         r"^(?P<s>\d{2})(?:\s*(?:-|–|bis)\s*(?P<e>\d{2}))?\s*(?P<rest>.*)$",
         re.IGNORECASE,
@@ -349,7 +337,6 @@ def _load_encounters_from_text(text: str) -> dict[str, dict[str, list[tuple[int,
             s = _to_int_w100(m_rng.group("s"))
             e_raw = m_rng.group("e")
             e = _to_int_w100(e_raw) if e_raw else s
-
             if s > e:
                 s, e = e, s
 
@@ -371,10 +358,20 @@ def init_encounters():
     raw = _load_encounter_raw_text()
     ENCOUNTERS = _load_encounters_from_text(raw) if raw.strip() else {}
 
+def build_encounter_confirm_keyboard(current_biom: str) -> InlineKeyboardMarkup:
+    rows = [
+        [
+            InlineKeyboardButton(f"✅ {current_biom}", callback_data="enc_confirm:yes"),
+            InlineKeyboardButton("🌍 Anderes Biom", callback_data="enc_confirm:no"),
+        ]
+    ]
+    return InlineKeyboardMarkup(rows)
+
 def build_encounter_biom_keyboard() -> InlineKeyboardMarkup:
     choices = [
-        "Arktis", "Berg", "Grasland", "Hügel", "Küste", "Sumpf", "Wald", "Wüste",
-        "Unterreich", "Unterwasser", "Stadt/Dorf"
+        "Arktis", "Berg", "Grasland", "Hügel",
+        "Küste", "Sumpf", "Wald", "Wüste",
+        "Unterreich", "Unterwasser", "Stadt/Dorf",
     ]
     rows = []
     row = []
@@ -418,22 +415,89 @@ def pick_encounter(biom: str, level: str) -> tuple[int, str]:
 
     return roll, "Nichts gefunden. Deine Tabelle hat an der Stelle vermutlich eine Lücke."
 
+_W_DICE_EXPR = re.compile(r"(\d+)\s*[Ww]\s*(\d+)(\s*[+-]\s*\d+)?")
+
+def roll_inline_w_dice(text: str) -> tuple[str, list[str]]:
+    """
+    Ersetzt Ausdrücke wie 1W6, 2W10 + 5 usw direkt im Text durch das Ergebnis.
+    Gibt zusätzlich eine Liste mit Details der Würfe zurück.
+    """
+    details: list[str] = []
+
+    def repl(m: re.Match) -> str:
+        count = int(m.group(1))
+        sides = int(m.group(2))
+        mod_raw = m.group(3)
+        mod = 0
+        if mod_raw:
+            mod = int(mod_raw.replace(" ", ""))
+
+        rolls = [random.randint(1, sides) for _ in range(count)]
+        total = sum(rolls) + mod
+
+        mod_txt = f"{mod:+d}" if mod else ""
+        details.append(f"{count}W{sides}{mod_txt} = {total} (Würfe: {', '.join(map(str, rolls))})")
+        return str(total)
+
+    rolled_text = _W_DICE_EXPR.sub(repl, text)
+    return rolled_text, details
+
 async def rollencounter_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not ENCOUNTERS:
         await update.message.reply_text(
             "Ich habe noch keine Encounter Tabellen geladen.\n"
-            "Lege eine encounters_de.txt neben dein Script oder fülle ENCOUNTER_TABLE_TEXT und starte den Bot neu 🙂"
+            "Lege eine encounters_de.txt neben dein Script und starte den Bot neu 🙂"
         )
         return ConversationHandler.END
 
-    context.user_data.pop("enc_biom", None)
-    context.user_data.pop("enc_level", None)
+    # Optional: /rollencounter Wald
+    if context.args:
+        raw = " ".join(context.args).strip()
+        biom_norm = normalize_biom(raw) or _canonical_enc_biom(raw)
+        biom_norm = _biom_for_encounter_from_current(biom_norm)
+        context.user_data["enc_biom"] = biom_norm
+        await update.message.reply_text(
+            f"⚔️ Biom: {biom_norm}\nWelche Stufe?",
+            reply_markup=build_encounter_level_keyboard()
+        )
+        return ENC_PICK_LEVEL
+
+    current = context.user_data.get("current_biom")
+    if not current:
+        await update.message.reply_text(
+            "Ich kenne dein aktuelles Biom noch nicht.\n"
+            "Setze es bitte erst mit /setbiom 🙂",
+            reply_markup=build_biom_keyboard()
+        )
+        return ConversationHandler.END
+
+    enc_biom = _biom_for_encounter_from_current(current)
+    context.user_data["enc_biom"] = enc_biom
 
     await update.message.reply_text(
+        f"⚔️ Nutze aktuelles Biom?\nAktuell: {current}\nEncounter Tabelle: {enc_biom}",
+        reply_markup=build_encounter_confirm_keyboard(enc_biom)
+    )
+    return ENC_CONFIRM
+
+async def rollencounter_confirm(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    choice = query.data.split(":", 1)[1]
+    if choice == "yes":
+        biom = context.user_data.get("enc_biom", "Unbekannt")
+        await query.edit_message_text(
+            f"⚔️ Biom: {biom}\nWelche Stufe?",
+            reply_markup=build_encounter_level_keyboard()
+        )
+        return ENC_PICK_LEVEL
+
+    await query.edit_message_text(
         "⚔️ Welches Biom?",
         reply_markup=build_encounter_biom_keyboard()
     )
-    return ENCOUNTER_BIOM
+    return ENC_PICK_BIOM
 
 async def rollencounter_pick_biom(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -446,7 +510,7 @@ async def rollencounter_pick_biom(update: Update, context: ContextTypes.DEFAULT_
         f"⚔️ Biom: {biom}\nWelche Stufe?",
         reply_markup=build_encounter_level_keyboard()
     )
-    return ENCOUNTER_LEVEL
+    return ENC_PICK_LEVEL
 
 async def rollencounter_pick_level(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -456,18 +520,25 @@ async def rollencounter_pick_level(update: Update, context: ContextTypes.DEFAULT
     biom = (context.user_data.get("enc_biom") or "").strip()
 
     try:
-        roll_value, encounter = pick_encounter(biom, level)
+        w100, encounter_raw = pick_encounter(biom, level)
+        encounter_rolled, dice_details = roll_inline_w_dice(encounter_raw)
+
         msg = (
             f"⚔️ Encounter\n"
             f"Biom: {_canonical_enc_biom(biom)}\n"
             f"Stufe: {level}\n"
-            f"W100: {roll_value:02d}\n\n"
-            f"Begegnung:\n{encounter}"
+            f"W100: {w100:02d}\n\n"
+            f"Begegnung (Tabelle):\n{encounter_raw}\n\n"
+            f"Begegnung (ausgewürfelt):\n{encounter_rolled}"
         )
+
+        if dice_details:
+            msg += "\n\nWürfe:\n" + "\n".join(dice_details)
+
     except KeyError:
         msg = (
             f"Für Biom {biom} und Stufe {level} habe ich keine passende Tabelle gefunden.\n"
-            f"Check die Überschrift in deiner Datei encounters_de.txt."
+            f"Check die Überschrift in encounters_de.txt."
         )
 
     await query.edit_message_text(msg)
@@ -543,7 +614,7 @@ def build_chaos_keyboard():
 
 async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
-        await update.message.reply_text("Beispiel:\n/roll 1d6\n/roll 2d20+3")
+        await update.message.reply_text("Beispiel:\n/roll 1d6\n/roll 2d20+3\n/roll 1w6")
         return
 
     expr = context.args[0].lower().strip()
@@ -683,8 +754,9 @@ def main():
     encounter_conv = ConversationHandler(
         entry_points=[CommandHandler("rollencounter", rollencounter_start)],
         states={
-            ENCOUNTER_BIOM: [CallbackQueryHandler(rollencounter_pick_biom, pattern=r"^enc_biom:")],
-            ENCOUNTER_LEVEL: [CallbackQueryHandler(rollencounter_pick_level, pattern=r"^enc_lvl:")],
+            ENC_CONFIRM: [CallbackQueryHandler(rollencounter_confirm, pattern=r"^enc_confirm:")],
+            ENC_PICK_BIOM: [CallbackQueryHandler(rollencounter_pick_biom, pattern=r"^enc_biom:")],
+            ENC_PICK_LEVEL: [CallbackQueryHandler(rollencounter_pick_level, pattern=r"^enc_lvl:")],
         },
         fallbacks=[CommandHandler("cancel", rollencounter_cancel)],
         allow_reentry=True,
