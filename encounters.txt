@@ -1,0 +1,4748 @@
+Arktisbegegnungen (Stufe 1–4)
+W100 – Begegnung
+
+01
+1 Rieseneule
+
+02–05
+1W6 + 3 Kobolde
+
+06–08
+1W4 Fallensteller (Gemeiner)
+
+09–10
+1 Eule
+
+11–12
+2W4 Blutfalken
+
+13–17
+2W6 Banditen
+
+18–20
+1W3 Geflügelte Kobolde mit 1W6 Kobolden
+
+21–25
+Der zum Teil aufgefressene Kadaver eines Mammuts, den man ausschlachten kann, um Rationen für 1W4 Wochen zu erhalten
+
+26–29
+2W8 Jäger (Stammeskrieger)
+
+30–35
+1 Halboger
+
+36–40
+Abrupt endende Spuren im Schnee, die von Kreaturen stammen, die im Gänsemarsch gingen
+
+41–45
+1W3 Eis-Mephiten
+
+46–50
+1 Braunbär
+
+51–53
+1W6 + 1 Orks
+
+54–55
+1 Eisbär
+
+56–57
+1W6 Kundschafter
+
+58–60
+1 Säbelzahntiger
+
+61–65
+Ein zugefrorener Teich, in dessen eisige Oberfläche scheinbar vor Kurzem ein klaffendes Loch geschlagen wurde
+
+66–68
+1 Berserker
+
+69–70
+1 Oger
+
+71–72
+1 Greif
+
+73–75
+1 Druide
+
+76–80
+3W4 Flüchtlinge (Gemeine), die vor Orks auf der Flucht sind
+
+81
+1W3 Veteranen
+
+82
+1W4 Orog
+
+83
+2 Braunbären
+
+84
+1 Ork-Auge des Grumsh mit 2W8 Orks
+
+85
+1W3 Winterwölfe
+
+86–87
+1W4 Yetis
+
+88
+1 Halboger
+
+89
+1W3 Mantikoren
+
+90
+1 Banditenhauptmann mit 2W6 Banditen
+
+91
+1 Wiedergänger
+
+92–93
+1 Troll
+
+94–95
+1 Werbär
+
+96–97
+1 Junger Remorhaz
+
+98
+1 Mammut
+
+99
+1 Junger weißer Drache
+
+00
+1 Frost­riese
+
+
+Arktisbegegnungen (Stufe 5–10)
+W100 – Begegnung
+
+01–05
+2 Säbelzahntiger
+
+06–07
+1W4 Halboger
+
+08–10
+1W3 + 1 Braunbären
+
+11–15
+1W3 Eisbären
+
+16–20
+2W4 Berserker
+
+21–25
+Eine Halbork-Druidin, die sich um einen verwundeten Eisbären kümmert. Wenn die Charaktere der Druidin dabei helfen, überlässt sie ihnen eine Phiole Gegengift.
+
+26–30
+2W8 Kundschafter
+
+31–35
+2W4 Eis-Mephiten
+
+
+Arktisbegegnungen (Stufe 11–16)
+W100 – Begegnung
+
+36–40
+2W6 + 1 Zombies an Bord einer Galeone, die im Eis feststeckt. Genug Rationen für 2W20 Tage können aus dem Schiff geborgen werden, wenn es durchsucht wird.
+
+41–45
+1 Mantikor
+
+46–50
+2W6 + 3 Orks
+
+51–53
+1W6 + 2 Oger
+
+54–55
+2W4 Greifen
+
+56–57
+1W4 Veteranen
+
+58–60
+1 Banditenhauptmann mit 1 Druiden, 1W3 Berserkern und 2W10 + 5 Banditen
+
+61–65
+1W4 Stunden extreme Kälte (siehe Kapitel 5 im Dungeon Master’s Guide)
+
+66–68
+1 Junger Remorhaz
+
+69–72
+1 Ork-Auge des Grumsh mit 1W6 Orogs und 2W8 + 6 Orks
+
+73–75
+1 Wiedergänger
+
+76–80
+Ein Heulen, das für 1W3 Minuten übers Land hallt
+
+81–82
+1W3 Mammuts
+
+83–84
+1 Junger weißer Drache
+
+85–86
+2W4 Winterwölfe
+
+87–88
+1W6 + 2 Yetis
+
+89–90
+1W2 Frostriesen
+
+91–92
+1W3 Werbären
+
+93–94
+1W4 Trolle
+
+95–96
+1 Abscheulicher Yeti
+
+97–98
+1 Remorhaz
+
+99
+1 Roch
+
+00
+2W4 Junge Remorhazzen
+
+
+Arktisbegegnungen (Stufe 17–20)
+W100 – Begegnung
+
+01–02
+2W10 Wiedergänger
+
+03–04
+2W8 Trolle
+
+05–06
+2W10 Werbären
+
+07–08
+1 Frostriese
+
+09–10
+2W4 Junge Remorhazzen
+
+11–20
+1W4 Frostriesen
+
+21–25
+Eine kreisrunde Stelle von schwarzem Eis auf dem Boden. Die Lufttemperatur um die Stelle ist wärmer als in der Umgebung. Charaktere, die sich die Stelle näher betrachten, stellen fest, dass dort Maschinenteile im Eis eingeschlossen sind.
+
+26–35
+1 Uralter weißer Drache
+
+36–40
+Ein Abenteurer, 1,80 m unter dem Eis eingefroren. Chance von 50 %, dass der Leichnam einen seltenen magischen Gegenstand nach Wahl des SLs bei sich trägt.
+
+41–50
+1W3 Abscheuliche Yetis
+
+51–60
+1W4 Remorhazzen
+
+61–65
+Eine 150 m hohe Mauer aus Eis, die 90 m dick ist und sich über eine Strecke von (1W4) × 1,5 km erstreckt.
+
+66–75
+1W4 Rochs
+
+76–80
+Das Abbild einer ernst wirkenden Frau mit langen, wallenden Haaren, das in die Seite eines Berges gehauen wurde.
+
+81–90
+1W10 Frostriesen mit 2W4 Eisbären
+
+91–96
+1W3 Ausgewachsene weiße Drachen
+
+97–99
+2W4 Abscheuliche Yetis
+
+00
+1 Uralter weißer Drache mit 1W3 Jungen weißen Drachen
+
+
+Bergbegegnungen (Stufe 1–4)
+W100 – Begegnung
+
+01–02
+1 Adler
+
+03–05
+1W3 Schwärme von Fledermäusen
+
+06–08
+1W6 Ziegen
+
+09–11
+1W10 + 5 Stammeskrieger
+
+12–14
+1W6 + 3 Pteranodons
+
+15–17
+1W8 + 1 Geflügelte Kobolde
+
+18–20
+1 Löwe
+
+21–24
+Stufen, die in den Berg gehauen wurden. Sie steigen 3W10 + 12 m, bevor sie plötzlich enden.
+
+25–27
+2W10 Blutmücken
+
+28–30
+2W4 Aarakocra
+
+
+Bergbegegnungen (Stufe 1–4)
+W100 – Begegnung
+
+31–33
+2W6 Zwergen-Soldaten (Wachen) mit 1W6 Maultieren, die mit Eisenerz beladen sind
+
+34–36
+1 Riesenadler
+
+37–38
+Ein kleiner Schrein in einer Felsspalte, welcher einer rechtschaffend neutralen Gottheit gewidmet ist
+
+39–41
+2W8 + 1 Blutfalken
+
+42–44
+1 Riesenziege
+
+45–47
+3W4 Kobolde
+
+48–50
+1 Halboger
+
+51–53
+1 Berserker
+
+54–55
+1 Orog
+
+56
+1 Höllenhund
+
+57
+1 Druide
+
+58–59
+1 Peryton
+
+60–61
+1W2 Pferdegreifen
+
+62
+1 Mantikor
+
+63–64
+1W6 + 2 Kundschafter
+
+65–67
+Enorme Fußabdrücke eines Riesen, die in die Gebirgsgipfel führen
+
+68–73
+2W4 Orks
+
+74–75
+1 Riesenelch
+
+76–77
+1 Veteran
+
+78–79
+1 Ork-Auge des Grumsh
+
+80
+1W4 Harpyien
+
+81
+1 Oger
+
+82
+1 Greif
+
+83
+1 Basilisk
+
+84–85
+1 Säbelzahntiger
+
+86–90
+Ein sprudelnder Wasserlauf, der aus einer Felsspalte dringt
+
+91
+1W2 Ettins
+
+92
+1 Zyklop
+
+93
+1 Troll
+
+94
+1 Galeb Duhr
+
+95
+1 Luftelementar
+
+96
+1 Landhai
+
+97
+1 Chimäre
+
+98
+1 Wyvern
+
+99
+1 Steinriese
+
+00
+1 Frostriese
+
+
+Bergbegegnungen (Stufe 5–10)
+W100 – Begegnung
+
+01–02
+2W8 + 1 Aarakocra
+
+03–04
+1 Löwe oder 1 Säbelzahntiger
+
+05–06
+1W8 + 1 Riesenziegen
+
+07–08
+1W4 + 3 Zwergen-Pioniere (Kundschafter)
+
+09–10
+1W6 + 2 Orks
+
+11–15
+1W10 Riesenadler
+
+16–20
+1W8 + 1 Pferdegreifen
+
+21–25
+1W8 Felsspalten, die Dampf ausstoßen, welcher über jede Spalte einen Würfel mit 6 m Seitenlänge teilweise verhüllt
+
+26–30
+1 Basilisk
+
+31–35
+1W12 Halboger
+
+36–40
+Eine Felsklamm, die von einer 30 m hohen Mauer blockiert wird. Diese hat eine Öffnung im Zentrum, wo einmal ein Tor war
+
+41–45
+1 Mantikor
+
+46–50
+2W4 Harpyien
+
+51–52
+1 Galeb Duhr
+
+53–54
+1 Landhai
+
+55–56
+1W10 Berserker
+
+57–58
+1W3 Höllenhunde
+
+59–60
+1W8 + 1 Veteranen
+
+61–65
+Ein ferner Berg, der an einen Zahn erinnert
+
+66–69
+1W4 Ettins
+
+70–73
+1 Wyvern
+
+74–75
+1 Ork-Auge des Grumsh mit 1W6 Orogs und 3W6 + 10 Orks
+
+76–80
+Eine Reihe von 1W10 + 40 Pfählen, auf welchen die Körper von Kobolden, Zwergen oder Orks aufgespießt sind
+
+81–83
+1 Feuerriese
+
+84–85
+1 Junger Silberdrache
+
+86–87
+1W4 Luftelementare
+
+88–90
+1W4 Trolle
+
+91–92
+1W3 + 1 Zyklopen
+
+93–94
+1W4 Chimären
+
+95–96
+1 Wolkenriese
+
+97
+1 Roch
+
+98
+1W4 Steinriesen
+
+99
+1 Junger roter Drache
+
+00
+1W4 Frostriesen
+
+
+Bergbegegnungen (Stufe 11–16)
+W100 – Begegnung
+
+01–02
+1W8 + 1 Basilisken
+
+03–04
+2W4 Höllenhunde
+
+05–06
+1W3 Chimären
+
+07–08
+1 Galeb Duhr
+
+09–10
+2W6 Veteranen
+
+11–15
+1 Junger Silberdrache
+
+16–20
+2W4 Trolle
+
+21–25
+1 Roter Drache, der über den höchsten Gipfeln durch die Luft gleitet
+
+26–30
+1W8 + 1 Mantikoren
+
+31–35
+1W4 Zyklopen
+
+36–40
+Schwerer Schneefall, der 1W6 Stunden anhält
+
+41–45
+1W10 Luftelementare
+
+46–50
+1W6 + 2 Landhaie
+
+51–55
+1W4 Steinriesen
+
+56–60
+1 Feuerriese
+
+61–65
+2 Steinriesen einige hundert Meter entfernt, die einander Felsbrocken zuwerfen
+
+66–70
+1W8 + 1 Ettins
+
+71–75
+1W3 Frostriesen
+
+76–80
+Ein breiter Felsabgrund, dessen Tiefe mit Nebel verhüllt ist
+
+81–85
+1W4 Wolkenriesen
+
+86–90
+1 Ausgewachsener Silberdrache
+
+91–96
+1 Ausgewachsener roter Drache
+
+97–98
+1W4 Rochs
+
+99
+1 Uralter Silberdrache
+
+00
+1 Uralter roter Drache
+
+
+Graslandbegegnungen (Stufe 1–5)
+W100 – Begegnung
+
+01
+1 Hobgoblin-Hauptmann mit 1W4 + 1 Hobgoblins
+
+02
+1 Chimäre
+
+03
+1 Gorgone
+
+04
+1W2 Couatl
+
+05
+1 Ankylosaurus
+
+06
+1 Wertiger
+
+07
+1W3 Allosaurier
+
+08–09
+1W3 Elefanten
+
+10–14
+Ein Kreis aus stehenden Steinen. Zwischen den Steinen ist es windstill, egal wie stark der Wind außerhalb weht
+
+15–16
+1 Phasenspinne
+
+17–18
+1 Gnoll-Rudelfürst mit 1W4 Riesenhyänen
+
+19–20
+1 Ork oder 1 Pegasus
+
+21–22
+1 Ankheg
+
+23–24
+1W3 Nashörner
+
+25–28
+1W3 Schreckhähne
+
+29–32
+1W6 + 2 Riesenwespen oder 1W4 + 3 Schwärme von Insekten
+
+33–36
+1W4 Schakalwere oder 1W4 Kundschafter
+
+37–40
+1W8 Riesenziegen oder 1W8 Worge
+
+41–44
+2W4 Hobgoblins, 2W4 Orks oder 2W4 Gnolle
+
+45–46
+1W2 Riesengiftschlangen
+
+47–48
+1W6 + 2 Elche oder 1W6 + 2 Reitpferde
+
+49–50
+2W4 Goblins
+
+51–52
+1W3 Eber
+
+53–54
+1 Panther (Leopard) oder 1 Löwe
+
+55–58
+1W6 + 3 Goblins, die auf Wölfen reiten
+
+59–62
+2W6 Riesenwolfsspinnen oder 1 Riesenadler
+
+63–65
+1W8 + 4 Pteranodons
+
+66–69
+3W6 Wölfe
+
+70–74
+2W4 + 2 Axtschädel
+
+75–76
+1 Riesenbiber oder 1W2 Tiger
+
+77–78
+1 Oger oder 1W3 Grottenschrate
+
+79–80
+1 Riesenelch oder 1 Gnoll-Rudelfürst mit 1W3 Riesenhyänen
+
+81–82
+1W3 Riesengeier oder 1W3 Pferdegreifen
+
+83–84
+1 Goblin-Boss mit 1W6 + 2 Goblins und 1W4 + 3 Wölfen oder 1W3 Trittkrieger
+
+85–89
+1W3 Druiden, welche die Wildnis patrouillieren
+
+90–91
+1W6 Vogelscheuchen oder 1 Werbär
+
+92–93
+1W3 Zentauren oder 1W3 Greifen
+
+94
+1W3 Gnoll-Reißzähne von Yeenoghu oder 1 Ork-Auge des Grumsh mit 2W4 + 1 Orks
+
+98–96
+1 Triceratops
+
+97
+1 Zyklop oder 1 Landhai
+
+98–99
+1W4 Mantikoren
+
+00
+1 Tyrannosaurus Rex
+
+
+Graslandbegegnungen (Stufe 6–10)
+W100 – Begegnung
+
+01
+1W3 Gorgonen
+
+02
+1W4 Zyklopen
+
+03–04
+1W3 Gnoll-Reißzähne von Yeenoghu
+
+05–06
+1 Chimäre
+
+07–09
+1W4 + 1 Veteranen auf Reitpferden
+
+10–11
+Ein Tornado, der 1W6 × 1,5 km entfernt den Boden berührt und das Land über die Länge von 1,5 km verwüstet, bevor er sich auflöst
+
+12–13
+1W3 Mantikoren
+
+14–15
+2W4 Ankhegs
+
+16–17
+1W8 + 1 Zentauren
+
+18–19
+1W6 + 2 Greifen
+
+20–21
+1W6 Elefanten
+
+22–24
+Ein Landstreifen, der mit verfallenden Kriegsmaschinen, Knochen und Bannern vergessener Armeen übersät ist
+
+25–28
+1W8 + 1 Grottenschrate
+
+29–32
+1 Gnoll-Rudelfürst mit 1W4 + 1 Riesenhyänen
+
+33–36
+2W4 Vogelscheuchen
+
+37–40
+1W12 Löwen
+
+41–44
+1W10 Thri-kreen
+
+45–46
+1 Allosaurus
+
+47–48
+1 Tiger
+
+49–50
+1W2 Riesenadler oder 1W2 Riesengeier
+
+51–52
+1 Goblin-Boss mit 2W4 Goblins
+
+53–54
+1W2 Pegasi
+
+55–58
+1 Ankylosaurus
+
+59–62
+1W2 Couatl
+
+63–66
+1 Ork-Auge des Grumsh mit 1W8 + 1 Orks
+
+67–70
+2W4 Pferdegreifen
+
+71–74
+1W4 + 1 Nashörner
+
+75–76
+1 Hobgoblin-Hauptmann mit 2W6 Hobgoblins
+
+77–78
+1W3 Phasenspinnen
+
+79–80
+1W6 + 2 Riesenbiber
+
+81–82
+2W4 Riesenelche
+
+83–84
+1W4 Oger und 1W4 Orogs
+
+85–87
+Ein heißer Wind, der den Gestank der Verwesung mit sich bringt
+
+88–90
+1W3 Wertiger
+
+91–92
+1 Landhai
+
+93–94
+Ein Stamm aus 2W20 + 20 Nomaden (Stammeskrieger) auf Reitpferden, welche einer Herde Antilopen (Reh) folgen. Die Nomaden sind bereit, Nahrung, Leder und Informationen gegen Waffen zu tauschen.
+
+95–96
+1W6 + 2 Werbären
+
+97
+1 Junger Golddrache
+
+98–99
+1W4 Triceratops
+
+00
+1W3 Tyrannosaurus Rex
+
+
+Graslandbegegnungen (Stufe 11–16)
+W100 – Begegnung
+
+01–05
+3W6 Werbären
+
+06–10
+2W10 Gnoll-Reißzähne von Yeenoghu
+
+11–15
+1W4 Landhaie
+
+16–17
+Eine alte gepflasterte Straße, die teilweise von der Wildnis zurückerobert wurde und sich 1W8 × 1,5 km in jede Richtung erstreckt, bevor sie endet
+
+18–27
+1W12 Couatl
+
+28–30
+Eine Hexe (Magus), die in einer primitiven Hütte haust. Sie bietet Heiltränke an, Gegengifte und andere Verbrauchsgegenstände im Tausch gegen Nahrung und Neuigkeiten.
+
+31–40
+2W10 Elefanten
+
+41–46
+2W4 Wertiger
+
+47–56
+1W8 + 1 Zyklopen
+
+57–61
+1W3 Chimären
+
+62–66
+5 Triceratops
+
+67–69
+Ein riesiges Loch, das sich über 15 m erstreckt und beinahe 150 m tief ist. Am Boden ist eine leere Höhle.
+
+70–79
+1W4 + 3 Gorgonen
+
+80–88
+1W3 Junge Golddrachen
+
+89–90
+Ein kreisförmiges Grasgebiet mit beinahe 375 m Durchmesser. Das Gras scheint, als wäre es niedergedrückt worden; 1W4 weitere diese Kreise sind durch Linien verbunden und können von oben gesehen werden.
+
+91–96
+2W4 Tyrannosaurus Rex
+
+97–99
+1 Ausgewachsener Golddrache
+
+00
+1 Uralter Golddrache
+
+
+Graslandbegegnungen (Stufe 17–20)
+W100 – Begegnung
+
+01–10
+2W6 Triceratops
+
+11–20
+1W10 Gorgonen
+
+21–25
+2W6 Hyänen, die vom Kadaver eines toten Dinosauriers fressen
+
+26–35
+3W6 Landhaie
+
+36–40
+Ein feuriger Streitwagen, der über den Himmel zieht
+
+41–50
+1W3 Junge Golddrachen
+
+51–60
+2W4 Zyklopen
+
+61–65
+Ein Tal, in dem alles Gras abgestorben ist und der Boden mit versteinerten Baumstümpfen und umgefallenen Baumstämmen übersät ist
+
+66–75
+2W10 Grottenschrate mit 4W6 Goblins und 2W10 Wölfen
+
+76–80
+Eine freundliche Abenteurergruppe aus 1W6 + 1 Charakteren verschiedener Völker, Klassen und Stufen (durchschnittliche Stufe 1W6 + 2). Sie teilen Informationen über ihre jüngsten Reisen.
+
+81–90
+1W12 Chimären
+
+91–96
+1W6 + 2 Tyrannosaurus Rex
+
+97–99
+1 Ausgewachsener Golddrache
+
+00
+1 Uralter Golddrache
+
+
+Hügelbegegnungen (Stufe 1–4)
+W100 – Begegnung
+
+01
+1 Adler
+
+02–03
+2W4 Paviane
+
+04–06
+1W6 Banditen
+
+07
+1W4 Geier
+
+08
+1W10 Gemeine
+
+09
+1 Rabe
+
+10
+1 Giftschlange
+
+11–13
+2W6 Banditen oder 2W6 Stammeskrieger
+
+14
+2W8 Ziegen
+
+15
+1W6 + 4 Blutfalken
+
+16
+1W4 + 3 Riesenwiesel
+
+17–18
+1W3 Wachen mit 1W2 Doggen und 1 Maultier
+
+19–20
+1W6 + 5 Hyänen
+
+21–22
+2W4 Blutmücken
+
+23–25
+Eine leere Höhle voller Knochen
+
+26
+1 Pseudodrache oder 1W3 Rieseneulen
+
+27
+1 Löwe oder 1 Panther (Puma)
+
+28–30
+2W8 Kobolde
+
+31
+1 Pferdegreif
+
+32–34
+2W4 Goblins
+
+35
+1 Worg
+
+36
+1W3 Schwärme von Fledermäusen oder 1W3 Schwärme von Raben
+
+37
+1 Riesenadler
+
+38–40
+Ein alter Zwerg, der auf einem Baumstumpf sitzt und an einem Stück Holz schnitzt
+
+41
+1W4 Elche
+
+42
+1W4 Geflügelte Kobolde mit 1W6 Kobolden
+
+43
+1W6 + 2 Riesenwolfsspinnen
+
+44–45
+2W4 Wölfe
+
+46
+1 Schwarm von Insekten
+
+47
+1W8 + 1 Axtschädel
+
+48–49
+1 Braunbär oder 1W3 Eber
+
+50
+1 Kundschafter
+
+51
+1 Oger
+
+52–53
+2W4 Gnolle
+
+54
+1 Riesenelch
+
+55
+1W3 + 1 Harpyien
+
+56
+1 Werwolf
+
+57–58
+2W4 Orks
+
+59
+1W4 Halboger
+
+60
+1 Druide oder 1 Veteran
+
+61–63
+Die Leiche eines Abenteurers, welche eine vollständige Entdeckerausrüstung trägt und auf einem Langschwert liegt
+
+64
+1 Grüne Vettel
+
+65–66
+1W3 Schreckenswölfe
+
+67–68
+Ein kleiner Friedhof mit 2W6 Gräbern
+
+69–70
+1 Hobgoblin-Hauptmann mit 2W4 Hobgoblins
+
+71
+2W4 Riesenziegen
+
+72
+1 Mantikor
+
+73–74
+1W6 + 2 Hobgoblins
+
+75
+1 Phasenspinne
+
+76–78
+Eine Ansammlung Guano von einem sehr großen Vogel
+
+79
+1 Gnoll-Reißzahn von Yeenoghu
+
+80
+1W3 Riesenbiber
+
+81
+1 Gnoll-Rudelfürst mit 1W3 Riesenhyänen
+
+82
+1 Banditenhauptmann mit 2W4 Banditen
+
+83
+1 Ork-Auge des Grumsh mit 1W8 + 2 Orks
+
+84
+1W3 Orogs oder 1W4 Berserker
+
+85–86
+1 Ettin oder 1 Werbär
+
+87–88
+1 Goblin-Boss mit 2W6 Goblins
+
+89
+1W3 Greifen
+
+90
+1W3 Perytone oder 1W4 Pegasi
+
+97–96
+1W3 Trolle
+
+97–99
+1 Zyklop
+
+00
+1 Steinriese
+
+
+Hügelbegegnungen (Stufe 5–10)
+W100 – Begegnung
+
+Hügelbegegnungen (Stufe 5–10)
+
+W100 – Begegnung
+
+01
+1W4 Pegasi oder 1W3 Perytone
+
+02
+1W6 + 2 Riesenziegen
+
+03
+1 Mantikor
+
+04
+1W8 + 1 Gnolle oder 1W8 + 1 Hobgoblins
+
+05
+1W4 Löwen
+
+06
+1W6 + 2 Worge
+
+07
+1W4 Braunbären
+
+08
+3W6 Axtschnäbel
+
+09
+1 Halboger mit 2W6 Orks
+
+10
+2W10 geflügelte Kobolde
+
+11–12
+1 Goblin-Boss mit 1W4 Schreckenswölfen und 2W6 Goblins
+
+13
+1W6 Riesenelche
+
+14–15
+1W8 + 1 Riesenadler
+
+16–17
+1W4 Phasenspinnen
+
+18–19
+1 Gnoll-Rudelfürst mit 2W4 Riesenhyänen
+
+20
+2W4 Pferdegreifen
+
+21–25
+Eine 4,50 m hohe Statue eines Zwergenkriegers, welche auf der Seite liegt
+
+26–27
+2W4 Orgs
+
+28–29
+1W4 + 1 Greifen
+
+30–31
+1W6 + 2 Harpyien
+
+32–33
+1 Ork-Auge des Grumsh mit 2W6 + 3 Orks
+
+34–35
+1W4 + 3 Riesenreber
+
+36–40
+Eine Steintür an der Seite eines Hügels, dahinter ein 4,50 m langer Gang, der in einem Einsturzbereich endet
+
+41–42
+1W3 Grüne Vetteln
+
+43–44
+1W4 Werwölfe
+
+45–46
+1W6 + 2 Oger
+
+47–48
+1 Hobgoblin-Hauptmann mit 2W8 Hobgoblins
+
+49–50
+1 Banditenhauptmann mit 3W6 Banditen
+
+51–54
+1 Chimäre
+
+55–58
+1W4 Ettins
+
+59–62
+1W6 + 2 Veteranen mit 2W6 Berserkern
+
+63–65
+Eine verlassene Holzhütte
+
+66–69
+1 Galeb Duhr
+
+70–73
+1 Landhai
+
+74–77
+1 Wyvern
+
+78–80
+2W6 + 10 Ziegen mit einem Hirten (Stammeskrieger)
+
+81–82
+1W3 Hügelriesen
+
+83–84
+2W4 Werbären
+
+85–86
+1W4 Wiedergänger
+
+87–88
+1W2 Gorgonen
+
+89–90
+1W8 + 1 Gnoll-Reißzähne von Yeenoghu
+
+91–93
+1W4 Zyklopen
+
+94–96
+1 Junger roter Drache
+
+97–98
+1W4 Steinriesen
+
+99
+1W3 Junge Kupferdrachen
+
+00
+1 Roch
+
+
+Hügelbegegnungen (Stufe 11–16)
+W100 – Begegnung
+
+01
+2W8 Mantikoren oder 2W8 Phasenspinnen
+
+02–04
+1W6 Grüne Vetteln mit 1W6 Wyvern
+
+05–07
+1 Hobgoblin-Hauptmann mit 1 Hügelriese und 4W10 Hobgoblins
+
+08–10
+2W6 + 3 Werwölfe
+
+11–14
+1W6 + 2 Ettins
+
+15–18
+1W3 Landhaie
+
+19–22
+1W4 Werbären
+
+23–24
+Eine Rauchfahne, die aus einem kleinen Schornstein in der Seite eines Hügels austritt
+
+25–28
+1W4 Wyvern
+
+29–32
+1W8 + 1 Wereber
+
+33–36
+1W3 Wiedergänger
+
+37–38
+Ein leichtes Erdbeben, das die Umgebung für 1W20 Sekunden erschüttert
+
+39–42
+1W3 Chimären
+
+43–46
+1W4 Gorgonen
+
+47–50
+1W6 + 2 Gnoll-Reißzähne von Yeenoghu
+
+51–54
+1W4 Hügelriesen
+
+55–58
+1 Junger roter Drache
+
+59–62
+1W3 + 1 Galeb Duhr
+
+63–65
+2W10 pfeifende Zwergen-Bergarbeiter (Gemeine), die zu ihrer Mine ziehen
+
+66–69
+1W3 Junge Kupferdrachen
+
+70–73
+1W4 Trolle
+
+74–77
+1W3 Zyklopen
+
+78–80
+1W3 Adelige mit 1W4 Kundschaftern, die nach Gold suchen
+
+81–85
+1 Ausgewachsener Kupferdrache
+
+86–90
+2W4 Steinriesen
+
+91–96
+1W4 Rochs
+
+97–99
+1 Ausgewachsener roter Drache
+
+00
+1 Uralter Kupferdrache
+
+
+Hügelbegegnungen (Stufe 17–20)
+W100 – Begegnung
+
+01
+1W2 Rochs
+
+02–05
+1 Junger roter Drache
+
+06–10
+2W6 Ettins
+
+11–15
+1W4 Landhaie
+
+16–20
+1W10 Wiedergänger
+
+21–25
+Die weißen Umrisse eines enormen Pferdes, die in die Flanke eines hohen Hügels gemeißelt wurden
+
+26–30
+1W6 + 1 Gorgonen
+
+31–35
+2W4 + 1 Trolle
+
+36–40
+Die verbrannten Überreste von 2W10 Humanoiden, welche über eine Hügelanke verstreut sind
+
+41–45
+2W6 Hügelriesen
+
+46–50
+1W6 + 2 Werbären
+
+51–55
+2W4 Galeb Duhr
+
+56–60
+1W4 + 2 Wyvern
+
+61–65
+Ein massiver Felsbrocken, der in der Erde versunken ist, als ob er hierhin gefallen oder hierher geworfen worden wäre
+
+66–70
+1 Ausgewachsener Kupferdrache
+
+71–75
+1W6 + 3 Zyklopen
+
+76–80
+Die Fundamente eines alten Steinturms, die auf dem Gipfel eines Hügels sitzen
+
+81–85
+2W4 Steinriesen
+
+86–90
+1 Ausgewachsener roter Drache
+
+91–96
+1 Uralter Kupferdrache
+
+97–99
+1 Uralter roter Drache
+
+00
+1W2 Ausgewachsene rote Drachen mit 1W3 Jungen roten Drachen
+
+
+Küstenbegegnungen (Stufe 1 bis 4)
+W100 Begegnung
+
+01
+1 Pseudodrache
+
+02 bis 05
+2W8 Krabben
+
+06 bis 10
+2W6 Fischer (Gemeine)
+
+11
+1W3 Giftschlangen
+
+12 bis 13
+1W6 Wachen, die einen gestrandeten Adligen beschützen.
+
+14 bis 15
+2W4 Kundschafter
+
+16 bis 18
+2W10 Meervolk
+
+19 bis 20
+1W6 + 2 Sahaugin
+
+21 bis 25
+1W4 Ghule, die an Bord eines schiffbrüchigen Handelsschiffes Leichen fressen. Bei einer Suche können 2W6 Ballen ruinierter Seide, 15 m Seil und ein Fass mit gesalzenen Heringen gefunden werden.
+
+26 bis 27
+1W4 Geflügelte Kobolde mit 1W6 + 1 Kobolden
+
+28 bis 29
+2W6 Stammeskrieger
+
+30 bis 31
+3W4 Kobolde
+
+32 bis 33
+2W4 + 5 Blutfalken
+
+34 bis 35
+1W8 + 1 Pteranodons
+
+36 bis 40
+Ein paar Dutzend frisch geschlüpfter Schildkröten, die sich mühsam ihren Weg zum Wasser bahnen.
+
+41 bis 42
+1W6 + 2 Rieseneidechsen
+
+43 bis 44
+1W6 + 4 Riesenkrabben
+
+45 bis 46
+2W4 Blutmücken
+
+47 bis 48
+2W6 + 3 Banditen
+
+49 bis 53
+2W4 Sahaugin
+
+54 bis 55
+1W6 + 2 Kundschafter
+
+56 bis 60
+1 Seevettel
+
+61 bis 65
+Ganz kurz scheinen die Wellen ein gewaltiges humanoides Gesicht zu formen.
+
+66 bis 70
+1 Druide
+
+71 bis 75
+1W4 Harpyien
+
+76 bis 80
+Ein einsamer Einsiedler (Tempeldiener), der am Strand sitzt und über die Bedeutung des Multiversums nachsinnt.
+
+81
+1W4 Berserker
+
+82
+1W6 Riesenadler
+
+83
+2W4 Riesenkröten
+
+84
+1W4 Oger oder 1W4 Seeger
+
+85
+3W6 Sahaugin
+
+86
+1W4 Veteranen
+
+87
+1W2 Plesiosaurier
+
+88
+1 Banditenhauptmann mit 2W6 Banditen
+
+W100 Begegnung
+
+89
+1W3 Mantikoren
+
+90
+1 Todesfee
+
+91 bis 92
+1W4 + 3 Greifen
+
+93 bis 94
+1 Sahaugin-Priesterin mit 1W3 Seegern und 2W6 Sahaugin
+
+95 bis 96
+1 Sahaugin-Baron
+
+97 bis 98
+1 Wasserelementar
+
+99
+1 Zyklop
+
+00
+1 junger Bronzdrache
+
+
+Küstenbegegnungen (Stufe 5 bis 10)
+W100 Begegnung
+
+01
+2W8 Riesenwolfspinnen
+
+02 bis 03
+3W6 Pteranodons
+
+04 bis 05
+2W4 Kundschafter
+
+06 bis 07
+1W6 + 2 Sahaugin
+
+08
+1 Seevettel
+
+09 bis 10
+1W4 + 1 Riesenkröten
+
+11 bis 15
+3W6 Sahaugin
+
+16 bis 20
+2W6 Riesenadler
+
+21 bis 25
+Ein Pseudodrache, der in der Luft Jagd auf Möwen macht.
+
+26 bis 29
+1W2 Druiden
+
+30 bis 32
+2W4 + 1 Riesenkröten
+
+33 bis 35
+1 Gemeiner, der ein Klagelied singt (nur bei Tage), oder 1 Todesfee (nur bei Nacht)
+
+36 bis 40
+Eine mit einem Stopfen versiegelte Flasche, die eine unheilvolle Nachricht enthält und halb im Sand vergraben ist.
+
+41 bis 43
+3 Seevetteln
+
+44 bis 46
+1W8 + 1 Harpyien
+
+47 bis 50
+1W4 Plesiosaurier
+
+51 bis 53
+1W4 Mantikoren
+
+54 bis 56
+2W4 Oger
+
+57 bis 60
+1W10 Greifen
+
+61 bis 65
+Eine Seeschlacht zwischen zwei Galeonen
+
+66 bis 70
+1W4 + 3 Seeger
+
+71 bis 75
+Eine Piratenmannschaft, die aus 1 Banditenhauptmann, 1 Druidin, 2 Berserkern und 2W12 Banditen besteht und auf der Suche nach Schätzen ist.
+
+76 bis 80
+Eine abgetrennte Hand eines Humanoiden, verstrickt in einem Netz
+
+81 bis 82
+1 Wasserelementar
+
+83 bis 84
+1 Zyklop
+
+85 bis 86
+1W4 Todesfeen (nur bei Nacht)
+
+87 bis 88
+2W4 Veteranen
+
+89 bis 90
+1 junger Bronzdrache
+
+91 bis 93
+1W3 Zyklopen
+
+94 bis 95
+1 junger blauer Drache
+
+96
+1 Sahaugin-Baron mit 1W3 Sahaugin-Priesterinnen und 2W8 Sahaugin
+
+97
+1 Dschinn
+
+98
+1 Roch
+
+99
+1 Marid
+
+00
+1 Sturmriese
+
+
+Küstenbegegnungen (Stufe 11 bis 16)
+W100 Begegnung
+
+01
+1W4 Todesfeen (nur bei Nacht)
+
+02 bis 04
+1 Zyklop
+
+05 bis 08
+1W6 + 2 Mantikoren
+
+09 bis 10
+1W8 + 2 Veteranen
+
+11 bis 20
+1 junger blauer Drache
+
+21 bis 25
+Ein Nest mit 1W6 Eiern einer Drachenschildkröte
+
+26 bis 35
+1W4 Sahaugin-Barone
+
+36 bis 40
+Ein Dreizack, teilweise im Sand vergraben
+
+41 bis 50
+1 junger Bronzdrache
+
+51 bis 55
+1 Marid
+
+56 bis 60
+1W6 Wasserelementare
+
+61 bis 65
+2W6 Grule, die über 1W6 zertrümmerte Schiffe kriechen und die Toten fressen
+
+66 bis 70
+1 Dschinn
+
+71 bis 75
+1W3 junge Bronzdrachen
+
+76 bis 80
+Ein gestrandeter Wal, tot und aufgedunsen. Wenn er Schaden erleidet, explodiert er, und jede Kreatur innerhalb von 9 m um ihn herum muss einen Geschicklichkeitsrettungswurf gegen SG 15 ablegen. Scheitert der Wurf, erleidet die Kreatur 5W6 Wuchtschaden, oder die Hälfte dieses Schadens, wenn ihr der Wurf gelingt.
+
+81 bis 82
+2W4 Zyklopen
+
+83 bis 84
+1 Sturmriese
+
+85 bis 86
+1W3 junge blaue Drachen
+
+87 bis 88
+1 ausgewachsener Bronzdrache
+
+89 bis 90
+1 ausgewachsener blauer Drache
+
+91 bis 93
+1W3 Rochs
+
+94 bis 97
+1 Drachenschildkröte
+
+98 bis 99
+1 uralter Bronzdrache
+
+00
+1 uralter blauer Drache
+
+
+Küstenbegegnungen (Stufe 17 bis 20)
+W100 Begegnung
+
+01 bis 10
+1 Roch
+
+11 bis 20
+1 Sturmriese
+
+21 bis 25
+Ein ausgewachsener Bronzdrache, der gerade mit einem ausgewachsenen blauen Drachen bis auf den Tod kämpft.
+
+26 bis 40
+2W6 Zyklopen
+
+41 bis 50
+1 ausgewachsener Bronzdrache oder 1 ausgewachsener blauer Drache
+
+51 bis 60
+1W3 Dschinni oder 1W3 Mariden
+
+61 bis 70
+1 Drachenschildkröte
+
+71 bis 75
+1W3 Rochs
+
+76 bis 80
+1W6 + 2 Wasserhosen, die über das Wasser tanzen und abrupt wieder verschwinden.
+
+81 bis 90
+1W6 junge blaue Drachen
+
+91 bis 96
+1 uralter Bronzdrache
+
+97 bis 99
+1 uralter blauer Drache
+
+00
+1W3 + 1 Sturmriesen
+
+
+Stadtbegegnungen (Stufe 1 bis 4)
+W100 Begegnung
+
+01
+1W6 Katzen
+
+02 bis 03
+1 Gemeiner mit 1W6 Ziegen
+
+04 bis 05
+2W10 Ratten
+
+06
+1 Rabe, der auf einem Wegweiser sitzt
+
+07
+1 Gemeiner auf einem Zugpferd
+
+08
+2W4 Doggen
+
+09
+1W2 Gemeine, die 1W4 Maultiere oder 1W4 Ponys führen
+
+10
+1 Pseudodrache
+
+11
+1 Spion
+
+11 bis 13
+1W8 + 1 Tempeldiener
+
+14
+1W6 + 6 fliegende Schlangen
+
+15
+3W6 Kobolde
+
+16
+2W4 Riesentausendfüßler
+
+17
+1W8 + 1 Skelette
+
+18 bis 19
+1W6 + 2 Schwärme von Ratten
+
+20
+1W12 Zombies
+
+21 bis 25
+Ein Hausierer unter dem Gewicht seiner vielen Töpfe, Pfannen und anderen grundlegenden Gebrauchsgüter.
+
+26
+1 Riesenspinne
+
+27 bis 28
+1 Streitross
+
+29
+2W8 Kultisten
+
+30 bis 31
+3W4 Riesenratten
+
+32
+2W8 Blutmücken
+
+33
+1W3 + 2 Riesengiftschlangen
+
+34
+1W4 + 2 Schwärme von Fledermäusen
+
+35
+2W4 Geflügelte Kobolde
+
+36 bis 40
+Ein Wagen beladen mit Äpfeln, dem ein Rad gebrochen ist und der deshalb den Verkehr aufhält.
+
+41
+1 Krokodil
+
+42 bis 43
+1 Schwarm von Insekten
+
+44 bis 45
+3W6 Banditen
+
+46 bis 47
+1W3 + 2 Adelige auf Reitpferden mit einer Eskorte aus 1W10 Wachen
+
+48
+2W4 Kenku
+
+49
+1W6 + 2 Rauch-Mephiten
+
+50
+1W8 + 1 Schwärme von Raben
+
+51 bis 52
+1 Weratte
+
+53 bis 54
+1W3 Halboger
+
+55 bis 56
+1 Mimike
+
+57 bis 58
+1W4 Ghule
+
+59 bis 60
+1W4 Schreckgespenster
+
+61 bis 62
+1W10 Schatten
+
+63 bis 65
+Jemand entleert einen Nachttopf aus dem zweiten Stock auf die Straße.
+
+66 bis 67
+1 Grul
+
+68 bis 69
+1 Priester
+
+70 bis 71
+1 Irrlicht
+
+72 bis 73
+1W3 Riesenspinnen
+
+74 bis 75
+1W3 Yuan-ti Reinblütige
+
+76 bis 77
+2W4 Schläger
+
+78 bis 80
+Ein Untergangsprophet, der an einer Straßenecke das Ende der Welt predigt.
+
+81
+1 Cambion
+
+82
+1 Vampirbrut
+
+83
+1 Couatl
+
+84
+1 Geist
+
+85
+1 Sukkubus oder 1 Inkubus
+
+86
+1 Banditenhauptmann mit 3W6 Banditen
+
+87
+1W4 + 1 Kultränker
+
+88
+1 Ritter oder 1 Veteran
+
+89
+1 Wassergeist
+
+90
+1 Grufschrecken
+
+91
+1 Magus
+
+92
+1 Schildwächter
+
+93
+1 Gladiator
+
+94
+1 Wiedergänger
+
+95
+2W4 Gargylen
+
+96
+1W4 Doppelgänger
+
+97
+1 Oni
+
+98
+1 Unsichtbarer Pirscherr
+
+99
+1W8 + 1 Phasenspinnen
+
+00
+1 Assassine
+
+
+
+Stadtbegegnungen (Stufe 5 bis 10)
+W100 Begegnung
+
+01 bis 02
+1W10 Kenku
+
+03 bis 04
+2W6 Riesentausendfüßler
+
+05 bis 06
+2W8 Skelette
+
+07 bis 08
+1W6 Schwärme von Ratten und 1W6 Schwärme von Fledermäusen
+
+09 bis 10
+3W6 Geflügelte Kobolde
+
+11 bis 13
+2W4 Schreckgespenster
+
+14 bis 16
+1W4 Grufschrecken
+
+17 bis 19
+4W4 Tempeldiener auf Zugpferden
+
+20 bis 22
+3W6 Riesentausendfüßler
+
+23 bis 25
+1 gesprächiges Straßenkind, das Passanten anbietet, zum Preis von 1 SM als Führer durch die Stadt zu dienen.
+
+26 bis 28
+1W10 Spione
+
+29 bis 31
+3W6 Krokodile
+
+32 bis 34
+1W6 + 2 Schwärme von Insekten
+
+35 bis 37
+2W4 Rauch-Mephiten
+
+38 bis 40
+Ein Adeliger ruft „Haltet den Dieb!“ einem fliehenden Halunken (Bandit) hinterher.
+
+41 bis 43
+1 Sukkubus oder 1 Inkubus
+
+44 bis 46
+1W10 Halboger
+
+47 bis 49
+2W10 Riesenspinnen
+
+50 bis 51
+4W10 Zombies
+
+52 bis 53
+1W4 Ritter auf Streitrossen
+
+54 bis 55
+1W4 + 1 Wassergeister
+
+56 bis 57
+1W8 + 1 Mimiks
+
+58 bis 59
+2W8 Riesenspinnen
+
+60 bis 61
+3W6 Schatten
+
+62 bis 65
+Ein Schauspieler lehnt sich im zweiten Stock aus dem Fenster, um Passanten eine Aufführung anzukündigen.
+
+66 bis 67
+1 Banditenhauptmann mit 3W8 Banditen
+
+68 bis 69
+1W10 Irrlichter
+
+70 bis 71
+2W4 Priester
+
+72 bis 74
+3W6 Yuan-ti Reinblütige
+
+75 bis 76
+2W10 Schläger
+
+77 bis 80
+Ein Weissager liest die Karten für alle, die 1 SM bezahlen.
+
+81
+1W3 Gladiatoren
+
+82
+1W4 + 1 Couatl
+
+83
+1W8 Geister
+
+84
+2W4 Doppelgänger
+
+85
+1W6 + 2 Phasenspinnen
+
+86
+2W4 Veteranen
+
+87
+3W6 Grule mit 2W6 Ghulen
+
+88
+3W6 Gargylen
+
+89
+2W10 Kultränker
+
+90
+3W6 Wertratten
+
+91
+1 Assassine
+
+92
+1W3 Unsichtbare Pirscher
+
+93
+1 Grauer Slaad
+
+94
+1 junger Silberdrache
+
+95
+1W4 Cambions oder 1W4 Wiedergänger
+
+96
+3W6 Grufschrecken
+
+97
+1 Erzmagus
+
+98
+2W4 Vampirbruten oder 1W4 Oni
+
+99
+1 Magus mit 1 Schildwächter
+
+00
+1 Rakshasa oder 1 Vampir
+
+
+Stadtbegegnungen (Stufe 11 bis 16)
+W100 Begegnung
+
+01
+1 Mimike
+
+02 bis 05
+1 Banditenhauptmann mit 5W10 Banditen, alle auf Reitpferden
+
+06 bis 10
+1W10 Ritter auf Streitrossen (ein Ritter ist ein Doppelgänger)
+
+11 bis 13
+1W8 Sukkubi oder 1W8 Inkubi
+
+14 bis 16
+3W6 Kultfanatiker
+
+17 bis 19
+1W10 Grufschrecken
+
+20 bis 22
+3W6 Wertratten
+
+23 bis 25
+Ein Knall in der Ferne, gefolgt von einer Rauchwolke, die über der anderen Seite der Ortschaft aufsteigt.
+
+26 bis 28
+1W8 + 1 Geister
+
+29 bis 31
+2W10 Gargylen
+
+32 bis 34
+1W6 + 2 Wassergeister
+
+35 bis 37
+1W4 + 4 Irrlichter
+
+38 bis 40
+Straßenkünstler führen ein Puppenspiel auf. Zwei Puppen schlagen sich gegenseitig mit Stöcken, zur Freude der versammelten Zuschauer.
+
+41 bis 43
+2W4 Couatl
+
+44 bis 46
+2W4 Grule
+
+47 bis 51
+1W8 + 1 Veteranen
+
+52 bis 55
+3W4 Priester
+
+56 bis 58
+2W4 Cambions
+
+59 bis 61
+1W10 Wiedergänger
+
+62 bis 65
+2W4 Phasenspinnen
+
+66 bis 69
+Ein heruntergekommener Gemeiner, der sich in eine Gasse duckt und einen Kauf bei einer verdächtig aussehenden Gestalt tätigt.
+
+70 bis 72
+1W8 Unsichtbare Pirscher
+
+73 bis 75
+1W8 + 1 Gladiatoren
+
+76 bis 80
+Zwei Bauern, die sich wegen des Preises von Kartoffeln prügeln (50 % Chance, dass einer der Bauern ein Assassine im Ruhestand ist).
+
+81
+1W4 junge Silberdrachen
+
+82 bis 83
+1W4 Assassinen
+
+84 bis 86
+1W8 Oni
+
+87 bis 88
+1W4 Magi mit 1W4 Schildwächtern
+
+89 bis 90
+1W10 Vampirbruten
+
+91 bis 92
+1 ausgewachsener Silberdrache
+
+93 bis 94
+1W4 Graue Slaadi
+
+95 bis 96
+1 Vampir-Zauberwirker oder 1 Vampir-Krieger
+
+97
+1 Erzmagus, der die Straße auf einem Reitpferd herunterritt und 1W6 Wachen mit Zaubern angreift.
+
+98
+1 Rakshasa
+
+99
+1 Vampir
+
+00
+1 uralter Silberdrache
+
+
+
+Stadtbegegnungen (Stufe 17 bis 20)
+W100 Begegnung
+
+01 bis 05
+1W10 Unsichtbare Pirscher
+
+06 bis 10
+1W10 Wiedergänger
+
+11 bis 14
+1W6 + 2 Gladiatoren
+
+15 bis 18
+2W4 Cambions
+
+19 bis 22
+2W6 Sukkubi oder 2W6 Inkubi
+
+23 bis 25
+Eine Hexe (Erzmagus), die auf einem Flugbesen über den Köpfen herfliegt.
+
+26 bis 30
+1W4 Graue Slaadi
+
+31 bis 35
+2W8 Couatl
+
+36 bis 40
+Ein verzweifelter Elternteil, der Passanten um Hilfe anfleht, weil ein Kind in die Kanalisation gefallen ist.
+
+41 bis 45
+1W3 junge Silberdrachen
+
+46 bis 50
+3W6 Geister
+
+51 bis 55
+1 ausgewachsener Silberdrache
+
+56 bis 60
+1W4 Magi mit 1W4 Schildwächtern
+
+61 bis 65
+Ein aggressiver Händler, der Passanten Waren feilbietet und behauptet, er liefere die feinste Seide weit und breit.
+
+66 bis 70
+1 uralter Silberdrache
+
+71 bis 75
+3W6 Vampirbruten
+
+76 bis 80
+Eine Patrouille von 2W10 Wachen, welche die Straße entlangmarschieren und nach jemandem suchen.
+
+81 bis 85
+1W10 Assassinen
+
+86 bis 90
+1W4 + 1 Graue Slaadi
+
+91 bis 93
+1W10 Oni
+
+94 bis 96
+1 Vampir-Zauberwirker oder 1 Vampir-Krieger
+
+97
+1 Erzmagus
+
+98
+1W3 Rakshasa
+
+99
+1W4 Vampire
+
+00
+1 Tarraske
+
+
+Sumpfbegegnungen (Stufe 1 bis 4)
+W100 Begegnung
+
+01
+1W4 Giftschlangen
+
+02 bis 05
+3W6 Ratten
+
+06 bis 10
+2W8 Raben
+
+11 bis 12
+3W6 Riesenratten
+
+13
+1W10 + 5 Stammeskrieger
+
+14 bis 15
+1W8 + 1 Rieseneidechsen
+
+16 bis 17
+1 Krokodil
+
+18 bis 19
+1 Schwarm von Insekten
+
+20
+1 Riesenspinne
+
+21 bis 22
+1W4 + 1 Schlammhütten, die teilweise in trübem Wasser versunken sind
+
+23 bis 25
+2W8 + 1 Kobolde
+
+26
+2W4 Schlamm-Mephiten
+
+27 bis 29
+1W6 + 2 Riesengiftschlangen
+
+30
+2W4 Geflügelte Kobolde
+
+31 bis 32
+1 Kundschafter
+
+33 bis 34
+Die im Dickicht verfangene Leiche eines Abenteurers. An der Leiche sind eine Entdeckerausrüstung und vielleicht (50 % Chance) ein zufälliger gewöhnlicher magischer Gegenstand zu finden.
+
+35 bis 38
+1 Riesenkröte
+
+39 bis 41
+1W6 + 2 Würgeschlangen
+
+42 bis 44
+2W4 Riesenfrösche
+
+45
+1W8 + 1 Schwarm von Ratten oder 1W6 + 2 Schwärme von Raben
+
+46 bis 48
+2W10 Blutmücken
+
+49 bis 52
+2W6 + 3 Bullywugs
+
+53 bis 54
+1W8 + 1 Orks
+
+55 bis 56
+1W4 Yuan-ti Reinblütige
+
+57
+1 Druide
+
+58 bis 59
+1 Yuan-ti Halbblütige
+
+60 bis 62
+1 Riesenwürgeschlange
+
+63 bis 64
+Ein schriller Schrei, der 1W4 Minuten anhält
+
+65 bis 67
+2W4 Echsenmenschen
+
+68 bis 69
+1W4 Ghule
+
+70 bis 71
+1 Irrlicht
+
+72
+1 Gruftschrecken
+
+73
+1 Grul
+
+74 bis 75
+1 Schwarm von Giftschlangen
+
+76 bis 77
+Ein fauliger Gestank, der aus Brackwasser heraufsteigt
+
+78 bis 80
+1W4 + 2 Oger
+
+81 bis 83
+1 Modernder Schlurfer
+
+84 bis 86
+1 Echsenmenschen-Schamane mit 1W6 Rieseneidechsen und 2W10 Echsenmenschen
+
+87
+1 Troll
+
+88 bis 89
+1W4 Grüne Vetteln
+
+90 bis 91
+1 Wiedergänger
+
+92 bis 93
+1 Riesenkrokodil
+
+94 bis 95
+1 Ork – Auge des Gruumsh mit 1W3 Orgus und 2W6 + 3 Orks
+
+96 bis 97
+1 junger schwarzer Drache
+
+98
+1 Yuan-ti Scheusal
+
+99
+1W4 Wasserelementare
+
+00
+1 Hydra
+
+
+Sumpfbegegnungen (Stufe 5 bis 10)
+W100 Begegnung
+
+01
+1 Grüne Vettel
+
+02 bis 03
+2W4 Rieseneidechsen oder 2W4 Riesengiftschlangen
+
+04 bis 05
+2W8 Geflügelte Kobolde
+
+06 bis 07
+1W10 + 1 Bullywugs mit 1W8 + 1 Riesenfröschen
+
+08 bis 09
+1 Druide
+
+10
+1W8 + 1 Schwärme von Insekten
+
+11 bis 13
+1W12 Ghule
+
+14 bis 16
+2W8 Kundschafter
+
+17 bis 19
+2W10 Orks
+
+20 bis 22
+2W4 Riesenspinnen
+
+23 bis 24
+Verschmutztes Wasser, welches Kreaturen, die sich hindurchbewegen, Augenfäule aussetzt (siehe „Krankheiten“ im Kapitel 8 des Dungeon Master’s Guide, Spielleiterhandbuch).
+
+25 bis 27
+1W6 + 2 Riesenkröten
+
+28 bis 30
+3W6 Echsenmenschen
+
+31 bis 33
+1W8 + 1 Yuan-ti Reinblütige
+
+34 bis 36
+1W4 + 1 Schwärme von Giftschlangen
+
+37 bis 38
+Ein aufgedunsener humanoider Körper, der mit dem Gesicht nach unten im Wasser treibt.
+
+39 bis 41
+1 Modernder Schlurfer
+
+42 bis 44
+1W4 + 1 Irrlichter
+
+45 bis 47
+2W6 Krokodile
+
+48 bis 50
+1W4 + 1 Riesenwürgeschlangen
+
+51 bis 54
+1 Echsenmenschen-Schamane mit 1W3 Schwärmen von Giftschlangen und 1W8 + 2 Echsenmenschen
+
+55 bis 58
+1W8 + 1 Oger
+
+59 bis 62
+2W4 Grule
+
+63 bis 65
+Ein Altar, der halb im Schlamm versunken ist, geweiht einer Gottheit, die halb Mensch und halb Frosch ist.
+
+66 bis 69
+1 Riesenkrokodil
+
+70 bis 73
+1 Modernder Schlurfer
+
+74 bis 77
+1 Ork – Auge des Gruumsh mit 1W3 Orgen und 2W10 + 5 Orks
+
+78 bis 80
+Ein Fluchregen, der 1W6 Minuten anhält und alle ungeschützten Feuer in 1,5 km Radius löscht.
+
+81 bis 82
+1 junger schwarzer Drache
+
+83 bis 84
+1W4 Grüne Vetteln mit 1W6 + 1 Ogern
+
+85 bis 86
+1 Yuan-ti Scheusal
+
+87 bis 88
+1W4 + 1 Gruftschrecken
+
+89 bis 90
+1W6 + 1 Yuan-ti Halbblütige
+
+91 bis 93
+1W4 + 1 Trolle
+
+94 bis 96
+1W10 Wiedergänger
+
+97 bis 99
+1W8 + 1 Wasserelementare
+
+00
+1W3 Hydren
+
+
+Sumpfbegegnungen (Stufe 11 bis 20)
+W100 Begegnung
+
+01 bis 10
+1W4 Riesenkrokodile
+
+11 bis 15
+1W3 Yuan-ti Scheusale
+
+16 bis 20
+1W6 + 1 Grüne Vetteln
+
+21 bis 25
+Ein großer und aggressiver Baum, von dessen Ästen 2W6 gepanzerte Rankenarten herabstrecken baumeln.
+
+26 bis 30
+2W4 Gruftschrecken
+
+31 bis 35
+1W8 Yuan-ti Halbblütige
+
+36 bis 40
+Nebel, der sich über das Gelände ausbreitet und die Gegend innerhalb von 1W3 × 1,5 km für 1W4 Stunden stark verhüllt.
+
+41 bis 45
+3W4 Wiedergänger
+
+46 bis 50
+1W6 Modernde Schlurfer
+
+51 bis 55
+1W10 Wasserelementare
+
+56 bis 60
+1W4 junge schwarze Drachen
+
+61 bis 65
+Ein schauriges Götzenbild mit einem Fledermauskopf, welches beinahe vollständig von Ranken überwuchert ist.
+
+66 bis 70
+1W8 + 2 Trolle
+
+71 bis 75
+1W3 Hydren
+
+76 bis 80
+Der Klang von Trommeln, die einige Kilometer entfernt geschlagen werden.
+
+81 bis 96
+1 ausgewachsener schwarzer Drache
+
+97 bis 00
+1 uralter schwarzer Drache
+
+
+
+1W12 Kuo-toa
+
+33
+1 Rostmonster
+
+34 bis 35
+Eine mit Geröll übersäte Passage, die anscheinend erst kürzlich freigeräumt wurde.
+
+36 bis 37
+1W8 + 1 Riesenfledermäuse
+
+38 bis 39
+3W6 Kobolde
+
+40 bis 41
+2W4 Grimlocks
+
+42 bis 43
+1W4 + 3 Schwärme von Fledermäusen
+
+44
+Zwergen-Goldgräber (Kundschafter) auf der Suche nach Gold.
+
+45
+1 Aaskriecher oder 1 Gallertwürfel
+
+46
+1W6 Düstermental oder 2W4 Falldorne
+
+47
+1 Höhlenhund
+
+48
+1W3 Schreckgespenster
+
+49
+1W4 Grottenschrate
+
+50
+1W10 + 5 Geflügelte Kobolde
+
+51
+1W4 Feuerschlangen
+
+52
+2W8 + 1 Troglodyten
+
+53
+1W6 Riesenspinnen
+
+54
+3W6 Kuo-toa
+
+55
+2W4 Goblin-Boss mit 2W4 Goblins
+
+56
+2W4 Grimlocks
+
+57
+1 Ockergallerte
+
+58
+2W10 Riesentausendfüßler
+
+59
+1 Nothic oder 1 Riesenkröte
+
+60
+1W4 Myconid-Erwachsene mit 5W4 Myconid-Sprossen
+
+61
+1 Minotaurus-Skelett oder 1 Minotaurus
+
+62
+3W6 Drow
+
+63
+1 Mimike oder 1 Doppelgänger
+
+64
+1W6 + 3 Hobgoblins
+
+65
+1 Intellektverschlinger oder 1 Beobachter
+
+66
+1W8 + 1 Orks
+
+67 bis 68
+Ein leises Klopfen, das aus dem Inneren einer nahen Wand kommt.
+
+69
+1 Plapperndes Hundertmaul oder 1 Wassergeist
+
+70
+1W12 Gassporen
+
+71
+1 Riesenwürgeschlange
+
+72
+1W10 Schatten
+
+73
+1W3 Grells
+
+74
+1W4 Gruftschrecken
+
+75
+1W8 + 1 Quaggoth-Sporendiener
+
+76
+1W2 Gargylen
+1W4 Oger oder 1W3 Ettins
+
+77
+1W4 Oger oder 1W3 Ettins
+
+78
+1W4 Zwergen-Forscher (Veteranen)
+
+79 bis 80
+Ein Bergarbeiterin verlassenes Lager, in welchem Blut und die Inhalte von 1W3 Gewölbeforscher-Ausrüstungen verstreut sind.
+
+81
+1 Chuul oder 1 Salamander
+
+82
+1W4 Phasenspinnen oder 1W3 Hakenschrecken
+
+83
+5W4 Duergar
+
+84
+1 Geist oder 1 Flammenschädel oder 1 Todesalb
+
+85
+1 Druide mit 1 Eisbar (Höhlenbär)
+
+86
+1 Hobgoblin-Hauptmann mit 1W4 Halbogern und 2W10 Hobgoblins
+
+87
+1 Erdelementar oder 1 Schwarzer Blob
+
+88
+1 Kuo-toa-Monitor mit 1W8 + 1 Kuo-toa-Geißeln
+
+89
+1 Quaggoth-Thonot mit 1W3 Quaggoths
+
+90
+1 Betrachter-Zombie oder 1 Knochenraga
+
+91
+1 Ork – Auge des Gruumsh mit 1W4 Orgs und 2W8 Orks
+
+92
+1W4 Grule mit 1W10 Ghulen
+
+93 bis 95
+Eine übelriechende Pfütze, wo schleimiges Wasser von der Decke tropft.
+
+96
+1 Otyugh oder 1 Seiler
+
+97
+1 Vampirbrut
+
+98
+1 Chimäre
+
+99
+1 Gedankenschinder
+
+00
+1 Geisternaga
+
+
+Underdark-Begegnungen (Stufe 5 bis 10)
+W100 Begegnung
+
+01
+3W6 Schwärme von Fledermäusen
+
+02
+1W4 Riesenspinnen oder 1W4 Riesenkröten
+
+03
+1 Mimike
+
+04
+2W4 Grauschlicke
+
+05
+2W10 Orks oder 3W6 Troglodyten
+
+06
+3W6 Grimlocks
+
+07
+1W6 + 2 Magma-Mephiten
+
+08
+1 Goblin-Boss mit 2W4 Goblins
+
+09
+2W4 Düstermental
+
+10
+2W8 + 1 Drow
+
+11
+2W10 Falldorne
+
+12
+1W4 Minotaurus-Skelette
+
+13 bis 14
+3W6 Tiefengnome
+
+15
+1 Druide mit 1 Eisbar (Höhlenbär)
+
+16 bis 17
+3W6 Orks
+
+18
+1 Knochennaga
+
+19 bis 20
+2W6 Grottenschrate
+
+21 bis 25
+Leuchtende Pilze, welche an den Wänden einer feuchten Höhle wachsen und sie mit dämmerigem Licht erfüllen.
+
+26
+2W4 Schreckgespenster
+
+27
+1W12 + 4 Schatten
+
+28
+1W3 Plappernde Hundertmäuler
+
+29 bis 30
+4W4 Hobgoblins
+
+31 bis 32
+1W4 Aaskriecher
+
+33 bis 34
+1 Schwarzer Blob
+
+35
+1W4 Ockergallerten
+
+36 bis 40
+Eine schimmernde Stelle, die gelb erscheint, wenn man Licht darauf fallen lässt.
+
+41
+1W4 Nothics
+
+42 bis 43
+2W8 + 1 Gassporen
+
+44 bis 45
+1W3 Gallertwürfel
+
+46
+1 Geist
+
+47 bis 48
+1 Flammenschädel
+
+49 bis 50
+2W8 Duergar
+
+51
+1 Todesalb
+
+52
+1 Erdkloss
+
+53
+1 Xorn
+
+54
+1W6 + 2 Zwergen-Jäger (Veteranen), die Trolle suchen
+
+55
+1 Hobgoblin-Hauptmann mit 3W10 Hobgoblins
+
+56
+1 Seiler
+
+57
+1 Kuo-toa-Monitor mit 1W4 Kuo-toa-Geißeln und 1W8 Kuo-toa
+
+58
+1W3 Wassergeister
+
+59
+1W4 Grule mit 1W10 Ghulen
+
+60
+1 Otyugh
+
+61
+Eine Händlerkarawane, bestehend aus 1 Drow-Magus, 2 Drow-Elitekriegern und 2W10 Quaggoths
+
+62
+1W4 Gruftschrecken
+
+63
+1W4 Doppelgänger
+
+64
+2W8 Feuerschlangen
+
+65
+1W4 Beobachter
+
+66
+1 Ork – Auge des Gruumsh mit 1W4 Orgs und 2W10 + 3 Orks
+
+67
+1W3 Vampirbruten
+
+68
+3W6 Quaggoth-Sporendiener
+
+69
+1W3 Grells
+
+70
+1W6 + 1 Intellektverschlinger
+
+71 bis 72
+1W10 Gargylen
+
+73
+1 Betrachter-Zombie
+
+74
+1W4 Quaggoth-Thonots mit 2W4 Quaggoths
+
+75
+1W6 Ettins oder 1W4 Trolle
+
+76
+1W8 + 1 Phasenspinnen
+
+77
+1 Formianer oder 1W3 Zyklopen
+
+78
+1W4 Erdelementare
+
+79
+3W6 Oger
+
+80
+1W4 + 1 Echtschlurfs
+
+81
+1W4 Erdelementare
+
+82
+3W6 Oger
+
+83
+1W4 + 1 Chuuls
+
+84
+1W10 Höhlenhunde
+
+85
+1W3 Drow-Elitekrieger
+
+86
+1W4 Chimären
+
+87
+1W4 Salamander
+
+88
+1 Mantler
+
+89
+2W4 Gruftschrecken
+
+90
+1W4 Drinnen
+
+91
+1 Feuerriese
+
+92
+1 Grick-Alpha mit 2W4 Gricks
+
+93
+1 Gedankenschinder-Arkanist
+
+94
+1W4 Drow-Magi
+
+95
+1 Geisternaga
+
+96
+1W4 Gedankenschinder
+
+97
+1 Behir
+
+98
+1 Aboleth
+
+99
+1 Dao oder 1 Steinriese
+
+00
+1 Betrachter
+
+
+Underdark-Begegnungen (Stufe 11 bis 16)
+W100 Begegnung
+
+01 bis 02
+3W6 Aaskriecher
+
+03 bis 04
+1W6 + 1 Gallertwürfel
+
+05 bis 06
+1W8 + 2 Plappernde Hundertmäuler
+
+07 bis 08
+2W8 Minotaurus-Skelette
+
+09 bis 10
+2W6 Ockergallerten
+
+11 bis 12
+2W4 Doppelgänger
+
+13 bis 14
+1W4 Quaggoth-Thonots mit 1W10 + 2 Quaggoths
+
+15 bis 16
+1W3 Seiler
+
+17 bis 18
+3W6 Gargylen
+
+19 bis 20
+1W10 Mimiken
+
+21 bis 25
+Eine 30 m lange Felsspalte, 4W10 × 0,3 m breit und 5W20 + 200 × 0,3 m tief.
+
+26 bis 27
+1 Hobgoblin-Hauptmann mit 3W10 Hobgoblins
+
+28 bis 29
+2W4 Beobachter
+
+30 bis 31
+3W6 Grule
+
+32 bis 33
+2W8 Intellektverschlinger
+
+34 bis 35
+1W3 Ork – Augen des Gruumsh mit 2W4 Orgs und 2W10 Orks
+
+36 bis 40
+Eine große Höhle, welche 2W10 außerordentlich detaillierte Statuen verschiedener Kreaturen enthält.
+
+41 bis 42
+1W8 + 1 Kuo-toa-Monitore
+
+43 bis 44
+2W4 Wassergeister
+
+45 bis 46
+2W10 Gricks
+
+47 bis 48
+3W6 Nothics
+
+49 bis 50
+2W8 + 1 Oger
+
+51 bis 52
+1W6 + 2 Chuuls
+
+53 bis 54
+1W8 + 1 Ettins
+
+55
+3W6 Grells
+
+56
+2W4 Flammenschädel
+
+57
+2W12 Zwergen-Soldaten (Veteranen) auf Patrouille
+
+58
+2W8 Höhlenhunde
+
+59
+1W10 Geister
+
+60
+3W4 Gruftschrecken
+
+61
+3W6 Phasenspinnen
+
+62
+1W8 + 1 Knochennaga
+
+63 bis 65
+Ein schriller Schrei, gefolgt von düsterem Gelächter.
+
+66
+1W4 Chimären
+
+67
+1W10 Schwarze Blobs
+
+68
+3W6 Minotauren
+
+69
+2W4 Otyughs
+
+70
+1W6 + 1 Betrachter-Zombies
+
+71
+4W4 Hakenschrecken
+
+72
+1W8 + 1 Erdklosse
+
+73
+2W4 Salamander
+
+74
+1W3 Grick-Alphas
+
+75
+1W6 + 2 Xorns
+
+76 bis 80
+Ein zerstörtes Dorf, das einmal Tiefengnomen gehörte. Wird es durchsucht, besteht eine Chance von 50 %, 1W3 Heiltränke zu finden, und eine Chance von 25 %, einen zufälligen gewöhnlichen magischen Gegenstand zu finden.
+
+81
+2W4 Erdelementare
+
+82
+1W3 Geisternagi
+
+83
+1W8 + 1 Zyklopen
+
+84
+1W6 + 2 Trolle
+
+85
+2W4 Steinriesen
+
+86
+2W4 Todesalben
+
+87
+1W4 Formianer
+
+88
+3W6 Myconid-Erwachsene mit 1W4 Drow-Elitekriegern
+
+89
+1W10 Vampirbruten
+
+90
+1W3 Mantler
+
+91
+1W4 Feuerriesen
+
+92
+1 Gedankenschinder-Arkanist mit 1W6 + 1 Gedankenschindern
+
+93
+1W4 Dao
+
+94
+1W8 + 1 Drinnen
+
+95
+1W3 Behirs
+
+96
+1W4 Abolethen
+
+97
+1 Betrachter
+
+98
+1 junger roter Schattendrache
+
+99
+1 Todesrann
+
+00
+1 Purpurwurm
+
+
+Underdark-Begegnungen (Stufe 17 bis 20)
+W100 Begegnung
+
+01
+1W4 Grick-Alphas
+
+02
+2W8 Beobachter
+
+03 bis 04
+3W6 Minotauren oder 2W8 Kuo-toa-Monitore
+
+05 bis 06
+2W8 Grells
+
+07 bis 08
+2W10 Phasenspinnen
+
+09 bis 10
+4W4 Höhlenhunde
+
+11 bis 12
+1W6 + 2 Seiler
+
+13 bis 14
+2W10 Gruftschrecken
+
+15 bis 16
+3W6 Doppelgänger
+
+17 bis 18
+1W8 + 1 Chimären
+
+19 bis 20
+1W4 Mantler
+
+21
+1W4 Hobgoblin-Hauptmänner mit 5W10 Hobgoblins
+
+22 bis 23
+1W8 + 1 Erdelementare
+
+24 bis 25
+2W4 Vampirbruten
+
+26 bis 27
+3W6 Minotauren
+
+28 bis 30
+Eine 9 m hohe, umgedrehte schwarze Pyramide, die 2,5 cm über dem Boden einer großen Höhle schwebt.
+
+31 bis 32
+1W10 Betrachter-Zombies
+
+33 bis 34
+1W4 Gedankenschinder-Arkanisten
+
+35 bis 36
+1W6 + 2 Otyughs
+
+37 bis 38
+1W12 Trolle
+
+39 bis 40
+1W10 Todesalben
+
+41 bis 43
+Eine wunderschöne Statuette eines Panthers aus Obsidian, die auf dem Boden liegt.
+
+44 bis 45
+1W4 Drow-Magi mit 1W6 Drow-Elitekriegern
+
+46 bis 47
+1W4 Geisternagi
+
+48 bis 49
+1W8 + 1 Salamander
+
+50 bis 51
+2W4 Erdklosse
+
+52 bis 53
+1W10 Xorns
+
+54 bis 56
+1 junger roter Schattendrache
+
+57 bis 59
+2W4 Formianer
+
+60 bis 62
+1W8 + 1 Drinnen
+
+63 bis 65
+1W20 + 20 Spinnen, die an den Wänden einer mit Spinnweben gefüllten Höhle entlangkrabbeln.
+
+66 bis 68
+1W4 Feuerriesen
+
+69 bis 70
+1W10 Gedankenschinder
+
+71 bis 73
+2W4 Steinriesen
+
+74 bis 76
+1W12 Zyklopen
+
+77 bis 80
+Eine große Höhle, in welcher eine 15 m hohe Götzenstatue des Blutidols steht.
+
+81 bis 85
+1W3 Dao
+
+86 bis 90
+1W4 Betrachter
+
+91 bis 93
+1W4 Behirs
+
+94 bis 96
+1 Todesrann
+
+97 bis 99
+1W3 Purpurwürmer
+
+00
+2W4 Abolethen
+
+
+11 bis 14
+2W4 Dampf-Mephiten
+
+15 bis 18
+3W4 Sahaugin
+
+19 bis 22
+2W6 Meervolk
+
+23 bis 25
+2W4 Leichen von ertrunkenen Seeleuten, in Seetang verfangen
+
+26 bis 29
+2W4 Würgeschlangen
+
+30 bis 33
+1W4 Rifffhaie
+
+34 bis 37
+1 Schwarm von Quippern
+
+38 bis 40
+Eine Anzahl enormer Muscheln
+
+41 bis 45
+1W10 Meervolk mit 1W3 Riesenseepferdchen
+
+46 bis 50
+1 Riesenoktopus
+
+51 bis 55
+1 Seeger
+
+56 bis 60
+1 Plesiosaurus
+
+61 bis 65
+2W10 Stücke verrosteten Messingbestecks, auf dem Grund verstreut
+
+66 bis 70
+1 Riesenwürgeschlange
+
+71 bis 75
+1 Seevettel
+
+76 bis 80
+Eine Schule silbriger Fische, die durch das Wasser huschen
+
+81 bis 85
+1W4 Jagdhaie
+
+86 bis 90
+1 Sahaugin-Priesterin mit 2W4 Sahaugin
+
+91 bis 95
+1W4 Killerwale
+
+97 bis 98
+1 Riesenhai
+
+99
+1 Wasserelementar
+
+00
+1 Sahaugin-Baron
+
+Unterwasserbegegnungen (Stufe 5 bis 10)
+W100 Begegnung
+
+01 bis 02
+3W6 Dampf-Mephiten
+
+03 bis 04
+1W10 Sahaugin
+
+05 bis 06
+1 Riesenoktopus
+
+07 bis 08
+3W6 Würgeschlangen
+
+09 bis 10
+2W10 Meervolk mit 1W4 Riesenseepferdchen
+
+11 bis 15
+1W4 Seevetteln
+
+16 bis 20
+2W4 Schwärme von Quippern
+
+21 bis 25
+Eine versunkene Galeone mit einer Chance von 50 %, auf einen zufälligen Schatzhort (Würfel auf der Tabelle für Schatzhorte: Herausforderungsgraad 5 bis 10 im Kapitel 7 des Dungeon Master’s Guide, Spielleiterhandbuch).
+
+26 bis 30
+1W4 Plesiosaurier
+
+31 bis 35
+3W6 Rifffhaie
+
+36 bis 40
+Eine zurückgelassene Bathysphäre
+
+41 bis 50
+1W4 Riesenwürgeschlangen
+
+51 bis 55
+2W4 Jagdhaie
+
+56 bis 60
+1W3 Sahaugin-Priesterinnen mit 2W10 Sahaugin
+
+61 bis 65
+Ein leeres Schloss aus Koralle
+
+66 bis 70
+1W4 Killerwale
+
+71 bis 75
+1W10 Seeger
+
+76 bis 80
+Eine schaurige Statue eines hockenden Humanoiden mit Fledermausflügeln auf dem Rücken und aus dem Gesicht ragenden Tentakeln
+
+81 bis 85
+1W4 Wasserelementare
+
+86 bis 90
+1 Sahaugin-Baron mit 2W8 Sahaugin
+
+91 bis 96
+1W4 Riesenhaie
+
+97 bis 99
+1 Marid
+
+00
+1 Sturmriesen
+
+
+Unterwasserbegegnungen (Stufe 11 bis 20)
+W100 Begegnung
+
+01 bis 10
+1 Sahaugin-Baron mit 1W4 Sahaugin-Priesterinnen und 2W10 Sahaugin
+
+11 bis 35
+1W10 Killerwale
+
+36 bis 40
+Ein Geisterschiff, welches oberhalb passiert und 2W6 + 10 Geister enthält
+
+41 bis 60
+1W6 Riesenhaie
+
+61 bis 65
+Eine Sphäre sprudelnden Wassers von 1,5 Kilometern Durchmesser. Erlaubt es luftatmenden Wesen, Wasser zu atmen, solange sie sich in der Sphäre aufhalten.
+
+66 bis 75
+1W10 Wasserelementare
+
+76 bis 80
+Ein schimmerndes blau-grünes Portal zur Elementarebene des Wassers
+
+81 bis 90
+1W4 Mariden
+
+91 bis 96
+1W3 Sturmriesen
+
+97 bis 99
+1 Drachenschildkröte
+
+00
+1 Kraken
+
+
+Waldbegegnungen (Stufe 1 bis 4)
+W100 Begegnung
+
+01
+1 Rieseneule
+
+02
+1W4 Katzen
+
+03
+2W4 Holzfäller (Gemeine)
+
+04
+1 Dachs oder 1W4 Giftschlangen
+
+05
+2W8 Paviane
+
+06
+1W6 + 3 Hyänen
+
+07
+1 Eule
+
+08
+1 Pseudodrache
+
+09
+1 Panther
+
+10
+1 Riesengiftschlange
+
+11
+1W6 + 2 Eber
+
+12
+1W4 + 1 Rieseneidechsen
+
+13
+1 Menschenaffe oder 1 Tiger
+
+14
+2W6 Stammeskrieger mit 1W6 Doggen
+
+15
+1W6 + 2 Riesenfledermäuse oder 3W6 Fliegende Schlangen
+
+16
+1 Kundschafter oder 2W4 Wächter mit 1W8 Doggen
+
+17
+1W8 + 1 Geflügelte Kobolde
+
+18
+1W3 Würgeschlangen
+
+19
+1W10 + 5 Riesenratten oder 2W6 + 3 Riesenwiesel
+
+20
+1W4 + 1 Nadelplagen mit 1W6 + 3 Zweigplagen
+
+21 bis 25
+Ein weinendes Kind, das sich verlaufen hat. Wenn die Charaktere das Kind heimbringen, belohnen die Eltern sie mit 1W3 Heiltränken.
+
+26
+1W8 + 1 Riesenfrösche
+
+27
+4W4 Kobolde
+
+28
+1W3 Schwarzbären
+
+29
+3W6 Blutmücken
+
+30
+1 Satyr
+
+31
+2W4 Kenku
+
+32
+1W3 Rankenplagen mit 1W12 Erwachten Büschen
+
+33
+1W4 Rabenschwärme
+
+34
+1 Feendrache (gelb oder jünger)
+
+35
+1W4 + 2 Riesendachse
+
+36 bis 40
+Ein junger Holzfäller (Kundschafter) eilt durch den Wald, um einen Freund zu retten.
+
+41
+2W4 Flimmerhunde
+
+42
+1W8 + 1 Feengeister
+
+43
+1W6 + 2 Elche
+
+44
+1W4 Echsenmenschen oder 3W6 Banditen
+
+45
+1W4 + 4 Wölfe
+
+46
+2W4 Riesenwolfspinnen
+
+47
+1 Schwarm von Insekten oder 2W8 Blutfalken
+
+48
+1W6 + 2 Pixies
+
+49
+1 Braunbär
+
+50
+1W4 + 3 Goblins
+
+51
+1W3 Dryaden
+
+52
+1 Erwachter Baum
+
+53
+1 Phasenspinne
+
+54
+1W6 Harpyien
+
+55
+1 Atterkopp oder 1W8 + 1 Orks
+
+56
+1 Goblin-Boss mit 2W6 + 1 Goblins
+
+57
+1 Ankheg
+
+58
+1 Riesenwürgeschlange
+
+59
+1W4 Grottenschrate oder 2W4 Hobgoblins
+
+60
+1 Pegasus
+
+61 bis 65
+Ein Strom kalten, klaren Wassers, der zwischen den Bäumen fließt.
+
+66
+1W4 Halboger oder 1 Oger
+
+67
+1 Feendrache (grün oder älter)
+
+68
+1 Werwolf oder 1W8 + 1 Worge
+
+69
+1 Druide, der Misteln schneidet
+
+70
+1 Irrlicht
+
+71
+1W4 Schreckenswölfe oder 1 Riesenbiber
+
+72
+1W10 Riesenwespen
+
+73
+1 Eulenbär oder 1 Riesenelch
+
+74
+2W6 Gnolle
+
+75
+1W6 Riesenkröten
+
+76 bis 80
+1W6 Seidenkokons, die von den Ästen hängen und verweste Kadaver enthalten.
+
+81
+1 Werbär oder 1 Riesenbär
+
+82
+1W6 + 2 Riesenspinnen
+
+83
+1W4 Zentauren oder 1W4 Riesenelche
+
+84
+1 Ork – Auge des Gruumsh mit 2W4 + 2 Orks
+
+85
+1 Gnoll-Reißzahn des Yeenoghu
+
+86
+1W4 Gricks
+
+87
+1 Banditenhauptmann mit 2W6 + 3 Banditen
+
+88
+1W4 Wertratten
+
+89
+1 Couatl (Tag) oder 1 Todesfee (Nacht)
+
+90
+1 Gnoll-Rudelfürst mit 1W4 Riesenhyänen
+
+91
+2W4 Berserker mit 4 Veteranen
+
+92
+1 Echsenmenschen-Schamane mit 1W3 Schwärmen von Giftschlangen und 1W10 + 2 Echsenmenschen
+
+93
+1W4 Tatzenschreiter
+
+94
+1W3 Grüne Vetteln
+
+95
+1 Hobgoblin-Hauptmann mit 2W6 Hobgoblins und 1W4 Riesenbären
+
+96
+1 Yuan-ti Halbblütige mit 1W6 + 1 Yuan-ti Reinblütigen
+
+97
+1W3 Weriger
+
+98
+1 Gorgone oder 1 Einhorn
+
+99
+1 Modernder Schlurfer
+
+00
+1 Yuan-ti Scheusal
+
+
+Waldbegegnungen (Stufe 5 bis 10)
+W100 Begegnung
+
+01
+2W4 Rankenplagen
+
+02
+2W6 Hobgoblins oder 2W6 Orks
+
+03
+2W4 Menschenaffen oder 2W4 Satyre
+
+04
+1W3 Irrlichter
+
+05
+1W4 Schwärme von Giftschlangen
+
+06
+1 Ork – Auge des Gruumsh mit 1W3 Orgs und 1W8 + 2 Orks
+
+07
+1W3 Würgeschlangen oder 1W4 Tiger
+
+08
+1 Goblin-Boss mit 3W6 Goblins
+
+09
+1 Feendrache (beliebiges Alter)
+
+10
+1 Braunbär oder 1W6 + 2 Schwarzbären
+
+11 bis 13
+1W4 Riesenelche
+
+14 bis 15
+1W8 + 1 Riesenspinnen
+
+16 bis 17
+1 Echsenmenschen-Schamane mit 2W4 Echsenmenschen
+
+18
+1W10 Riesenkröten
+
+19
+1W4 Ankhegs
+
+20
+1W3 Erwachte Bäume (Tag) oder 1 Todesfee (Nacht)
+
+21 bis 25
+Eine kleine Hütte, fast von tiefem Wald versteckt. Das Innere ist bis auf einen großen gusseisernen Ofen leer.
+
+26
+1 Couatl
+
+27 bis 28
+1W4 Oger oder 1W6 + 2 Halboger
+
+29 bis 30
+1 Gnoll-Rudelfürst mit 1W4 + 1 Riesenhyänen
+
+31 bis 32
+1W6 Wertratten
+
+33
+1W4 Gricks
+
+34
+1W8 + 1 Yuan-ti Reinblütige
+
+35
+1W6 Pegasi
+
+Waldbegegnungen (Stufe 5–10)
+W100 – Begegnung
+
+36–40
+Ein alter Steinbogen von offensichtlich elfischer Bauart. Jeder Charakter, der ihn durchschreitet, hat für eine Stunde Vorteil auf Weisheitswürfe (Wahrnehmung).
+
+41–42
+1W6 + 2 Dryaden
+
+43
+1W4 Riesenelche
+
+44
+1W8 + 1 Harpyien
+
+45–46
+1 Banditenhauptmann mit 1 Druiden und 1W6 + 5 Banditen
+
+47–48
+2W4 Schreckenswölfe
+
+49–50
+2W4 Grottenschrate
+
+51–52
+2W4 Zentauren
+
+53–54
+3W10 Flimmerhunde
+
+55–56
+1W4 Eulenbären
+
+57–58
+1W8 + 1 Berserker
+
+59–60
+1W3 Grüne Vetteln
+
+61–65
+Ein Teich kalten, klaren Wassers mit 1W6 schlafenden Tieren an seinem Ufer.
+
+66–67
+1W4 Werwölfe
+
+68–69
+1 Werbär
+
+70–71
+1W8 + 1 Atterköppe
+
+72–73
+2W10 Elche
+
+74–75
+1W4 Veteranen
+
+76–80
+Ein alter Baum, in dessen Stamm ein runzeliges Gesicht geschnitzt wurde.
+
+81
+1W4 Wereber
+
+82
+2W4 Täuschungsbestien
+
+83
+1W4 Modernde Schlurfer
+
+84
+1 Hobgoblin-Hauptmann mit 3W10 Hobgoblins und 4W12 Goblins
+
+85
+1 Yuan-ti-Scheusal
+
+86
+1W8 + 1 Phasenspinnen
+
+87
+1W4 Trolle
+
+88
+2W4 Yuan-ti-Halbblütige
+
+89
+1 Oni
+
+90
+1W4 Einhörner
+
+91
+1W6 + 2 Wertiger
+
+92
+1 junger grüner Drache
+
+93
+1W4 Gorgonen
+
+94
+1W6 + 2 Gnoll-Reißzähne von Yeenoghu
+
+95
+1 Baumhirte
+
+96
+1W4 Wiedergänger
+
+97
+1 Grick-Alpha mit 1W6 + 1 Gricks
+
+98
+1W4 Riesenmenschenaffen
+
+99
+1 Wächternaga
+
+00
+1 ausgewachsener Golddrache
+
+
+Waldbegegnungen (Stufe 11–16)
+W100 – Begegnung
+
+01–03
+1 Werbär
+
+04–05
+1W4 Druiden, die ein Ritual für die Toten praktizieren (nur bei Tag), oder 1W4 Todesfeen (nur bei Nacht)
+
+06–07
+1W3 Couatl
+
+08–10
+1W3 Gnoll-Reißzähne von Yeenoghu mit 2W6 + 3 Gnollen
+
+11–15
+2W4 Täuschungsbestien
+
+16–20
+1W6 + 2 Veteranen
+
+21–25
+Ein Teich mit kaltem, klarem Wasser. Goldmünzen liegen am Grund verstreut, verschwinden jedoch, sobald man sie aus dem Teich nimmt.
+
+26–30
+1W4 + 1 Grüne Vetteln mit 1W3 Eulenbären
+
+31–35
+1W6 + 2 Werwölfe
+
+36–40
+Ein kleiner Waldland-Schrein, welcher einem geheimnisvollen Kult namens Siswa geweiht ist.
+
+41–45
+1W6 + 2 Phasenspinnen
+
+46–50
+2W4 Yuan-ti-Halbblütige
+
+51–52
+1W3 Werbären
+
+53–54
+1W4 Wiedergänger
+
+55–56
+1 junger grüner Drache
+
+57–58
+1W4 Trolle
+
+59–60
+1W6 + 2 Wereber
+
+61–65
+Eine Gruppe von sieben Leuten (Gemeine), die Tiermasken tragen und schweigend durch den Wald trotten.
+
+66–67
+1W4 Gorgonen
+
+68–69
+1W3 Modernde Schlurfer
+
+70–71
+1 Baumhirte
+
+72–73
+1W4 Einhörner
+
+74–75
+1W6 + 2 Wertiger
+
+76–80
+Der Klang silbernen Gelächters, der als Echo aus der Ferne dringt.
+
+81–82
+1 Wächternaga
+
+83–84
+1 junger Golddrache
+
+85–86
+1 Grick-Alpha mit 2W4 Gricks
+
+87–88
+1W3 Yuan-ti-Scheusale
+
+89–90
+1 ausgewachsener grüner Drache
+
+91–93
+1W8 + 1 Riesenmenschenaffen
+
+94–96
+2W4 Oni
+
+97–99
+1W3 Baumhirten
+
+00
+1 uralter grüner Drache
+
+
+Waldbegegnungen (Stufe 17–20)
+W100 – Begegnung
+
+01–05
+1 junger grüner Drache
+
+06–10
+1 Baumhirte
+
+11–13
+1 Wächternaga
+
+14–16
+1W10 Wiedergänger
+
+17–19
+1W8 + 1 Einhörner
+
+20–22
+1W3 Grick-Alphas
+
+23–25
+Für ein paar hundert Meter blühen Blumen dort, wo die Charaktere hintreten, und geben ein weiches Licht ab.
+
+26–28
+1 junger Golddrache
+
+29–31
+1W6 + 2 Modernde Schlurfer
+
+32–34
+2W4 Werbären
+
+35–37
+1W4 Oni
+
+38–40
+4W6 + 10 Elfen, die in einer kleinen Ansiedlung in den Baumkronen wohnen
+
+41–43
+1W6 + 2 Gorgonen
+
+44–46
+2W4 Trolle
+
+47–49
+1W4 Riesenmenschenaffen
+
+50–52
+1W3 Yuan-ti-Scheusale
+
+53–62
+1W3 junge grüne Drachen
+
+63–65
+Eine 15 m hohe Steinstatue eines Elfenkriegers mit erhobener Hand, die Handfläche nach vorne gerichtet, als würde sie Reisenden verbieten, diesen Weg zu nehmen.
+
+66–75
+1W4 Baumhirten
+
+76–80
+Ein Hügelgrab auf einem flachen Hügel
+
+81–90
+1 ausgewachsener Golddrache
+
+91–96
+1 uralter grüner Drache
+
+97–99
+2W4 + 1 Baumhirten
+
+00
+1 uralter Golddrache
+
+Wüstenbegegnungen (Stufe 1–4)
+W100 – Begegnung
+
+01
+3W8 Skorpione
+
+02
+2W4 Geier
+
+03
+1 zurückgelassenes Maultier
+
+04
+2W6 Gemeine und 2W4 Kamele auf dem Weg zu einer fernen Stadt
+
+05
+1W6 Fliegende Schlangen
+
+06
+2W6 Hyänen oder 2W6 Schakale
+
+07
+1W6 Wachen, die einen Adeligen zum Rand der Wüste bringen sollen. Alle reiten auf Kamelen.
+
+08
+1W6 Katzen
+
+09
+1 Pseudodrache
+
+10
+1W4 Giftschlangen
+
+11–13
+2W4 Blutmücken
+
+14–15
+1W6 + 2 Riesenwolfsspinnen
+
+16–17
+1 Kundschafter
+
+18–20
+2W4 Riesengiftschlangen
+
+21–25
+Spuren von Kreaturen, die im Gänsemarsch tiefer in die Wüste geführt haben
+
+26–27
+4W4 Kobolde
+
+28–29
+1 Schakalwer
+
+30–31
+3W6 Stammeskrieger
+
+32–33
+1W6 Rieseneidechsen
+
+34–35
+1 Schwarm von Insekten
+
+36–40
+Eine von Palmen umgebene Oase, die die Überreste eines alten Lagers birgt
+
+41–44
+3W6 Banditen
+
+45–46
+1W4 Würgeschlangen
+
+47–48
+2W4 Geflügelte Kobolde
+
+49–50
+1 Staub-Mephit
+
+51–52
+1W3 + 1 Riesenkröten
+
+53–54
+1W4 Riesenspinnen
+
+55
+1 Druide
+
+56–57
+2W4 Hobgoblins
+
+58
+1 Gruftschrecken
+
+59–60
+1 Oger
+
+61–65
+Eine Lampe aus Messing, die auf dem Boden liegt
+
+66–67
+1W4 Riesengeier
+
+68
+1 Phasenspinne
+
+69
+1 Riesenwürgeschlange
+
+70–71
+1 Gnoll-Rudelfürst mit 1W3 Riesenhyänen
+
+72
+1W6 + 2 Gnolle
+
+73–74
+1 Mumie
+
+75
+1W3 Halboger
+
+76–80
+Ein Haufen menschlicher Knochen, umwickelt mit einem verwitterten Tuch
+
+81–82
+1 Lamia
+
+83
+1 Hobgoblin-Hauptmann mit 2W6 Hobgoblins
+
+84
+2W4 Todeshunde
+
+85–86
+1W4 Riesenskorpione
+
+87
+1 Yuan-ti-Halbblütiger mit 1W4 + 1 Yuan-ti-Reinblütigen
+
+88–89
+1 Banditenhauptmann mit 1 Druiden und 3W6 Banditen
+
+90
+2W4 Thri-kreen
+
+91
+1 Luftelementar
+
+92
+1W3 Couatl
+
+93
+1 Feuerelementar
+
+94
+1W4 Gnoll-Reißzähne von Yeenoghu
+
+95
+1 Wiedergänger
+
+96
+1W4 Wertiger
+
+97
+1 Zyklop
+
+98
+1 junger Messingdrache
+
+99
+1 Medusa
+
+00
+1 Yuan-ti-Scheusal
+
+
+Wüstenbegegnungen (Stufe 5–10)
+W100 – Begegnung
+
+01
+1W6 Kundschafter
+
+02
+2W4 Schakalwere
+
+03
+2W6 Hobgoblins
+
+04
+1W4 + 3 Staub-Mephiten
+
+05
+1W6 Schwärme von Insekten
+
+06
+1 Riesenwürgeschlange
+
+07–08
+1 Löwe
+
+09–10
+2W4 Gnolle
+
+11–12
+2W6 Riesenkröten
+
+13–17
+1 Mumie
+
+18–20
+1W8 + 1 Riesengeier
+
+21–25
+Ein Steinobelisk, teilweise im Sand vergraben
+
+26–28
+1 Oger mit 1W3 Halbogern
+
+29–35
+1W10 Riesenhyänen
+
+36–40
+1W6 + 1 leere Zelte
+
+41–43
+1W6 + 2 Thri-kreen
+
+44–46
+2W4 Yuan-ti-Reinblütige
+
+47–50
+1W6 + 3 Todeshunde
+
+51–52
+1W4 Riesenskorpione
+
+53
+1 Feuerelementar
+
+54–55
+1 Hobgoblin-Hauptmann mit 3W4 Hobgoblins
+
+56
+1W6 + 2 Oger
+
+57–58
+1W4 Lamien
+
+59–60
+1 Luftelementar
+
+61–65
+Ein Meteor, der auf dem Grund eines gläsernen Kraters ruht
+
+66
+1W4 + 1 Gruftschrecken
+
+67–68
+1 junger Messingdrache
+
+69–70
+1 Banditenhauptmann mit 1W3 Berserkern und 3W6 Banditen
+
+71–72
+1 Zyklop
+
+73
+1W4 Couatl
+
+74–75
+1W4 Yuan-ti-Halbblütige
+
+76–80
+Heftiger Wind wirbelt Sand auf und reduziert die Sichtweite für die nächsten 1W4 Stunden auf (1W6) × 30 cm
+
+81–83
+1 Wiedergänger mit 1W3 Gruftschrecken
+
+84–85
+1W8 + 1 Phasenspinnen
+
+86–87
+1W6 + 2 Wertiger
+
+88–90
+2W4 Gnoll-Reißzähne von Yeenoghu
+
+91
+1 junger blauer Drache
+
+92
+1W4 Zyklopen
+
+93
+1W3 Yuan-ti-Scheusale
+
+94
+1W4 Medusen
+
+95
+1 Wächternaga
+
+96
+1W3 junge Messingdrachen
+
+97
+1 Ifrit
+
+98
+1 Roch
+
+99
+1 Gynosphinx
+
+00
+1 ausgewachsener Messingdrache
+
+
+Wüstenbegegnungen (Stufe 11–16)
+W100 – Begegnung
+
+01
+1 junger Messingdrache
+
+02–05
+4W6 Gnolle
+
+06–10
+3W10 Riesenhyänen
+
+11–12
+1W8 + 1 Lamien
+
+13–14
+2W4 Gnoll-Reißzähne von Yeenoghu
+
+15–17
+1W6 + 2 Riesenskorpione
+
+18–20
+2W4 Phasenspinnen
+
+21–25
+Eine Wüstenkarawane aus 1W6 Händlern (Adelige) mit 2W6 Wachen
+
+26–27
+1W6 + 1 Couatl
+
+28–30
+1W4 Feuerelementare
+
+31–32
+1 Hobgoblin-Hauptmann mit 3W10 + 10 Hobgoblins
+
+33–35
+2W4 Gruftschrecken
+
+36–40
+1W6 Quadratkilometer Wüstenglas
+
+41–42
+1 junger blauer Drache
+
+43–45
+1W6 + 2 Wertiger
+
+46–48
+1W4 Luftelementare
+
+49–50
+1W6 + 1 Yuan-ti-Halbblütige
+
+51–55
+1W4 Medusen
+
+56–60
+1W4 Wiedergänger mit 3W12 Skeletten
+
+61–65
+Eine geplünderte Pyramide
+
+66–70
+1W4 junge Messingdrachen
+
+71–75
+1W3 Yuan-ti-Scheusale
+
+76–78
+1W6 + 2 Zyklopen
+
+79–82
+1 erwachsener Messingdrache
+
+83–85
+1 Purpurwurm
+
+86
+1W2 junge blaue Drachen
+
+87–88
+1 Mumienfürst
+
+89
+1W3 Wächternagi
+
+90
+1 ausgewachsener blauer Drache
+
+91
+1W2 Gynosphingen
+
+92–93
+1W3 Ifriti
+
+94
+1 Androsphinx
+
+95
+1W4 Rochs
+
+96–97
+1 ausgewachsener blauer Drakolich
+
+98–99
+1 uralter Messingdrache
+
+00
+1 uralter blauer Drache
+
+Wüstenbegegnungen (Stufe 17–20)
+W100 – Begegnung
+
+01–05
+1 ausgewachsener Messingdrache
+
+06–10
+1W2 Yuan-ti-Scheusale mit 2W10 + 5 Yuan-ti-Halbblütigen und 4W6 + 6 Yuan-ti-Reinblütigen
+
+11–14
+1W6 + 2 Medusen
+
+15–18
+1W2 Purpurwürmer
+
+19–22
+2W4 Zyklopen
+
+23–25
+Eine verlassene Stadt aus weißem Marmor. Bei Tage leer. Bei Nacht streifen harmlose Erscheinungen durch die Straßen und spielen die letzten Momente ihres Lebens nach.
+
+26–30
+1W3 junge blaue Drachen
+
+31–35
+1 Mumienfürst
+
+36–40
+1W4 Stunden extremer Hitze (siehe Kapitel 5 des Dungeon Master’s Guide)
+
+41–50
+1W3 Wächternagi
+
+51–60
+1W4 Ifriti
+
+61–63
+Ein alter Wegweiser, der nur auf einen Ort deutet, genannt Pazar
+
+64–72
+1W4 Rochs
+
+73–80
+1W3 Gynosphingen
+
+81–85
+1 ausgewachsener blauer Drakolich
+
+86–90
+1 Androsphinx
+
+91–96
+1 uralter Messingdrache
+
+97–99
+1 uralter blauer Drache
+
+00
+1W4 ausgewachsene Messingdrachen
+
+
+
+Hier musst du schauen, manchmal steht zb 86 bis 90 oder 86-90 damit ist das selbe gemeint. Es geht ja um die würfelwürfe und damit ist dann der wert von 86-90 dann gemeint.
