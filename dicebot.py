@@ -75,6 +75,169 @@ SUBJECT_WORDS = [
     "Blut",
 ]
 
+# -----------------------
+# BIOM SYSTEM
+# -----------------------
+SURFACE_BIOMES = ["Arktis", "Küste", "Wüste", "Wald", "Grasland", "Hügel", "Berg", "Sumpf"]
+SPECIAL_BIOMES = ["Unterreich", "Wasser", "Stadt/Dorf"]
+ALL_BIOMES = SURFACE_BIOMES + SPECIAL_BIOMES
+
+def normalize_biom(text: str) -> str | None:
+    t = (text or "").strip().lower()
+    if not t:
+        return None
+
+    # ein paar tolerante Aliase
+    if t in {"stadt", "dorf", "stadt dorf", "stadt/dorf", "stadt\\dorf"}:
+        return "Stadt/Dorf"
+
+    for b in ALL_BIOMES:
+        if t == b.lower():
+            return b
+    return None
+
+def build_biom_keyboard() -> InlineKeyboardMarkup:
+    rows = []
+    row = []
+    # Stadt/Dorf nicht als "aktuelles Biom" auswählbar, weil es immer auf einem Biom liegt
+    choices = SURFACE_BIOMES + ["Wasser", "Unterreich"]
+    for label in choices:
+        row.append(InlineKeyboardButton(label, callback_data=f"biom_set:{label}"))
+        if len(row) == 2:
+            rows.append(row)
+            row = []
+    if row:
+        rows.append(row)
+    return InlineKeyboardMarkup(rows)
+
+def roll_biom(current_biom: str) -> tuple[str, str, str | None]:
+    """
+    Regeln:
+    66% gleiches Biom
+    10% Stadt/Dorf (auf aktuellem Biom)
+    5% Wasser
+    5% Unterreich
+    Rest gleichmäßig auf andere Biome verteilt
+
+    Rückgabe:
+    (rolled_base, display_text, new_current_biom_or_none)
+    new_current_biom_or_none ist None, wenn Stadt/Dorf gerollt wurde (Biom bleibt gleich)
+    """
+    if current_biom not in ALL_BIOMES:
+        raise ValueError(f"Unbekanntes Biom: {current_biom}")
+
+    fixed = {
+        "Wasser": 5.0,
+        "Unterreich": 5.0,
+        "Stadt/Dorf": 10.0,
+    }
+    current_weight = 66.0
+
+    # Wenn das aktuelle Biom selbst ein "fixed" Biom ist, nicht doppelt zählen
+    fixed_for_roll = dict(fixed)
+    if current_biom in fixed_for_roll:
+        fixed_for_roll.pop(current_biom)
+
+    total_fixed = current_weight + sum(fixed_for_roll.values())
+    remaining = 100.0 - total_fixed
+
+    others = [b for b in ALL_BIOMES if b != current_biom and b not in fixed_for_roll]
+    per_other = remaining / len(others) if others else 0.0
+
+    choices = [current_biom] + list(fixed_for_roll.keys()) + others
+    weights = [current_weight] + list(fixed_for_roll.values()) + [per_other] * len(others)
+
+    rolled = random.choices(choices, weights=weights, k=1)[0]
+
+    if rolled == "Stadt/Dorf":
+        return rolled, f"Stadt/Dorf (auf {current_biom})", None
+
+    return rolled, rolled, rolled
+
+async def setbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not context.args:
+        await update.message.reply_text(
+            "🌍 Wähle dein aktuelles Biom aus",
+            reply_markup=build_biom_keyboard()
+        )
+        return
+
+    biom_raw = " ".join(context.args).strip()
+    biom = normalize_biom(biom_raw)
+
+    if not biom:
+        await update.message.reply_text("Unbekanntes Biom. Erlaubt: " + ", ".join(ALL_BIOMES))
+        return
+
+    if biom == "Stadt/Dorf":
+        await update.message.reply_text(
+            "Stadt/Dorf liegt immer auf einem Biom. Setze bitte das Biom darunter, z.B. /setbiom Wald 🙂"
+        )
+        return
+
+    context.user_data["current_biom"] = biom
+    await update.message.reply_text(f"🌍 Aktuelles Biom gesetzt: {biom}")
+
+async def setbiom_pick(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    biom = query.data.split(":", 1)[1]
+    biom = normalize_biom(biom)
+
+    if not biom or biom == "Stadt/Dorf":
+        await query.edit_message_text("Bitte wähle ein gültiges Biom.")
+        return
+
+    context.user_data["current_biom"] = biom
+    await query.edit_message_text(f"🌍 Aktuelles Biom gesetzt: {biom}")
+
+async def biom(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    current = context.user_data.get("current_biom")
+    if not current:
+        await update.message.reply_text("Ich kenne dein aktuelles Biom noch nicht. Setze es mit /setbiom")
+        return
+    await update.message.reply_text(f"🌍 Aktuelles Biom: {current}")
+
+async def rollbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # Optional: /rollbiom Wald setzt vorher
+    if context.args:
+        biom_raw = " ".join(context.args).strip()
+        biom_norm = normalize_biom(biom_raw)
+        if not biom_norm:
+            await update.message.reply_text("Unbekanntes Biom. Erlaubt: " + ", ".join(ALL_BIOMES))
+            return
+        if biom_norm == "Stadt/Dorf":
+            await update.message.reply_text(
+                "Stadt/Dorf liegt immer auf einem Biom. Nutze bitte z.B. /rollbiom Wald 🙂"
+            )
+            return
+        context.user_data["current_biom"] = biom_norm
+
+    current = context.user_data.get("current_biom")
+    if not current:
+        await update.message.reply_text("Setze erst dein aktuelles Biom mit /setbiom, dann /rollbiom")
+        return
+
+    rolled_base, display, new_current = roll_biom(current)
+
+    msg = (
+        f"🧭 Biom Wurf\n"
+        f"Aktuell: {current}\n"
+        f"Gerollt: {display}"
+    )
+
+    if new_current is not None:
+        context.user_data["current_biom"] = new_current
+        msg += f"\nNeu: {new_current}"
+    else:
+        msg += f"\nBiom bleibt: {current}"
+
+    await update.message.reply_text(msg)
+
+# -----------------------
+# ORACLE + DICE SYSTEM
+# -----------------------
 def clamp(n: int, lo: int, hi: int) -> int:
     return max(lo, min(hi, n))
 
@@ -273,6 +436,12 @@ def main():
 
     # Standard Würfel
     app.add_handler(CommandHandler("roll", roll))
+
+    # Biom System
+    app.add_handler(CommandHandler("setbiom", setbiom))
+    app.add_handler(CommandHandler("biom", biom))
+    app.add_handler(CommandHandler("rollbiom", rollbiom))
+    app.add_handler(CallbackQueryHandler(setbiom_pick, pattern=r"^biom_set:"))
 
     # Orakel Conversation
     oracle_conv = ConversationHandler(
