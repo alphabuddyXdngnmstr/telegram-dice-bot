@@ -1,3 +1,4 @@
+```python
 import os
 import random
 import re
@@ -745,34 +746,32 @@ async def rollchance(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     sg = 10
     reward_text = ""
-    magic_item = False
 
     if 1 <= w100 <= 40:
         sg = 10
-        base, r = _roll_sum(1, 10)
+        base, _r = _roll_sum(1, 10)
         reward = base * 10
         reward_text = f"{reward} GM"
     elif 41 <= w100 <= 75:
         sg = 15
-        base, r = _roll_sum(2, 10)
+        base, _r = _roll_sum(2, 10)
         reward = base * 10
         reward_text = f"{reward} GM"
     elif 76 <= w100 <= 90:
         sg = 18
-        base, r = _roll_sum(4, 10)
+        base, _r = _roll_sum(4, 10)
         reward = base * 10
         reward_text = f"{reward} GM"
     elif 91 <= w100 <= 98:
         sg = 22
-        base, r = _roll_sum(6, 10)
+        base, _r = _roll_sum(6, 10)
         reward = base * 10
         reward_text = f"{reward} GM"
     else:
         sg = 30
-        base, r = _roll_sum(1, 4)
+        base, _r = _roll_sum(1, 4)
         reward = base * 1000
         reward_text = f"{reward} GM + 1x Magic Item"
-        magic_item = True
 
     msg = (
         f"🎯 Rollchance\n"
@@ -787,6 +786,210 @@ async def rollchance(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg)
 
 # -----------------------
+# WALDKARTE SYSTEM
+# -----------------------
+WALDKARTE_LEVELS = ["1-4", "5-10", "11-16", "17-20"]
+
+def build_waldkarte_level_keyboard() -> InlineKeyboardMarkup:
+    rows = [
+        [
+            InlineKeyboardButton("1-4", callback_data="waldkarte_level:1-4"),
+            InlineKeyboardButton("5-10", callback_data="waldkarte_level:5-10"),
+        ],
+        [
+            InlineKeyboardButton("11-16", callback_data="waldkarte_level:11-16"),
+            InlineKeyboardButton("17-20", callback_data="waldkarte_level:17-20"),
+        ],
+    ]
+    return InlineKeyboardMarkup(rows)
+
+async def rollwaldkarte(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    roll18 = random.randint(1, 18)
+
+    if 1 <= roll18 <= 7:
+        await update.message.reply_text(
+            f"🌲 Waldkarte\n"
+            f"W18: {roll18}\n"
+            f"Ergebnis: Skillchance"
+        )
+        await rollchance(update, context)
+        return
+
+    if 8 <= roll18 <= 11:
+        await update.message.reply_text(
+            f"🌲 Waldkarte\n"
+            f"W18: {roll18}\n"
+            f"Ergebnis: Ruhe\n"
+            f"Du kannst jagen, chillen oder trainieren 🙂"
+        )
+        return
+
+    if roll18 == 12:
+        d4 = random.randint(1, 4)
+        mapping = {1: "Ruine", 2: "Händler", 3: "Dorf", 4: "Gasthaus"}
+        await update.message.reply_text(
+            f"🌲 Waldkarte\n"
+            f"W18: {roll18}\n"
+            f"Ergebnis: Ortschaft außerhalb der Karte\n"
+            f"W4: {d4} -> {mapping[d4]}"
+        )
+        return
+
+    if roll18 in (13, 14):
+        context.user_data["waldkarte_pending"] = {"type": "encounter", "card_roll": roll18}
+        await update.message.reply_text(
+            f"🌲 Waldkarte\n"
+            f"W18: {roll18}\n"
+            f"Ergebnis: Encounter\n\n"
+            f"Wähle die Stufe:",
+            reply_markup=build_waldkarte_level_keyboard()
+        )
+        return
+
+    if roll18 in (15, 16):
+        d6 = random.randint(1, 6)
+
+        if d6 == 1:
+            a = random.randint(1, 10)
+            b = random.randint(1, 10)
+            gold = (a + b) * 10
+            await update.message.reply_text(
+                f"🌲 Waldkarte\n"
+                f"W18: {roll18}\n"
+                f"Ergebnis: Entdeckung\n"
+                f"W6: {d6} -> Truhe\n"
+                f"2W10: {a} + {b} = {a + b}\n"
+                f"Belohnung: {gold} GM"
+            )
+            return
+
+        if d6 == 2:
+            await update.message.reply_text(
+                f"🌲 Waldkarte\n"
+                f"W18: {roll18}\n"
+                f"Ergebnis: Entdeckung\n"
+                f"W6: {d6} -> 50% Rabatt Händler"
+            )
+            return
+
+        if d6 == 3:
+            await update.message.reply_text(
+                f"🌲 Waldkarte\n"
+                f"W18: {roll18}\n"
+                f"Ergebnis: Entdeckung\n"
+                f"W6: {d6} -> Zauberschriften Händler"
+            )
+            return
+
+        if d6 == 4:
+            context.user_data["next_reward_bonus_d10x10"] = True
+            await update.message.reply_text(
+                f"🌲 Waldkarte\n"
+                f"W18: {roll18}\n"
+                f"Ergebnis: Entdeckung\n"
+                f"W6: {d6} -> Merker\n"
+                f"Bei deiner nächsten Belohnung bekommst du zusätzlich 1W10x10 GM 🙂"
+            )
+            return
+
+        if d6 == 5:
+            await update.message.reply_text(
+                f"🌲 Waldkarte\n"
+                f"W18: {roll18}\n"
+                f"Ergebnis: Entdeckung\n"
+                f"W6: {d6} -> 1x Inspiration"
+            )
+            return
+
+        context.user_data["omen_bonus_d6"] = True
+        await update.message.reply_text(
+            f"🌲 Waldkarte\n"
+            f"W18: {roll18}\n"
+            f"Ergebnis: Entdeckung\n"
+            f"W6: {d6} -> Omen\n"
+            f"Merker: Du kannst 1W6 zu jedem Wurf dazunehmen 🙂"
+        )
+        return
+
+    if roll18 == 17:
+        context.user_data["waldkarte_pending"] = {"type": "hort", "card_roll": roll18}
+        await update.message.reply_text(
+            f"🌲 Waldkarte\n"
+            f"W18: {roll18}\n"
+            f"Ergebnis: Kreaturenhort\n\n"
+            f"Wähle die Stufe:",
+            reply_markup=build_waldkarte_level_keyboard()
+        )
+        return
+
+    await update.message.reply_text(
+        f"🌲 Waldkarte\n"
+        f"W18: {roll18}\n"
+        f"Ergebnis: NPC\n"
+        f"Ein NPC gibt dir eine Wegbeschreibung zum Portal oder die Info, die du suchst (Joker)."
+    )
+
+async def rollwaldkarte_pick_level(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    level = query.data.split(":", 1)[1].strip()
+    pending = context.user_data.get("waldkarte_pending")
+
+    if not pending:
+        await query.edit_message_text("Ich habe keine offene Waldkarte Auswahl mehr. Nutze /rollwaldkarte 🙂")
+        return
+
+    if level not in WALDKARTE_LEVELS:
+        context.user_data.pop("waldkarte_pending", None)
+        await query.edit_message_text("Ungültige Stufe. Nutze /rollwaldkarte erneut 🙂")
+        return
+
+    if not ENCOUNTERS:
+        context.user_data.pop("waldkarte_pending", None)
+        await query.edit_message_text(
+            "Ich habe keine Encounter Tabellen geladen.\n"
+            "Lege eine encounters_de.txt neben dein Script und starte den Bot neu 🙂"
+        )
+        return
+
+    card_roll = pending.get("card_roll", "?")
+    kind = pending.get("type", "encounter")
+
+    context.user_data.pop("waldkarte_pending", None)
+
+    biome = "Wald"
+
+    try:
+        w100, encounter_raw = pick_encounter(biome, level)
+        encounter_rolled, dice_details = roll_inline_w_dice(encounter_raw)
+
+        title = "Kreaturenhort" if kind == "hort" else "Encounter"
+        extra = "Das ist die Kreatur, die den Hort hält oder bewacht." if kind == "hort" else "Viel Spaß 🙂"
+
+        msg = (
+            f"🌲 Waldkarte\n"
+            f"W18: {card_roll}\n"
+            f"Ergebnis: {title}\n"
+            f"Biom: {biome}\n"
+            f"Stufe: {level}\n"
+            f"W100: {w100:02d}\n\n"
+            f"Begegnung (Tabelle):\n{encounter_raw}\n\n"
+            f"Begegnung (ausgewürfelt):\n{encounter_rolled}\n\n"
+            f"{extra}"
+        )
+
+        if dice_details:
+            msg += "\n\nWürfe:\n" + "\n".join(dice_details)
+
+        await query.edit_message_text(msg)
+    except KeyError:
+        await query.edit_message_text(
+            f"Für Biom {biome} und Stufe {level} habe ich keine passende Tabelle gefunden.\n"
+            f"Check die Überschrift in encounters_de.txt."
+        )
+
+# -----------------------
 # HELP
 # -----------------------
 async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -794,7 +997,8 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🧰 Befehle\n\n"
         "/help  diese Hilfe\n"
         "/roll <XdY(+/-Z)>  Würfeln, z.B. /roll 1d6 oder /roll 2d20+3 (auch 1w6)\n"
-        "/rollchance  Skillwurf plus SG und Belohnung\n\n"
+        "/rollchance  Skillwurf plus SG und Belohnung\n"
+        "/rollwaldkarte  zieht eine Waldkarte (Skillchance, Ruhe, Entdeckung, Encounter, Hort, NPC)\n\n"
         "🌍 Biom\n"
         "/setbiom <Biom>  setzt dein aktuelles Biom (oder ohne Parameter per Buttons)\n"
         "/biom  zeigt dein aktuelles Biom\n"
@@ -826,6 +1030,8 @@ def main():
 
     app.add_handler(CommandHandler("roll", roll))
     app.add_handler(CommandHandler("rollchance", rollchance))
+    app.add_handler(CommandHandler("rollwaldkarte", rollwaldkarte))
+    app.add_handler(CallbackQueryHandler(rollwaldkarte_pick_level, pattern=r"^waldkarte_level:"))
 
     app.add_handler(CommandHandler("setbiom", setbiom))
     app.add_handler(CommandHandler("biom", biom))
@@ -866,3 +1072,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+```
