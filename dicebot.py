@@ -53,6 +53,7 @@ BASE_CHANCE = {
     "has_to_be": 99,
 }
 
+# Kleine eigene Random Event Tabellen, frei formuliert
 EVENT_FOCUS = [
     "Fernere Begegnung",
     "Umgebungsereignis",
@@ -88,6 +89,7 @@ def normalize_biom(text: str) -> str | None:
     if not t:
         return None
 
+    # ein paar tolerante Aliase
     if t in {"stadt", "dorf", "stadt dorf", "stadt/dorf", "stadt\\dorf"}:
         return "Stadt/Dorf"
 
@@ -99,6 +101,7 @@ def normalize_biom(text: str) -> str | None:
 def build_biom_keyboard() -> InlineKeyboardMarkup:
     rows = []
     row = []
+    # Stadt/Dorf nicht als "aktuelles Biom" auswählbar, weil es immer auf einem Biom liegt
     choices = SURFACE_BIOMES + ["Wasser", "Unterreich"]
     for label in choices:
         row.append(InlineKeyboardButton(label, callback_data=f"biom_set:{label}"))
@@ -110,6 +113,18 @@ def build_biom_keyboard() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(rows)
 
 def roll_biom(current_biom: str) -> tuple[str, str, str | None]:
+    """
+    Regeln:
+    66% gleiches Biom
+    10% Stadt/Dorf (auf aktuellem Biom)
+    5% Wasser
+    5% Unterreich
+    Rest gleichmäßig auf andere Biome verteilt
+
+    Rückgabe:
+    (rolled_base, display_text, new_current_biom_or_none)
+    new_current_biom_or_none ist None, wenn Stadt/Dorf gerollt wurde (Biom bleibt gleich)
+    """
     if current_biom not in ALL_BIOMES:
         raise ValueError(f"Unbekanntes Biom: {current_biom}")
 
@@ -120,6 +135,7 @@ def roll_biom(current_biom: str) -> tuple[str, str, str | None]:
     }
     current_weight = 66.0
 
+    # Wenn das aktuelle Biom selbst ein "fixed" Biom ist, nicht doppelt zählen
     fixed_for_roll = dict(fixed)
     if current_biom in fixed_for_roll:
         fixed_for_roll.pop(current_biom)
@@ -186,6 +202,7 @@ async def biom(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(f"🌍 Aktuelles Biom: {current}")
 
 async def rollbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # Optional: /rollbiom Wald setzt vorher
     if context.args:
         biom_raw = " ".join(context.args).strip()
         biom_norm = normalize_biom(biom_raw)
@@ -221,9 +238,8 @@ async def rollbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg)
 
 # -----------------------
-# ENCOUNTER SYSTEM
+# ENCOUNTER SYSTEM (liest encounters_de.txt)
 # -----------------------
-
 ENCOUNTERS: dict[str, dict[str, list[tuple[int, int, str]]]] = {}
 
 def _to_int_w100(token: str) -> int:
@@ -402,6 +418,7 @@ def pick_encounter(biom: str, level: str) -> tuple[int, str]:
     tables_for_biom = ENCOUNTERS.get(biom, {})
     table = tables_for_biom.get(level)
 
+    # Fallback: eine Datei hat evtl. nur "11-20"
     if table is None and level in ("11-16", "17-20"):
         table = tables_for_biom.get("11-20")
 
@@ -455,7 +472,8 @@ async def rollencounter_start(update: Update, context: ContextTypes.DEFAULT_TYPE
         raw = " ".join(context.args).strip()
         biom_norm = normalize_biom(raw) or _canonical_enc_biom(raw)
         biom_norm = _biom_for_encounter_from_current(biom_norm)
-        context.user_data["enc_biom"] = biom_norm
+        context.user_data["enc_biome"] = biom_norm
+
         await update.message.reply_text(
             f"⚔️ Biom: {biom_norm}\nWelche Stufe?",
             reply_markup=build_encounter_level_keyboard()
@@ -472,7 +490,7 @@ async def rollencounter_start(update: Update, context: ContextTypes.DEFAULT_TYPE
         return ConversationHandler.END
 
     enc_biom = _biom_for_encounter_from_current(current)
-    context.user_data["enc_biom"] = enc_biom
+    context.user_data["enc_biome"] = enc_biom
 
     await update.message.reply_text(
         f"⚔️ Nutze aktuelles Biom?\nAktuell: {current}\nEncounter Tabelle: {enc_biom}",
@@ -486,7 +504,7 @@ async def rollencounter_confirm(update: Update, context: ContextTypes.DEFAULT_TY
 
     choice = query.data.split(":", 1)[1]
     if choice == "yes":
-        biom = context.user_data.get("enc_biom", "Unbekannt")
+        biom = context.user_data.get("enc_biome", "Unbekannt")
         await query.edit_message_text(
             f"⚔️ Biom: {biom}\nWelche Stufe?",
             reply_markup=build_encounter_level_keyboard()
@@ -504,7 +522,7 @@ async def rollencounter_pick_biom(update: Update, context: ContextTypes.DEFAULT_
     await query.answer()
 
     biom = query.data.split(":", 1)[1]
-    context.user_data["enc_biom"] = biom
+    context.user_data["enc_biome"] = biom
 
     await query.edit_message_text(
         f"⚔️ Biom: {biom}\nWelche Stufe?",
@@ -517,7 +535,7 @@ async def rollencounter_pick_level(update: Update, context: ContextTypes.DEFAULT
     await query.answer()
 
     level = query.data.split(":", 1)[1]
-    biom = (context.user_data.get("enc_biom") or "").strip()
+    biom = (context.user_data.get("enc_biome") or "").strip()
 
     try:
         w100, encounter_raw = pick_encounter(biom, level)
@@ -555,6 +573,10 @@ def clamp(n: int, lo: int, hi: int) -> int:
     return max(lo, min(hi, n))
 
 def oracle_outcome(odds_key: str, chaos_rank: int) -> dict:
+    """
+    Gibt Ergebnis, Roll, Chance und ob Random Event getriggert wurde zurück.
+    Chaos Rank 5 ist neutral, darüber wird es ja lastiger, darunter nein lastiger.
+    """
     base = BASE_CHANCE[odds_key]
     adjust = (chaos_rank - 5) * 5
     chance = clamp(base + adjust, 0, 100)
@@ -726,6 +748,26 @@ async def rolloracle_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Orakel abgebrochen 🙂")
     return ConversationHandler.END
 
+# -----------------------
+# HELP
+# -----------------------
+async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    msg = (
+        "🧰 Befehle\n\n"
+        "/help – diese Hilfe\n"
+        "/roll <XdY(+/-Z)> – Würfeln, z.B. /roll 1d6 oder /roll 2d20+3 (auch 1w6)\n\n"
+        "🌍 Biom\n"
+        "/setbiom <Biom> – setzt dein aktuelles Biom (oder ohne Parameter per Buttons)\n"
+        "/biom – zeigt dein aktuelles Biom\n"
+        "/rollbiom [Biom] – würfelt das nächste Biom (optional vorher setzen)\n\n"
+        "⚔️ Encounters\n"
+        "/rollencounter [Biom] – würfelt einen Encounter (nutzt sonst dein aktuelles Biom)\n\n"
+        "🔮 Orakel\n"
+        "/rolloracle [Frage] – Ja/Nein Orakel\n"
+        "/cancel – bricht Orakel oder Encounter Auswahl ab"
+    )
+    await update.message.reply_text(msg)
+
 def main():
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     base_url = os.environ.get("BASE_URL")
@@ -740,6 +782,10 @@ def main():
 
     # Encounter Tabellen laden
     init_encounters()
+
+    # Help
+    app.add_handler(CommandHandler("help", help_cmd))
+    app.add_handler(CommandHandler("start", help_cmd))
 
     # Standard Würfel
     app.add_handler(CommandHandler("roll", roll))
