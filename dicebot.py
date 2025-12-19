@@ -737,6 +737,13 @@ def _roll_sum(count: int, sides: int) -> tuple[int, list[int]]:
     rolls = [random.randint(1, sides) for _ in range(count)]
     return sum(rolls), rolls
 
+def _apply_next_reward_bonus_if_any(context: ContextTypes.DEFAULT_TYPE) -> tuple[int, str | None]:
+    if context.user_data.get("next_reward_bonus_d10x10"):
+        context.user_data["next_reward_bonus_d10x10"] = False
+        bonus = random.randint(1, 10) * 10
+        return bonus, f"Bonus (Merker): 1W10x10 = {bonus} GM"
+    return 0, None
+
 async def rollchance(update: Update, context: ContextTypes.DEFAULT_TYPE):
     skill_roll = random.randint(1, 6)
     attr, emoji = ATTR_TABLE[skill_roll]
@@ -744,7 +751,9 @@ async def rollchance(update: Update, context: ContextTypes.DEFAULT_TYPE):
     w100 = random.randint(1, 100)
 
     sg = 10
+    reward = 0
     reward_text = ""
+    magic_item = False
 
     if 1 <= w100 <= 40:
         sg = 10
@@ -771,13 +780,28 @@ async def rollchance(update: Update, context: ContextTypes.DEFAULT_TYPE):
         base, _r = _roll_sum(1, 4)
         reward = base * 1000
         reward_text = f"{reward} GM + 1x Magic Item"
+        magic_item = True
+
+    bonus, bonus_line = _apply_next_reward_bonus_if_any(context)
+    if bonus:
+        reward += bonus
+        if magic_item:
+            reward_text = f"{reward} GM + 1x Magic Item"
+        else:
+            reward_text = f"{reward} GM"
 
     msg = (
         f"🎯 Rollchance\n"
         f"Skillwurf 1W6: {skill_roll}\n"
         f"Attribut: {attr} {emoji}\n"
-        f"W100: {w100:02d}\n\n"
-        f"Dein Skill SG ist {sg} für {attr} {emoji}. "
+        f"W100: {w100:02d}\n"
+    )
+
+    if bonus_line:
+        msg += f"{bonus_line}\n"
+
+    msg += (
+        f"\nDein Skill SG ist {sg} für {attr} {emoji}. "
         f"Deine Belohnung ist {reward_text} (W100: {w100:02d}). "
         f"Viel Erfolg 😊"
     )
@@ -1071,5 +1095,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-```
-
