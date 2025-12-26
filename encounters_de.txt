@@ -4255,6 +4255,7 @@ Ein Hügelgrab auf einem flachen Hügel
 00
 1 uralter Golddrache
 
+
 Wüstenbegegnungen (Stufe 1–4)
 W100 – Begegnung
 
