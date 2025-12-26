@@ -311,40 +311,6 @@ Stufen, die in den Berg gehauen wurden. Sie steigen 3W10 + 12 m, bevor sie plöt
 28–30
 2W4 Aarakocra
 
-
-Bergbegegnungen (Stufe 1–4)
-W100 – Begegnung
-
-01–02
-1 Adler
-
-03–05
-1W3 Schwärme von Fledermäusen
-
-06–08
-1W6 Ziegen
-
-09–11
-1W10 + 5 Stammeskrieger
-
-12–14
-1W6 + 3 Pteranodons
-
-15–17
-1W8 + 1 Geflügelte Kobolde
-
-18–20
-1 Löwe
-
-21–24
-Stufen, die in den Berg gehauen wurden. Sie steigen 3W10 + 12 m, bevor sie plötzlich enden.
-
-25–27
-2W10 Blutmücken
-
-28–30
-2W4 Aarakocra
-
 31–33
 2W6 Zwergen-Soldaten (Wachen) mit 1W6 Maultieren, die mit Eisenerz beladen sind.
 
