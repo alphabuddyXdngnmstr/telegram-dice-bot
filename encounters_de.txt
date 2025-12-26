@@ -315,14 +315,44 @@ Stufen, die in den Berg gehauen wurden. Sie steigen 3W10 + 12 m, bevor sie plöt
 Bergbegegnungen (Stufe 1–4)
 W100 – Begegnung
 
+01–02
+1 Adler
+
+03–05
+1W3 Schwärme von Fledermäusen
+
+06–08
+1W6 Ziegen
+
+09–11
+1W10 + 5 Stammeskrieger
+
+12–14
+1W6 + 3 Pteranodons
+
+15–17
+1W8 + 1 Geflügelte Kobolde
+
+18–20
+1 Löwe
+
+21–24
+Stufen, die in den Berg gehauen wurden. Sie steigen 3W10 + 12 m, bevor sie plötzlich enden.
+
+25–27
+2W10 Blutmücken
+
+28–30
+2W4 Aarakocra
+
 31–33
-2W6 Zwergen-Soldaten (Wachen) mit 1W6 Maultieren, die mit Eisenerz beladen sind
+2W6 Zwergen-Soldaten (Wachen) mit 1W6 Maultieren, die mit Eisenerz beladen sind.
 
 34–36
 1 Riesenadler
 
 37–38
-Ein kleiner Schrein in einer Felsspalte, welcher einer rechtschaffend neutralen Gottheit gewidmet ist
+Ein kleiner Schrein in einer Felsspalte, welcher einer rechtschaffend neutralen Gottheit gewidmet ist.
 
 39–41
 2W8 + 1 Blutfalken
@@ -373,7 +403,7 @@ Enorme Fußabdrücke eines Riesen, die in die Gebirgsgipfel führen
 1 Veteran
 
 78–79
-1 Ork-Auge des Grumsh
+1 Ork-Auge des Gruumsh
 
 80
 1W4 Harpyien
@@ -391,7 +421,7 @@ Enorme Fußabdrücke eines Riesen, die in die Gebirgsgipfel führen
 1 Säbelzahntiger
 
 86–90
-Ein sprudelnder Wasserlauf, der aus einer Felsspalte dringt
+Ein sprudelnder Wasserlauf, der aus einer Felsspalte dringt.
 
 91
 1W2 Ettins
@@ -606,6 +636,70 @@ Ein breiter Felsabgrund, dessen Tiefe mit Nebel verhüllt ist
 1 Uralter Silberdrache
 
 00
+1 Uralter roter Drache
+
+
+Bergbegegnungen (Stufe 17–20)
+W100 – Begegnung
+
+01–05
+1W10 Landhaie
+
+06–10
+1W8 + 1 Chimären
+
+11–15
+1 Ausgewachsener Silberdrache
+
+16–20
+1W8 + 1 Wyvern
+
+21–25
+Ein riesiges Boot auf einem Berggipfel
+
+26–30
+2W4 Galeb Duhr
+
+31–35
+1W4 Frostriesen
+
+36–40
+Ein bewaldetes Tal, das von geheimniskrämerischen und zurückgezogenen Elfen bewohnt wird, welche argwöhnisch von ihrem Meister sprechen: einem verrückten Magier, der im Herzen des Tals lebt.
+
+41–45
+1W10 Luftelementare
+
+46–50
+1W6 + 3 Trolle
+
+51–55
+1 Ausgewachsener roter Drache
+
+56–60
+1W4 Wolkenriesen
+
+61–65
+Ein Wasserfall, der über hundert Meter hoch ist und in ein klares Becken stürzt.
+
+66–70
+1W3 Feuerriesen
+
+71–75
+2W4 Steinriesen
+
+76–80
+Eine Streitmacht aus 100 Zwergen (Veteranen), die an einem Gebirgspass Wache stehen. Sie erlauben die Weiterreise nur bei Entrichtung von 100 GM (zu Fuß) oder 200 GM (beritten).
+
+81–85
+1W4 Rochs
+
+86–90
+1W4 Junge rote Drachen
+
+91–96
+1 Uralter Silberdrache
+
+97–00
 1 Uralter roter Drache
 
 
@@ -3440,7 +3534,7 @@ Eine große Höhle, in welcher eine 15 m hohe Götzenstatue des Blutidols steht.
 1W4 Behirs
 
 94 bis 96
-1 Todesrann
+1 Todestyrann
 
 97 bis 99
 1W3 Purpurwürmer
@@ -3449,73 +3543,80 @@ Eine große Höhle, in welcher eine 15 m hohe Götzenstatue des Blutidols steht.
 2W4 Abolethen
 
 
-11 bis 14
+Unterwasserbegegnungen (Stufe 1–4)
+W100 – Begegnung
+
+01–10
+3W6 Quipper
+
+11–14
 2W4 Dampf-Mephiten
 
-15 bis 18
-3W4 Sahaugin
+15–18
+1W4 Sahuagin
 
-19 bis 22
+19–22
 2W6 Meervolk
 
-23 bis 25
-2W4 Leichen von ertrunkenen Seeleuten, in Seetang verfangen
+23–25
+2W4 Leichen von ertrunkenen Seeleuten, in Seetang verfangen.
 
-26 bis 29
+26–29
 2W4 Würgeschlangen
 
-30 bis 33
-1W4 Rifffhaie
+30–33
+1W4 Riffhaie
 
-34 bis 37
+34–37
 1 Schwarm von Quippern
 
-38 bis 40
-Eine Anzahl enormer Muscheln
+38–40
+Eine Anzahl enormer Muscheln.
 
-41 bis 45
+41–45
 1W10 Meervolk mit 1W3 Riesenseepferdchen
 
-46 bis 50
+46–50
 1 Riesenoktopus
 
-51 bis 55
-1 Seeger
+51–55
+1 Seeoger
 
-56 bis 60
+56–60
 1 Plesiosaurus
 
-61 bis 65
-2W10 Stücke verrosteten Messingbestecks, auf dem Grund verstreut
+61–65
+2W10 Stücke verrosteten Messingbestecks, auf dem Grund verstreut.
 
-66 bis 70
+66–70
 1 Riesenwürgeschlange
 
-71 bis 75
+71–75
 1 Seevettel
 
-76 bis 80
-Eine Schule silbriger Fische, die durch das Wasser huschen
+76–80
+Eine Schule silbriger Fische, die durch das Wasser huschen.
 
-81 bis 85
+81–85
 1W4 Jagdhaie
 
-86 bis 90
-1 Sahaugin-Priesterin mit 2W4 Sahaugin
+86–90
+1 Sahuagin-Priesterin mit 2W4 Sahuagin
 
-91 bis 95
+91–96
 1W4 Killerwale
 
-97 bis 98
+97–98
 1 Riesenhai
 
 99
 1 Wasserelementar
 
 00
-1 Sahaugin-Baron
+1 Sahuagin-Baron
 
-Unterwasserbegegnungen (Stufe 5 bis 10)
+
+Unterwasserbegegnungen (Stufe 5-10)
 W100 Begegnung
 
 01 bis 02
@@ -3588,7 +3689,7 @@ Eine schaurige Statue eines hockenden Humanoiden mit Fledermausflügeln auf dem 
 1 Sturmriesen
 
 
-Unterwasserbegegnungen (Stufe 11 bis 20)
+Unterwasserbegegnungen (Stufe 11-20)
 W100 Begegnung
 
 01 bis 10
