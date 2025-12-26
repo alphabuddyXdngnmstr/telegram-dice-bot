@@ -2936,6 +2936,250 @@ Eine übelriechende Pfütze, wo schleimiges Wasser von der Decke tropft.
 1 Geisternaga
 
 
+Underdark-Begegnungen (Stufe 1–4)
+W100 – Begegnung
+
+01
+1 Gedankenschinder-Arkanist
+
+02
+1W3 + 1 Riesengiftschlangen
+
+03
+1W3 Rieseneidechsen
+
+04
+2W4 Riesenfeuerkäfer
+
+05
+1W8 + 1 Flumphs
+
+06
+1 Kreischer
+
+07
+1W12 Riesenratten
+
+08
+2W4 Kobolde
+
+09
+1W8 + 1 Blutmücken
+
+10
+2W4 Menschen (Stammeskrieger), welche den Weg zur Oberfläche suchen, um ihren Unterdrückern im Unterreich zu entkommen.
+
+11–12
+1W10 Troglodyten
+
+13–14
+1W2 Grauschlicke
+
+15–16
+3W6 Blutmücken
+
+17–18
+1W3 Magma-Mephiten
+
+19–20
+1W10 Goblins
+
+21–22
+Orkische Schmierereien an der Wand, welche einige weniger nette Dinge über die Mutter eines gewissen Krusk nahelegen.
+
+23–24
+1 Schwarm von Insekten
+
+25
+1 Tiefengnom
+
+26–28
+1W8 + 1 Drow
+
+29–30
+1W4 Violette Pilze
+
+31–32
+1W12 Kuo-toa
+
+33
+1 Rostmonster
+
+34–35
+Eine mit Geröll übersäte Passage, die anscheinend erst kürzlich freigeräumt wurde.
+
+36–37
+1W8 + 1 Riesenfledermäuse
+
+38–39
+3W6 Kobolde
+
+40–41
+2W4 Grimlocks
+
+42–43
+1W4 + 3 Schwärme von Fledermäusen
+
+44
+1 Zwergen-Goldgräber (Kundschafter) auf der Suche nach Gold.
+
+45
+1 Aaskriecher oder 1 Gallertwürfel
+
+46
+1W8 Düstermäntel oder 2W4 Falldorne
+
+47
+1 Höllenhund
+
+48
+1W3 Schreckgespenster
+
+49
+1W4 Grottenschrate
+
+50
+1W10 + 5 Geflügelte Kobolde
+
+51
+1W4 Feuerschlangen
+
+52
+2W8 + 1 Troglodyten
+
+53
+1W6 Riesenspinnen
+
+54
+3W6 Kuo-toa
+
+55
+1 Goblin-Boss mit 2W4 Goblins
+
+56
+4W4 Grimlocks
+
+57
+1 Ockergallerte
+
+58
+2W10 Riesentausendfüßler
+
+59
+1 Nothic oder 1 Riesenkrote
+
+60
+1W4 Myconid-Erwachsene mit 5W4 Myconid-Sprossen
+
+61
+1 Minotaurus-Skelett oder 1 Minotaurus
+
+62
+3W6 Drow
+
+63
+1 Mimik oder 1 Doppelgänger
+
+64
+1W6 + 3 Hobgoblins
+
+65
+1 Intellektverschlinger oder 1 Beobachter
+
+66
+1W8 + 1 Orks
+
+67–68
+Ein leises Klopfen, das aus dem Inneren einer nahen Wand kommt.
+
+69
+1 Plapperndes Hundertmaul oder 1 Wassergeist
+
+70
+1W12 Gassporen
+
+71
+1 Riesenwürgeschlange
+
+72
+1W10 Schatten
+
+73
+1W3 Grells
+
+74
+1W4 Gruftschrecken
+
+75
+1W8 + 1 Quaggoth-Sporendiener
+
+76
+1W2 Gargylen
+
+77
+1W4 Oger oder 1W3 Ettins
+
+78
+1W4 Zwergen-Forscher (Veteranen)
+
+79–80
+Ein von Bergarbeitern verlassenes Lager, in welchem Blut und die Inhalte von 1W3 Gewölbeforscherausrüstungen verstreut sind.
+
+81
+1 Chuul oder 1 Salamander
+
+82
+1W4 Phasenspinnen oder 1W3 Hakenschrecken
+
+83
+5W4 Duergar
+
+84
+1 Geist oder 1 Flammenschädel oder 1 Todesalb
+
+85
+1 Druide mit 1 Eisbär (Höhlenbär)
+
+86
+1 Hobgoblin-Hauptmann mit 1W4 Halbogern und 2W10 Hobgoblins
+
+87
+1 Erdelementar oder 1 Schwarzer Blob
+
+88
+1 Kuo-toa-Monitor mit 1W8 + 1 Kuo-toa-Geißeln
+
+89
+1 Quaggoth-Thonot mit 1W3 Quaggoths
+
+90
+1 Betrachter-Zombie oder 1 Knochennaga
+
+91
+1 Ork-Auge des Gruumsh mit 1W4 Orogs und 2W8 Orks
+
+92
+1W4 Grule mit 1W10 Ghulen
+
+93–95
+Eine stinkende Pfütze, wo schleimiges Wasser von der Decke tropfte.
+
+96
+1 Otyugh oder 1 Seiler
+
+97
+1 Vampirbrut
+
+98
+1 Chimäre
+
+99
+1 Gedankenschinder
+
+00
+1 Geisternaga
+
+
 Unterreichbegegnungen (Stufe 5 bis 10)
 W100 Begegnung
 
