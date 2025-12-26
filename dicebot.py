@@ -4,7 +4,6 @@ import re
 import math
 from pathlib import Path
 from typing import Optional, Tuple, List, Dict
-
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application,
@@ -16,49 +15,80 @@ from telegram.ext import (
     filters,
 )
 
-# =======================
-# DICE SYSTEM
-# =======================
-# Unterstützt: 1d6, 2d20+3, 2d6+1d4+3, 1w8 + 2w6 - 1
-DICE_TERM_RE = re.compile(r"^(?P<count>\d+)[dw](?P<sides>\d+)$", re.IGNORECASE)
-ROLL_TOKEN_RE = re.compile(r"[+-]?[^+-]+")
+# -----------------------
+# DICE ROLL SYSTEM
+# -----------------------
 
-def parse_roll_expression(expr: str) -> Tuple[List[Tuple[int, int, int]], int, str]:
+# Neue Roll Syntax: Ausdruck aus Würfeltermen und Zahlen, z.B.
+# 1d20+2d6+3
+# 2w6-1d4+5
+_ROLL_ALLOWED = re.compile(r"^[0-9dDwW+\-\s]+$")
+_ROLL_TERM = re.compile(r"([+\-]?)(\d+[dw]\d+|\d+)", re.IGNORECASE)
+_ROLL_DICE = re.compile(r"^(\d+)[dw](\d+)$", re.IGNORECASE)
+
+def parse_roll_expression(expr: str) -> Tuple[str, int, List[str]]:
     raw = (expr or "").strip()
     if not raw:
-        raise ValueError("empty")
+        raise ValueError("Leerer Ausdruck")
 
-    compact = re.sub(r"\s+", "", raw.lower())
-    if not compact:
-        raise ValueError("empty")
+    if not _ROLL_ALLOWED.match(raw):
+        raise ValueError("Ungültige Zeichen im Ausdruck")
 
-    tokens = ROLL_TOKEN_RE.findall(compact)
-    if not tokens or "".join(tokens) != compact:
-        raise ValueError("invalid")
+    compact = re.sub(r"\s+", "", raw)
+    terms = list(_ROLL_TERM.finditer(compact))
+    if not terms:
+        raise ValueError("Kein gültiger Ausdruck gefunden")
 
-    dice_terms: List[Tuple[int, int, int]] = []
-    flat_mod = 0
+    rebuilt = "".join(t.group(0) for t in terms)
+    if rebuilt != compact:
+        raise ValueError("Ungültiges Format. Nutze z.B. 1d20+2d6+3")
 
-    for tok in tokens:
-        sign = -1 if tok.startswith("-") else 1
-        core = tok[1:] if tok[:1] in "+-" else tok
-        if not core:
-            raise ValueError("invalid")
+    total = 0
+    details: List[str] = []
+    total_dice_rolled = 0
 
-        m = DICE_TERM_RE.match(core)
-        if m:
-            cnt = int(m.group("count"))
-            sides = int(m.group("sides"))
-            dice_terms.append((sign, cnt, sides))
+    for t in terms:
+        sign_txt = t.group(1)
+        sign = -1 if sign_txt == "-" else 1
+        token = t.group(2)
+
+        m_dice = _ROLL_DICE.match(token)
+        if m_dice:
+            count = int(m_dice.group(1))
+            sides = int(m_dice.group(2))
+
+            if count < 1 or count > 100:
+                raise ValueError("Maximal 100 Würfel pro Term")
+            if sides < 2 or sides > 100000:
+                raise ValueError("Seitenzahl bitte zwischen 2 und 100000")
+
+            total_dice_rolled += count
+            if total_dice_rolled > 200:
+                raise ValueError("Zu viele Würfel insgesamt. Maximal 200 pro Ausdruck")
+
+            rolls = [random.randint(1, sides) for _ in range(count)]
+            part_sum = sum(rolls) * sign
+            total += part_sum
+
+            sgn = "-" if sign < 0 else "+"
+            dice_name = f"{count}d{sides}"
+            if count == 1:
+                details.append(f"{sgn}{dice_name}: {rolls[0]}")
+            else:
+                details.append(f"{sgn}{dice_name}: {', '.join(map(str, rolls))} (Summe {sum(rolls)})")
             continue
 
-        if core.isdigit():
-            flat_mod += sign * int(core)
-            continue
+        # Zahlenterm
+        val = int(token) * sign
+        total += val
+        sgn = "-" if val < 0 else "+"
+        details.append(f"{sgn}{abs(val)} Mod")
 
-        raise ValueError("invalid")
+    normalized_expr = compact.lower().replace("w", "d")
+    if normalized_expr.startswith("+"):
+        normalized_expr = normalized_expr[1:]
 
-    return dice_terms, flat_mod, compact
+    return normalized_expr, total, details
 
 
 async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -67,74 +97,39 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Beispiele:\n"
             "/roll 1d6\n"
             "/roll 2d20+3\n"
-            "/roll 2d6+1d4+3\n"
-            "/roll 1w8 + 2w6 - 1"
+            "/roll 1d20+2d6+3\n"
+            "/roll 2w6-1"
         )
         return
 
-    expr_raw = " ".join(context.args).strip()
+    expr = " ".join(context.args).strip()
 
     try:
-        dice_terms, flat_mod, display_expr = parse_roll_expression(expr_raw)
-    except ValueError:
+        normalized, total, details = parse_roll_expression(expr)
+    except ValueError as e:
         await update.message.reply_text(
-            "Ungültiges Format.\n"
-            "Nutze z.B. /roll 2d6+1d4+3 oder /roll 1w8 + 2w6 - 1"
+            f"Ungültiges Format.\n{e}\n\n"
+            "Beispiele:\n"
+            "/roll 1d6\n"
+            "/roll 2d20+3\n"
+            "/roll 1d20+2d6+3"
         )
         return
 
-    if not dice_terms:
-        await update.message.reply_text("Bitte würfle mindestens einen Würfel, z.B. /roll 1d6 oder /roll 2d6+3")
-        return
-
-    total_dice = sum(cnt for _sign, cnt, _sides in dice_terms)
-    if total_dice < 1 or total_dice > 100:
-        await update.message.reply_text("Maximal 100 Würfel insgesamt auf einmal.")
-        return
-
-    for _sign, cnt, sides in dice_terms:
-        if cnt < 1:
-            await update.message.reply_text("Würfelanzahl muss mindestens 1 sein.")
-            return
-        if sides < 2 or sides > 100000:
-            await update.message.reply_text("Seitenzahl bitte zwischen 2 und 100000.")
-            return
-
-    lines: List[str] = [f"🎲 {display_expr}"]
-    grand_total = 0
-
-    for idx, (sign, cnt, sides) in enumerate(dice_terms):
-        rolls = [random.randint(1, sides) for _ in range(cnt)]
-        raw_sum = sum(rolls)
-        applied = raw_sum * sign
-        grand_total += applied
-
-        if idx == 0:
-            prefix = "" if sign > 0 else "-"
-        else:
-            prefix = "+" if sign > 0 else "-"
-
-        rolls_text = ", ".join(map(str, rolls))
-        lines.append(f"{prefix}{cnt}d{sides}: {rolls_text} (Summe {applied})")
-
-    if flat_mod:
-        grand_total += flat_mod
-        lines.append(f"Mod: {flat_mod:+d}")
-
-    lines.append(f"Gesamt: {grand_total}")
-
-    await update.message.reply_text("\n".join(lines))
+    msg = (
+        f"🎲 {normalized}\n"
+        f"Details:\n" + "\n".join(details) + "\n\n"
+        f"Summe: {total}"
+    )
+    await update.message.reply_text(msg)
 
 
-# =======================
-# ORACLE CONVERSATION STATES
-# =======================
+# -----------------------
+# ORACLE SYSTEM
+# -----------------------
+
 ORACLE_QUESTION, ORACLE_ODDS, ORACLE_CHAOS = range(3)
 
-# Encounter Conversation States
-ENC_CONFIRM, ENC_PICK_BIOM, ENC_PICK_LEVEL = range(3)
-
-# Deutsche Odds Auswahl
 ODDS_OPTIONS = [
     ("Unmöglich", "impossible"),
     ("Keine Chance", "no_way"),
@@ -149,7 +144,6 @@ ODDS_OPTIONS = [
     ("Muss so sein", "has_to_be"),
 ]
 
-# Basis Wahrscheinlichkeiten in Prozent
 BASE_CHANCE = {
     "impossible": 1,
     "no_way": 5,
@@ -187,9 +181,140 @@ SUBJECT_WORDS = [
     "Blut",
 ]
 
-# =======================
+def clamp(n: int, lo: int, hi: int) -> int:
+    return max(lo, min(hi, n))
+
+def oracle_outcome(odds_key: str, chaos_rank: int) -> dict:
+    base = BASE_CHANCE[odds_key]
+    adjust = (chaos_rank - 5) * 5
+    chance = clamp(base + adjust, 0, 100)
+
+    roll = random.randint(1, 100)
+
+    ex_yes = 0 if chance == 0 else max(1, chance // 5)
+
+    fail_size = 100 - chance
+    ex_no_size = 0 if fail_size == 0 else int(math.ceil(fail_size / 5))
+    ex_no_start = 101 if ex_no_size == 0 else 101 - ex_no_size
+
+    if chance > 0 and roll <= ex_yes:
+        result = "Außergewöhnlich Ja"
+    elif roll <= chance:
+        result = "Ja"
+    elif chance < 100 and roll >= ex_no_start:
+        result = "Außergewöhnlich Nein"
+    else:
+        result = "Nein"
+
+    doubles = (roll % 11 == 0)
+    random_event = bool(doubles and roll <= chaos_rank)
+
+    return {
+        "roll": roll,
+        "chance": chance,
+        "ex_yes": ex_yes,
+        "ex_no_start": ex_no_start,
+        "result": result,
+        "random_event": random_event,
+    }
+
+def build_odds_keyboard():
+    rows = []
+    row = []
+    for label, key in ODDS_OPTIONS:
+        row.append(InlineKeyboardButton(label, callback_data=f"oracle_odds:{key}"))
+        if len(row) == 2:
+            rows.append(row)
+            row = []
+    if row:
+        rows.append(row)
+    return InlineKeyboardMarkup(rows)
+
+def build_chaos_keyboard():
+    rows = []
+    row = []
+    for n in range(1, 10):
+        row.append(InlineKeyboardButton(str(n), callback_data=f"oracle_chaos:{n}"))
+        if len(row) == 3:
+            rows.append(row)
+            row = []
+    if row:
+        rows.append(row)
+    return InlineKeyboardMarkup(rows)
+
+async def rolloracle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data.pop("oracle_question", None)
+    context.user_data.pop("oracle_odds", None)
+    context.user_data.pop("oracle_chaos", None)
+
+    if context.args:
+        context.user_data["oracle_question"] = " ".join(context.args).strip()
+        await update.message.reply_text("🔮 Wie sind die Chancen?", reply_markup=build_odds_keyboard())
+        return ORACLE_ODDS
+
+    await update.message.reply_text("🔮 Was ist deine Ja Nein Frage? Schreib sie als Antwort 🙂")
+    return ORACLE_QUESTION
+
+async def rolloracle_question(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = (update.message.text or "").strip()
+    context.user_data["oracle_question"] = text if text else "Ohne konkrete Frage"
+    await update.message.reply_text("Wie sind die Chancen?", reply_markup=build_odds_keyboard())
+    return ORACLE_ODDS
+
+async def rolloracle_pick_odds(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    data = query.data.split(":", 1)[1]
+    context.user_data["oracle_odds"] = data
+
+    await query.edit_message_text("Chaos Rang auswählen, 1 bis 9", reply_markup=build_chaos_keyboard())
+    return ORACLE_CHAOS
+
+async def rolloracle_pick_chaos(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    chaos = int(query.data.split(":", 1)[1])
+    context.user_data["oracle_chaos"] = chaos
+
+    odds_key = context.user_data.get("oracle_odds", "fifty_fifty")
+    question = context.user_data.get("oracle_question", "Ohne konkrete Frage")
+
+    result = oracle_outcome(odds_key, chaos)
+    odds_label = next((lbl for lbl, key in ODDS_OPTIONS if key == odds_key), odds_key)
+
+    msg = (
+        f"🔮 Orakelwurf\n"
+        f"Frage: {question}\n"
+        f"Chancen: {odds_label}\n"
+        f"Chaos Rang: {chaos}\n\n"
+        f"d100: {result['roll']}\n"
+        f"Ergebnis: {result['result']}"
+    )
+
+    if result["random_event"]:
+        focus = random.choice(EVENT_FOCUS)
+        w1 = random.choice(ACTION_WORDS)
+        w2 = random.choice(SUBJECT_WORDS)
+        msg += (
+            f"\n\n✨ Zufallsereignis ausgelöst\n"
+            f"Fokus: {focus}\n"
+            f"Bedeutung: {w1}, {w2}"
+        )
+
+    await query.edit_message_text(msg)
+    return ConversationHandler.END
+
+async def rolloracle_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Orakel abgebrochen 🙂")
+    return ConversationHandler.END
+
+
+# -----------------------
 # BIOM SYSTEM
-# =======================
+# -----------------------
+
 SURFACE_BIOMES = ["Arktis", "Küste", "Wüste", "Wald", "Grasland", "Hügel", "Berg", "Sumpf"]
 SPECIAL_BIOMES = ["Unterreich", "Wasser", "Stadt/Dorf"]
 ALL_BIOMES = SURFACE_BIOMES + SPECIAL_BIOMES
@@ -253,10 +378,7 @@ def roll_biom(current_biom: str) -> Tuple[str, str, Optional[str]]:
 
 async def setbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
-        await update.message.reply_text(
-            "🌍 Wähle dein aktuelles Biom aus",
-            reply_markup=build_biom_keyboard()
-        )
+        await update.message.reply_text("🌍 Wähle dein aktuelles Biom aus", reply_markup=build_biom_keyboard())
         return
 
     biom_raw = " ".join(context.args).strip()
@@ -267,9 +389,7 @@ async def setbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     if biom == "Stadt/Dorf":
-        await update.message.reply_text(
-            "Stadt/Dorf liegt immer auf einem Biom. Setze bitte das Biom darunter, z.B. /setbiom Wald 🙂"
-        )
+        await update.message.reply_text("Stadt/Dorf liegt immer auf einem Biom. Setze bitte das Biom darunter, z.B. /setbiom Wald 🙂")
         return
 
     context.user_data["current_biom"] = biom
@@ -304,9 +424,7 @@ async def rollbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("Unbekanntes Biom. Erlaubt: " + ", ".join(ALL_BIOMES))
             return
         if biom_norm == "Stadt/Dorf":
-            await update.message.reply_text(
-                "Stadt/Dorf liegt immer auf einem Biom. Nutze bitte z.B. /rollbiom Wald 🙂"
-            )
+            await update.message.reply_text("Stadt/Dorf liegt immer auf einem Biom. Nutze bitte z.B. /rollbiom Wald 🙂")
             return
         context.user_data["current_biom"] = biom_norm
 
@@ -315,7 +433,7 @@ async def rollbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Setze erst dein aktuelles Biom mit /setbiom, dann /rollbiom")
         return
 
-    _rolled_base, display, new_current = roll_biom(current)
+    rolled_base, display, new_current = roll_biom(current)
 
     msg = (
         f"🧭 Biom Wurf\n"
@@ -332,9 +450,12 @@ async def rollbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg)
 
 
-# =======================
-# ENCOUNTER SYSTEM
-# =======================
+# -----------------------
+# ENCOUNTER SYSTEM (liest encounters_de.txt)
+# -----------------------
+
+ENC_CONFIRM, ENC_PICK_BIOM, ENC_PICK_LEVEL = range(3)
+
 ENCOUNTERS: Dict[str, Dict[str, List[Tuple[int, int, str]]]] = {}
 
 def _to_int_w100(token: str) -> int:
@@ -389,31 +510,31 @@ def _biom_for_encounter_from_current(current: str) -> str:
         return "Unterwasser"
     return current
 
-def _encounter_file_path() -> Path:
-    return Path(__file__).with_name("encounters_de.txt")
-
 def _load_encounter_raw_text() -> str:
-    path = _encounter_file_path()
+    path = Path(__file__).with_name("encounters_de.txt")
     if not path.exists():
         return ""
+    return path.read_text(encoding="utf-8", errors="replace")
 
-    try:
-        return path.read_text(encoding="utf-8")
-    except UnicodeDecodeError:
-        return path.read_text(encoding="cp1252", errors="replace")
+def _clean_enc_line(ln: str) -> str:
+    if ln is None:
+        return ""
+    s = ln.replace("\ufeff", "")
+    s = s.replace("\u00a0", " ")
+    # normalize Dash Varianten zu "-"
+    for ch in ["\u2013", "\u2014", "\u2212", "\u2011"]:
+        s = s.replace(ch, "-")
+    return s.strip()
 
 def _load_encounters_from_text(text: str) -> Dict[str, Dict[str, List[Tuple[int, int, str]]]]:
-    lines = [ln.strip() for ln in text.splitlines()]
-
-    sep = r"(?:-|–|—|bis)"
+    lines = [_clean_enc_line(ln) for ln in text.splitlines()]
 
     heading_re = re.compile(
-        rf"^(?P<biome>.+?)\s*\(\s*Stufe\s*(?P<a>\d+)\s*{sep}\s*(?P<b>\d+)\s*\)",
+        r"^(?P<biome>.+?)\s*\(\s*Stufe\s*(?P<a>\d+)\s*(?:-|bis)\s*(?P<b>\d+)\s*\)",
         re.IGNORECASE,
     )
-
     range_re = re.compile(
-        rf"^(?P<s>\d{{1,3}})(?:\s*{sep}\s*(?P<e>\d{{1,3}}))?\s*(?P<rest>.*)$",
+        r"^(?P<s>\d{2})(?:\s*(?:-|bis)\s*(?P<e>\d{2}))?\s*(?P<rest>.*)$",
         re.IGNORECASE,
     )
 
@@ -479,12 +600,10 @@ def init_encounters():
     ENCOUNTERS = _load_encounters_from_text(raw) if raw.strip() else {}
 
 def build_encounter_confirm_keyboard(current_biom: str) -> InlineKeyboardMarkup:
-    rows = [
-        [
-            InlineKeyboardButton(f"✅ {current_biom}", callback_data="enc_confirm:yes"),
-            InlineKeyboardButton("🌍 Anderes Biom", callback_data="enc_confirm:no"),
-        ]
-    ]
+    rows = [[
+        InlineKeyboardButton(f"✅ {current_biom}", callback_data="enc_confirm:yes"),
+        InlineKeyboardButton("🌍 Anderes Biom", callback_data="enc_confirm:no"),
+    ]]
     return InlineKeyboardMarkup(rows)
 
 def build_encounter_biom_keyboard() -> InlineKeyboardMarkup:
@@ -506,36 +625,31 @@ def build_encounter_biom_keyboard() -> InlineKeyboardMarkup:
 
 def build_encounter_level_keyboard() -> InlineKeyboardMarkup:
     rows = [
-        [
-            InlineKeyboardButton("1-4", callback_data="enc_lvl:1-4"),
-            InlineKeyboardButton("5-10", callback_data="enc_lvl:5-10"),
-        ],
-        [
-            InlineKeyboardButton("11-16", callback_data="enc_lvl:11-16"),
-            InlineKeyboardButton("17-20", callback_data="enc_lvl:17-20"),
-        ],
+        [InlineKeyboardButton("1-4", callback_data="enc_lvl:1-4"), InlineKeyboardButton("5-10", callback_data="enc_lvl:5-10")],
+        [InlineKeyboardButton("11-16", callback_data="enc_lvl:11-16"), InlineKeyboardButton("17-20", callback_data="enc_lvl:17-20")],
     ]
     return InlineKeyboardMarkup(rows)
 
 def pick_encounter(biom: str, level: str) -> Tuple[int, str]:
     biom = _canonical_enc_biom(biom)
     tables_for_biom = ENCOUNTERS.get(biom, {})
-
     table = tables_for_biom.get(level)
 
     if table is None and level in ("11-16", "17-20"):
         table = tables_for_biom.get("11-20")
 
     if not table:
-        available = ", ".join(sorted(tables_for_biom.keys())) if tables_for_biom else "keine"
+        available = ", ".join(sorted(tables_for_biom.keys()))
+        if not available:
+            available = "keine"
         raise KeyError(f"Keine Tabelle für {biom} {level}. Verfügbar: {available}")
 
-    roll_val = random.randint(1, 100)
+    roll = random.randint(1, 100)
     for s, e, txt in table:
-        if s <= roll_val <= e:
-            return roll_val, txt
+        if s <= roll <= e:
+            return roll, txt
 
-    return roll_val, "Nichts gefunden. Deine Tabelle hat an der Stelle vermutlich eine Lücke."
+    return roll, "Nichts gefunden. Deine Tabelle hat an der Stelle vermutlich eine Lücke."
 
 _W_DICE_EXPR = re.compile(r"(\d+)\s*[Ww]\s*(\d+)(\s*[+-]\s*\d+)?")
 
@@ -574,17 +688,13 @@ async def rollencounter_start(update: Update, context: ContextTypes.DEFAULT_TYPE
         biom_norm = _biom_for_encounter_from_current(biom_norm)
         context.user_data["enc_biome"] = biom_norm
 
-        await update.message.reply_text(
-            f"⚔️ Biom: {biom_norm}\nWelche Stufe?",
-            reply_markup=build_encounter_level_keyboard()
-        )
+        await update.message.reply_text(f"⚔️ Biom: {biom_norm}\nWelche Stufe?", reply_markup=build_encounter_level_keyboard())
         return ENC_PICK_LEVEL
 
     current = context.user_data.get("current_biom")
     if not current:
         await update.message.reply_text(
-            "Ich kenne dein aktuelles Biom noch nicht.\n"
-            "Setze es bitte erst mit /setbiom 🙂",
+            "Ich kenne dein aktuelles Biom noch nicht.\nSetze es bitte erst mit /setbiom 🙂",
             reply_markup=build_biom_keyboard()
         )
         return ConversationHandler.END
@@ -604,30 +714,21 @@ async def rollencounter_confirm(update: Update, context: ContextTypes.DEFAULT_TY
 
     choice = query.data.split(":", 1)[1]
     if choice == "yes":
-        biom_choice = context.user_data.get("enc_biome", "Unbekannt")
-        await query.edit_message_text(
-            f"⚔️ Biom: {biom_choice}\nWelche Stufe?",
-            reply_markup=build_encounter_level_keyboard()
-        )
+        biom = context.user_data.get("enc_biome", "Unbekannt")
+        await query.edit_message_text(f"⚔️ Biom: {biom}\nWelche Stufe?", reply_markup=build_encounter_level_keyboard())
         return ENC_PICK_LEVEL
 
-    await query.edit_message_text(
-        "⚔️ Welches Biom?",
-        reply_markup=build_encounter_biom_keyboard()
-    )
+    await query.edit_message_text("⚔️ Welches Biom?", reply_markup=build_encounter_biom_keyboard())
     return ENC_PICK_BIOM
 
 async def rollencounter_pick_biom(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
-    biom_choice = query.data.split(":", 1)[1]
-    context.user_data["enc_biome"] = biom_choice
+    biom = query.data.split(":", 1)[1]
+    context.user_data["enc_biome"] = biom
 
-    await query.edit_message_text(
-        f"⚔️ Biom: {biom_choice}\nWelche Stufe?",
-        reply_markup=build_encounter_level_keyboard()
-    )
+    await query.edit_message_text(f"⚔️ Biom: {biom}\nWelche Stufe?", reply_markup=build_encounter_level_keyboard())
     return ENC_PICK_LEVEL
 
 async def rollencounter_pick_level(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -635,15 +736,15 @@ async def rollencounter_pick_level(update: Update, context: ContextTypes.DEFAULT
     await query.answer()
 
     level = query.data.split(":", 1)[1]
-    biom_choice = (context.user_data.get("enc_biome") or "").strip()
+    biom = (context.user_data.get("enc_biome") or "").strip()
 
     try:
-        w100, encounter_raw = pick_encounter(biom_choice, level)
+        w100, encounter_raw = pick_encounter(biom, level)
         encounter_rolled, dice_details = roll_inline_w_dice(encounter_raw)
 
         msg = (
             f"⚔️ Encounter\n"
-            f"Biom: {_canonical_enc_biom(biom_choice)}\n"
+            f"Biom: {_canonical_enc_biom(biom)}\n"
             f"Stufe: {level}\n"
             f"W100: {w100:02d}\n\n"
             f"Begegnung (Tabelle):\n{encounter_raw}\n\n"
@@ -653,16 +754,14 @@ async def rollencounter_pick_level(update: Update, context: ContextTypes.DEFAULT
         if dice_details:
             msg += "\n\nWürfe:\n" + "\n".join(dice_details)
 
-        await query.edit_message_text(msg)
-
     except KeyError as e:
-        path = _encounter_file_path().resolve()
-        await query.edit_message_text(
-            f"{str(e)}\n\n"
-            f"Datei: {path}\n"
-            f"Check Level Auswahl oder ob auf dem Server wirklich diese Datei liegt."
+        msg = (
+            f"{e}\n\n"
+            f"Check Level Auswahl und die Überschrift in encounters_de.txt.\n"
+            f"Wenn du auf Render bist, check ob auf dem Server wirklich die aktuelle Datei liegt."
         )
 
+    await query.edit_message_text(msg)
     return ConversationHandler.END
 
 async def rollencounter_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -670,165 +769,25 @@ async def rollencounter_cancel(update: Update, context: ContextTypes.DEFAULT_TYP
     return ConversationHandler.END
 
 async def encdebug(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    path = _encounter_file_path().resolve()
-    biomes = sorted(ENCOUNTERS.keys())
-    msg = [
-        "🧪 Encounter Debug",
-        f"Datei: {path}",
-        f"Biome geladen: {', '.join(biomes) if biomes else 'keine'}",
-    ]
-    for b in ["Unterwasser", "Wüste", "Hügel", "Grasland", "Berg"]:
-        levels = ENCOUNTERS.get(b, {})
-        keys = ", ".join(sorted(levels.keys())) if levels else "keine"
-        msg.append(f"{b}: {keys}")
-    await update.message.reply_text("\n".join(msg))
+    if not ENCOUNTERS:
+        await update.message.reply_text("Keine Encounter geladen.")
+        return
 
+    lines = []
+    for biom in sorted(ENCOUNTERS.keys()):
+        lvls = ", ".join(sorted(ENCOUNTERS[biom].keys()))
+        lines.append(f"{biom}: {lvls}")
 
-# =======================
-# ORACLE
-# =======================
-def clamp(n: int, lo: int, hi: int) -> int:
-    return max(lo, min(hi, n))
-
-def oracle_outcome(odds_key: str, chaos_rank: int) -> dict:
-    base = BASE_CHANCE[odds_key]
-    adjust = (chaos_rank - 5) * 5
-    chance = clamp(base + adjust, 0, 100)
-
-    roll_val = random.randint(1, 100)
-
-    ex_yes = 0 if chance == 0 else max(1, chance // 5)
-
-    fail_size = 100 - chance
-    ex_no_size = 0 if fail_size == 0 else int(math.ceil(fail_size / 5))
-    ex_no_start = 101 if ex_no_size == 0 else 101 - ex_no_size
-
-    if chance > 0 and roll_val <= ex_yes:
-        result = "Außergewöhnlich Ja"
-    elif roll_val <= chance:
-        result = "Ja"
-    elif chance < 100 and roll_val >= ex_no_start:
-        result = "Außergewöhnlich Nein"
-    else:
-        result = "Nein"
-
-    doubles = (roll_val % 11 == 0)
-    random_event = bool(doubles and roll_val <= chaos_rank)
-
-    return {
-        "roll": roll_val,
-        "chance": chance,
-        "ex_yes": ex_yes,
-        "ex_no_start": ex_no_start,
-        "result": result,
-        "random_event": random_event,
-    }
-
-def build_odds_keyboard():
-    rows = []
-    row = []
-    for label, key in ODDS_OPTIONS:
-        row.append(InlineKeyboardButton(label, callback_data=f"oracle_odds:{key}"))
-        if len(row) == 2:
-            rows.append(row)
-            row = []
-    if row:
-        rows.append(row)
-    return InlineKeyboardMarkup(rows)
-
-def build_chaos_keyboard():
-    rows = []
-    row = []
-    for n in range(1, 10):
-        row.append(InlineKeyboardButton(str(n), callback_data=f"oracle_chaos:{n}"))
-        if len(row) == 3:
-            rows.append(row)
-            row = []
-    if row:
-        rows.append(row)
-    return InlineKeyboardMarkup(rows)
-
-async def rolloracle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    context.user_data.pop("oracle_question", None)
-    context.user_data.pop("oracle_odds", None)
-    context.user_data.pop("oracle_chaos", None)
-
-    if context.args:
-        context.user_data["oracle_question"] = " ".join(context.args).strip()
-        await update.message.reply_text(
-            "🔮 Wie sind die Chancen?",
-            reply_markup=build_odds_keyboard()
-        )
-        return ORACLE_ODDS
-
-    await update.message.reply_text("🔮 Was ist deine Ja Nein Frage? Schreib sie als Antwort 🙂")
-    return ORACLE_QUESTION
-
-async def rolloracle_question(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    text = (update.message.text or "").strip()
-    context.user_data["oracle_question"] = text if text else "Ohne konkrete Frage"
     await update.message.reply_text(
-        "Wie sind die Chancen?",
-        reply_markup=build_odds_keyboard()
-    )
-    return ORACLE_ODDS
-
-async def rolloracle_pick_odds(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-
-    data = query.data.split(":", 1)[1]
-    context.user_data["oracle_odds"] = data
-
-    await query.edit_message_text(
-        "Chaos Rang auswählen, 1 bis 9",
-        reply_markup=build_chaos_keyboard()
-    )
-    return ORACLE_CHAOS
-
-async def rolloracle_pick_chaos(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    await query.answer()
-
-    chaos = int(query.data.split(":", 1)[1])
-    context.user_data["oracle_chaos"] = chaos
-
-    odds_key = context.user_data.get("oracle_odds", "fifty_fifty")
-    question = context.user_data.get("oracle_question", "Ohne konkrete Frage")
-
-    result = oracle_outcome(odds_key, chaos)
-    odds_label = next((lbl for lbl, key in ODDS_OPTIONS if key == odds_key), odds_key)
-
-    msg = (
-        f"🔮 Orakelwurf\n"
-        f"Frage: {question}\n"
-        f"Chancen: {odds_label}\n"
-        f"Chaos Rang: {chaos}\n\n"
-        f"d100: {result['roll']}\n"
-        f"Ergebnis: {result['result']}"
+        "📚 Encounter Debug\n"
+        "Geladene Tabellen:\n" + "\n".join(lines)
     )
 
-    if result["random_event"]:
-        focus = random.choice(EVENT_FOCUS)
-        w1 = random.choice(ACTION_WORDS)
-        w2 = random.choice(SUBJECT_WORDS)
-        msg += (
-            f"\n\n✨ Zufallsereignis ausgelöst\n"
-            f"Fokus: {focus}\n"
-            f"Bedeutung: {w1}, {w2}"
-        )
 
-    await query.edit_message_text(msg)
-    return ConversationHandler.END
-
-async def rolloracle_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Orakel abgebrochen 🙂")
-    return ConversationHandler.END
-
-
-# =======================
+# -----------------------
 # ROLLCHANCE SYSTEM
-# =======================
+# -----------------------
+
 ATTR_TABLE = {
     1: ("STÄ", "💪"),
     2: ("GES", "🏃‍♂️"),
@@ -914,9 +873,10 @@ async def rollchance(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg)
 
 
-# =======================
+# -----------------------
 # ROLLHUNT SYSTEM
-# =======================
+# -----------------------
+
 HUNT_MOD_CHOICES = list(range(-4, 7))
 
 def build_hunt_mod_keyboard() -> InlineKeyboardMarkup:
@@ -1027,21 +987,16 @@ async def rollhunt_cancel_cb(update: Update, context: ContextTypes.DEFAULT_TYPE)
     await query.edit_message_text("Rollhunt abgebrochen 🙂")
 
 
-# =======================
+# -----------------------
 # WALDKARTE SYSTEM
-# =======================
+# -----------------------
+
 WALDKARTE_LEVELS = ["1-4", "5-10", "11-16", "17-20"]
 
 def build_waldkarte_level_keyboard() -> InlineKeyboardMarkup:
     rows = [
-        [
-            InlineKeyboardButton("1-4", callback_data="waldkarte_level:1-4"),
-            InlineKeyboardButton("5-10", callback_data="waldkarte_level:5-10"),
-        ],
-        [
-            InlineKeyboardButton("11-16", callback_data="waldkarte_level:11-16"),
-            InlineKeyboardButton("17-20", callback_data="waldkarte_level:17-20"),
-        ],
+        [InlineKeyboardButton("1-4", callback_data="waldkarte_level:1-4"), InlineKeyboardButton("5-10", callback_data="waldkarte_level:5-10")],
+        [InlineKeyboardButton("11-16", callback_data="waldkarte_level:11-16"), InlineKeyboardButton("17-20", callback_data="waldkarte_level:17-20")],
     ]
     return InlineKeyboardMarkup(rows)
 
@@ -1049,43 +1004,23 @@ async def rollwaldkarte(update: Update, context: ContextTypes.DEFAULT_TYPE):
     roll18 = random.randint(1, 18)
 
     if 1 <= roll18 <= 7:
-        await update.message.reply_text(
-            f"🌲 Waldkarte\n"
-            f"W18: {roll18}\n"
-            f"Ergebnis: Skillchance"
-        )
+        await update.message.reply_text(f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: Skillchance")
         await rollchance(update, context)
         return
 
     if 8 <= roll18 <= 11:
-        await update.message.reply_text(
-            f"🌲 Waldkarte\n"
-            f"W18: {roll18}\n"
-            f"Ergebnis: Ruhe\n"
-            f"Du kannst jagen, chillen oder trainieren 🙂"
-        )
+        await update.message.reply_text(f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: Ruhe\nDu kannst jagen, chillen oder trainieren 🙂")
         return
 
     if roll18 == 12:
         d4 = random.randint(1, 4)
         mapping = {1: "Ruine", 2: "Händler", 3: "Dorf", 4: "Gasthaus"}
-        await update.message.reply_text(
-            f"🌲 Waldkarte\n"
-            f"W18: {roll18}\n"
-            f"Ergebnis: Ortschaft außerhalb der Karte\n"
-            f"W4: {d4} -> {mapping[d4]}"
-        )
+        await update.message.reply_text(f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: Ortschaft außerhalb der Karte\nW4: {d4} -> {mapping[d4]}")
         return
 
     if roll18 in (13, 14):
         context.user_data["waldkarte_pending"] = {"type": "encounter", "card_roll": roll18}
-        await update.message.reply_text(
-            f"🌲 Waldkarte\n"
-            f"W18: {roll18}\n"
-            f"Ergebnis: Encounter\n\n"
-            f"Wähle die Stufe:",
-            reply_markup=build_waldkarte_level_keyboard()
-        )
+        await update.message.reply_text(f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: Encounter\n\nWähle die Stufe:", reply_markup=build_waldkarte_level_keyboard())
         return
 
     if roll18 in (15, 16):
@@ -1095,80 +1030,37 @@ async def rollwaldkarte(update: Update, context: ContextTypes.DEFAULT_TYPE):
             a = random.randint(1, 10)
             b = random.randint(1, 10)
             gold = (a + b) * 10
-            await update.message.reply_text(
-                f"🌲 Waldkarte\n"
-                f"W18: {roll18}\n"
-                f"Ergebnis: Entdeckung\n"
-                f"W6: {d6} -> Truhe\n"
-                f"2W10: {a} + {b} = {a + b}\n"
-                f"Belohnung: {gold} GM"
-            )
+            await update.message.reply_text(f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: Entdeckung\nW6: {d6} -> Truhe\n2W10: {a} + {b} = {a + b}\nBelohnung: {gold} GM")
             return
 
         if d6 == 2:
-            await update.message.reply_text(
-                f"🌲 Waldkarte\n"
-                f"W18: {roll18}\n"
-                f"Ergebnis: Entdeckung\n"
-                f"W6: {d6} -> 50% Rabatt Händler"
-            )
+            await update.message.reply_text(f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: Entdeckung\nW6: {d6} -> 50% Rabatt Händler")
             return
 
         if d6 == 3:
-            await update.message.reply_text(
-                f"🌲 Waldkarte\n"
-                f"W18: {roll18}\n"
-                f"Ergebnis: Entdeckung\n"
-                f"W6: {d6} -> Zauberschriften Händler"
-            )
+            await update.message.reply_text(f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: Entdeckung\nW6: {d6} -> Zauberschriften Händler")
             return
 
         if d6 == 4:
             context.user_data["next_reward_bonus_d10x10"] = True
-            await update.message.reply_text(
-                f"🌲 Waldkarte\n"
-                f"W18: {roll18}\n"
-                f"Ergebnis: Entdeckung\n"
-                f"W6: {d6} -> Merker\n"
-                f"Bei deiner nächsten Belohnung bekommst du zusätzlich 1W10x10 GM 🙂"
-            )
+            await update.message.reply_text(f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: Entdeckung\nW6: {d6} -> Merker\nBei deiner nächsten Belohnung bekommst du zusätzlich 1W10x10 GM 🙂")
             return
 
         if d6 == 5:
-            await update.message.reply_text(
-                f"🌲 Waldkarte\n"
-                f"W18: {roll18}\n"
-                f"Ergebnis: Entdeckung\n"
-                f"W6: {d6} -> 1x Inspiration"
-            )
+            await update.message.reply_text(f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: Entdeckung\nW6: {d6} -> 1x Inspiration")
             return
 
         context.user_data["omen_bonus_d6"] = True
-        await update.message.reply_text(
-            f"🌲 Waldkarte\n"
-            f"W18: {roll18}\n"
-            f"Ergebnis: Entdeckung\n"
-            f"W6: {d6} -> Omen\n"
-            f"Merker: Du kannst 1W6 zu jedem Wurf dazunehmen 🙂"
-        )
+        await update.message.reply_text(f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: Entdeckung\nW6: {d6} -> Omen\nMerker: Du kannst 1W6 zu jedem Wurf dazunehmen 🙂")
         return
 
     if roll18 == 17:
         context.user_data["waldkarte_pending"] = {"type": "hort", "card_roll": roll18}
-        await update.message.reply_text(
-            f"🌲 Waldkarte\n"
-            f"W18: {roll18}\n"
-            f"Ergebnis: Kreaturenhort\n\n"
-            f"Wähle die Stufe:",
-            reply_markup=build_waldkarte_level_keyboard()
-        )
+        await update.message.reply_text(f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: Kreaturenhort\n\nWähle die Stufe:", reply_markup=build_waldkarte_level_keyboard())
         return
 
     await update.message.reply_text(
-        f"🌲 Waldkarte\n"
-        f"W18: {roll18}\n"
-        f"Ergebnis: NPC\n"
-        f"Ein NPC gibt dir eine Wegbeschreibung zum Portal oder die Info, die du suchst (Joker)."
+        f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: NPC\nEin NPC gibt dir eine Wegbeschreibung zum Portal oder die Info, die du suchst (Joker)."
     )
 
 async def rollwaldkarte_pick_level(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1189,10 +1081,7 @@ async def rollwaldkarte_pick_level(update: Update, context: ContextTypes.DEFAULT
 
     if not ENCOUNTERS:
         context.user_data.pop("waldkarte_pending", None)
-        await query.edit_message_text(
-            "Ich habe keine Encounter Tabellen geladen.\n"
-            "Lege eine encounters_de.txt neben dein Script und starte den Bot neu 🙂"
-        )
+        await query.edit_message_text("Ich habe keine Encounter Tabellen geladen.\nLege eine encounters_de.txt neben dein Script und starte den Bot neu 🙂")
         return
 
     card_roll = pending.get("card_roll", "?")
@@ -1224,20 +1113,19 @@ async def rollwaldkarte_pick_level(update: Update, context: ContextTypes.DEFAULT
             msg += "\n\nWürfe:\n" + "\n".join(dice_details)
 
         await query.edit_message_text(msg)
-
     except KeyError as e:
-        path = _encounter_file_path().resolve()
-        await query.edit_message_text(f"{str(e)}\nDatei: {path}")
+        await query.edit_message_text(str(e))
 
 
-# =======================
+# -----------------------
 # HELP
-# =======================
+# -----------------------
+
 async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = (
         "🧰 Befehle\n\n"
         "/help  diese Hilfe\n"
-        "/roll <Expr>  Würfeln, z.B. /roll 1d6, /roll 2d20+3, /roll 2d6+1d4+3 (auch 1w6)\n"
+        "/roll <Ausdruck>  Würfeln, z.B. /roll 1d6 oder /roll 2d20+3 oder /roll 1d20+2d6+3 (auch 1w6)\n"
         "/rollchance  Skillwurf plus SG und Belohnung\n"
         "/rollhunt  Jagdwurf mit Mod Auswahl\n"
         "/rollwaldkarte  zieht eine Waldkarte (Skillchance, Ruhe, Entdeckung, Encounter, Hort, NPC)\n\n"
@@ -1247,7 +1135,7 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/rollbiom [Biom]  würfelt das nächste Biom (optional vorher setzen)\n\n"
         "⚔️ Encounters\n"
         "/rollencounter [Biom]  würfelt einen Encounter (nutzt sonst dein aktuelles Biom)\n"
-        "/encdebug  zeigt geladene Encounter Tabellen und Dateipfad\n\n"
+        "/encdebug  zeigt welche Encounter Tabellen wirklich geladen wurden\n\n"
         "🔮 Orakel\n"
         "/rolloracle [Frage]  Ja Nein Orakel\n"
         "/cancel  bricht Orakel oder Encounter Auswahl ab"
@@ -1255,9 +1143,6 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg)
 
 
-# =======================
-# MAIN
-# =======================
 def main():
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     base_url = os.environ.get("BASE_URL")
@@ -1267,7 +1152,6 @@ def main():
         raise RuntimeError("TELEGRAM_BOT_TOKEN oder BASE_URL fehlt")
 
     base_url = base_url.rstrip("/")
-
     app = Application.builder().token(token).build()
 
     init_encounters()
