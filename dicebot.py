@@ -16,10 +16,10 @@ from telegram.ext import (
     filters,
 )
 
-# =====
-# DICE PARSER
-# =====
-# Unterstützt: 1d6, 2d20+3, 2d6+1d4+3, 1w8+2w6-1 (auch mit Leerzeichen)
+# =======================
+# DICE SYSTEM
+# =======================
+# Unterstützt: 1d6, 2d20+3, 2d6+1d4+3, 1w8 + 2w6 - 1
 DICE_TERM_RE = re.compile(r"^(?P<count>\d+)[dw](?P<sides>\d+)$", re.IGNORECASE)
 ROLL_TOKEN_RE = re.compile(r"[+-]?[^+-]+")
 
@@ -28,13 +28,12 @@ def parse_roll_expression(expr: str) -> Tuple[List[Tuple[int, int, int]], int, s
     if not raw:
         raise ValueError("empty")
 
-    display_expr = re.sub(r"\s+", "", raw.lower())
-    if not display_expr:
+    compact = re.sub(r"\s+", "", raw.lower())
+    if not compact:
         raise ValueError("empty")
 
-    tokens = ROLL_TOKEN_RE.findall(display_expr)
-
-    if not tokens or "".join(tokens) != display_expr:
+    tokens = ROLL_TOKEN_RE.findall(compact)
+    if not tokens or "".join(tokens) != compact:
         raise ValueError("invalid")
 
     dice_terms: List[Tuple[int, int, int]] = []
@@ -59,21 +58,83 @@ def parse_roll_expression(expr: str) -> Tuple[List[Tuple[int, int, int]], int, s
 
         raise ValueError("invalid")
 
-    return dice_terms, flat_mod, display_expr
+    return dice_terms, flat_mod, compact
 
-# =====
+
+async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not context.args:
+        await update.message.reply_text(
+            "Beispiele:\n"
+            "/roll 1d6\n"
+            "/roll 2d20+3\n"
+            "/roll 2d6+1d4+3\n"
+            "/roll 1w8 + 2w6 - 1"
+        )
+        return
+
+    expr_raw = " ".join(context.args).strip()
+
+    try:
+        dice_terms, flat_mod, display_expr = parse_roll_expression(expr_raw)
+    except ValueError:
+        await update.message.reply_text(
+            "Ungültiges Format.\n"
+            "Nutze z.B. /roll 2d6+1d4+3 oder /roll 1w8 + 2w6 - 1"
+        )
+        return
+
+    if not dice_terms:
+        await update.message.reply_text("Bitte würfle mindestens einen Würfel, z.B. /roll 1d6 oder /roll 2d6+3")
+        return
+
+    total_dice = sum(cnt for _sign, cnt, _sides in dice_terms)
+    if total_dice < 1 or total_dice > 100:
+        await update.message.reply_text("Maximal 100 Würfel insgesamt auf einmal.")
+        return
+
+    for _sign, cnt, sides in dice_terms:
+        if cnt < 1:
+            await update.message.reply_text("Würfelanzahl muss mindestens 1 sein.")
+            return
+        if sides < 2 or sides > 100000:
+            await update.message.reply_text("Seitenzahl bitte zwischen 2 und 100000.")
+            return
+
+    lines: List[str] = [f"🎲 {display_expr}"]
+    grand_total = 0
+
+    for idx, (sign, cnt, sides) in enumerate(dice_terms):
+        rolls = [random.randint(1, sides) for _ in range(cnt)]
+        raw_sum = sum(rolls)
+        applied = raw_sum * sign
+        grand_total += applied
+
+        if idx == 0:
+            prefix = "" if sign > 0 else "-"
+        else:
+            prefix = "+" if sign > 0 else "-"
+
+        rolls_text = ", ".join(map(str, rolls))
+        lines.append(f"{prefix}{cnt}d{sides}: {rolls_text} (Summe {applied})")
+
+    if flat_mod:
+        grand_total += flat_mod
+        lines.append(f"Mod: {flat_mod:+d}")
+
+    lines.append(f"Gesamt: {grand_total}")
+
+    await update.message.reply_text("\n".join(lines))
+
+
+# =======================
 # ORACLE CONVERSATION STATES
-# =====
+# =======================
 ORACLE_QUESTION, ORACLE_ODDS, ORACLE_CHAOS = range(3)
 
-# =====
-# ENCOUNTER CONVERSATION STATES
-# =====
+# Encounter Conversation States
 ENC_CONFIRM, ENC_PICK_BIOM, ENC_PICK_LEVEL = range(3)
 
-# =====
-# ORACLE SETTINGS
-# =====
+# Deutsche Odds Auswahl
 ODDS_OPTIONS = [
     ("Unmöglich", "impossible"),
     ("Keine Chance", "no_way"),
@@ -88,6 +149,7 @@ ODDS_OPTIONS = [
     ("Muss so sein", "has_to_be"),
 ]
 
+# Basis Wahrscheinlichkeiten in Prozent
 BASE_CHANCE = {
     "impossible": 1,
     "no_way": 5,
@@ -125,9 +187,9 @@ SUBJECT_WORDS = [
     "Blut",
 ]
 
-# =====
+# =======================
 # BIOM SYSTEM
-# =====
+# =======================
 SURFACE_BIOMES = ["Arktis", "Küste", "Wüste", "Wald", "Grasland", "Hügel", "Berg", "Sumpf"]
 SPECIAL_BIOMES = ["Unterreich", "Wasser", "Stadt/Dorf"]
 ALL_BIOMES = SURFACE_BIOMES + SPECIAL_BIOMES
@@ -269,9 +331,10 @@ async def rollbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(msg)
 
-# =====
+
+# =======================
 # ENCOUNTER SYSTEM
-# =====
+# =======================
 ENCOUNTERS: Dict[str, Dict[str, List[Tuple[int, int, str]]]] = {}
 
 def _to_int_w100(token: str) -> int:
@@ -326,8 +389,11 @@ def _biom_for_encounter_from_current(current: str) -> str:
         return "Unterwasser"
     return current
 
+def _encounter_file_path() -> Path:
+    return Path(__file__).with_name("encounters_de.txt")
+
 def _load_encounter_raw_text() -> str:
-    path = Path(__file__).with_name("encounters_de.txt")
+    path = _encounter_file_path()
     if not path.exists():
         return ""
 
@@ -345,8 +411,9 @@ def _load_encounters_from_text(text: str) -> Dict[str, Dict[str, List[Tuple[int,
         rf"^(?P<biome>.+?)\s*\(\s*Stufe\s*(?P<a>\d+)\s*{sep}\s*(?P<b>\d+)\s*\)",
         re.IGNORECASE,
     )
+
     range_re = re.compile(
-        rf"^(?P<s>\d{{2}})(?:\s*{sep}\s*(?P<e>\d{{2}}))?\s*(?P<rest>.*)$",
+        rf"^(?P<s>\d{{1,3}})(?:\s*{sep}\s*(?P<e>\d{{1,3}}))?\s*(?P<rest>.*)$",
         re.IGNORECASE,
     )
 
@@ -453,20 +520,22 @@ def build_encounter_level_keyboard() -> InlineKeyboardMarkup:
 def pick_encounter(biom: str, level: str) -> Tuple[int, str]:
     biom = _canonical_enc_biom(biom)
     tables_for_biom = ENCOUNTERS.get(biom, {})
+
     table = tables_for_biom.get(level)
 
     if table is None and level in ("11-16", "17-20"):
         table = tables_for_biom.get("11-20")
 
     if not table:
-        raise KeyError(f"Keine Tabelle für {biom} {level}")
+        available = ", ".join(sorted(tables_for_biom.keys())) if tables_for_biom else "keine"
+        raise KeyError(f"Keine Tabelle für {biom} {level}. Verfügbar: {available}")
 
-    roll = random.randint(1, 100)
+    roll_val = random.randint(1, 100)
     for s, e, txt in table:
-        if s <= roll <= e:
-            return roll, txt
+        if s <= roll_val <= e:
+            return roll_val, txt
 
-    return roll, "Nichts gefunden. Deine Tabelle hat an der Stelle vermutlich eine Lücke."
+    return roll_val, "Nichts gefunden. Deine Tabelle hat an der Stelle vermutlich eine Lücke."
 
 _W_DICE_EXPR = re.compile(r"(\d+)\s*[Ww]\s*(\d+)(\s*[+-]\s*\d+)?")
 
@@ -584,22 +653,40 @@ async def rollencounter_pick_level(update: Update, context: ContextTypes.DEFAULT
         if dice_details:
             msg += "\n\nWürfe:\n" + "\n".join(dice_details)
 
-    except KeyError:
-        msg = (
-            f"Für Biom {biom_choice} und Stufe {level} habe ich keine passende Tabelle gefunden.\n"
-            f"Check die Überschrift in encounters_de.txt."
+        await query.edit_message_text(msg)
+
+    except KeyError as e:
+        path = _encounter_file_path().resolve()
+        await query.edit_message_text(
+            f"{str(e)}\n\n"
+            f"Datei: {path}\n"
+            f"Check Level Auswahl oder ob auf dem Server wirklich diese Datei liegt."
         )
 
-    await query.edit_message_text(msg)
     return ConversationHandler.END
 
 async def rollencounter_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Encounter abgebrochen 🙂")
     return ConversationHandler.END
 
-# =====
+async def encdebug(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    path = _encounter_file_path().resolve()
+    biomes = sorted(ENCOUNTERS.keys())
+    msg = [
+        "🧪 Encounter Debug",
+        f"Datei: {path}",
+        f"Biome geladen: {', '.join(biomes) if biomes else 'keine'}",
+    ]
+    for b in ["Unterwasser", "Wüste", "Hügel", "Grasland", "Berg"]:
+        levels = ENCOUNTERS.get(b, {})
+        keys = ", ".join(sorted(levels.keys())) if levels else "keine"
+        msg.append(f"{b}: {keys}")
+    await update.message.reply_text("\n".join(msg))
+
+
+# =======================
 # ORACLE
-# =====
+# =======================
 def clamp(n: int, lo: int, hi: int) -> int:
     return max(lo, min(hi, n))
 
@@ -608,7 +695,7 @@ def oracle_outcome(odds_key: str, chaos_rank: int) -> dict:
     adjust = (chaos_rank - 5) * 5
     chance = clamp(base + adjust, 0, 100)
 
-    roll = random.randint(1, 100)
+    roll_val = random.randint(1, 100)
 
     ex_yes = 0 if chance == 0 else max(1, chance // 5)
 
@@ -616,20 +703,20 @@ def oracle_outcome(odds_key: str, chaos_rank: int) -> dict:
     ex_no_size = 0 if fail_size == 0 else int(math.ceil(fail_size / 5))
     ex_no_start = 101 if ex_no_size == 0 else 101 - ex_no_size
 
-    if chance > 0 and roll <= ex_yes:
+    if chance > 0 and roll_val <= ex_yes:
         result = "Außergewöhnlich Ja"
-    elif roll <= chance:
+    elif roll_val <= chance:
         result = "Ja"
-    elif chance < 100 and roll >= ex_no_start:
+    elif chance < 100 and roll_val >= ex_no_start:
         result = "Außergewöhnlich Nein"
     else:
         result = "Nein"
 
-    doubles = (roll % 11 == 0)
-    random_event = bool(doubles and roll <= chaos_rank)
+    doubles = (roll_val % 11 == 0)
+    random_event = bool(doubles and roll_val <= chaos_rank)
 
     return {
-        "roll": roll,
+        "roll": roll_val,
         "chance": chance,
         "ex_yes": ex_yes,
         "ex_no_start": ex_no_start,
@@ -660,68 +747,6 @@ def build_chaos_keyboard():
     if row:
         rows.append(row)
     return InlineKeyboardMarkup(rows)
-
-async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not context.args:
-        await update.message.reply_text(
-            "Beispiele:\n"
-            "/roll 1d6\n"
-            "/roll 2d20+3\n"
-            "/roll 2d6+1d4+3\n"
-            "/roll 1w8 + 2w6 - 1"
-        )
-        return
-
-    expr_raw = " ".join(context.args).strip()
-
-    try:
-        dice_terms, flat_mod, display_expr = parse_roll_expression(expr_raw)
-    except ValueError:
-        await update.message.reply_text(
-            "Ungültiges Format.\n"
-            "Nutze z.B. /roll 1d6 oder /roll 2d6+1d4+3"
-        )
-        return
-
-    if not dice_terms:
-        await update.message.reply_text("Bitte würfle mindestens einen Würfel, z.B. /roll 1d6 oder /roll 2d6+3")
-        return
-
-    total_dice = sum(cnt for _sign, cnt, _sides in dice_terms)
-    if total_dice < 1 or total_dice > 100:
-        await update.message.reply_text("Maximal 100 Würfel insgesamt auf einmal.")
-        return
-
-    for _sign, cnt, sides in dice_terms:
-        if cnt < 1:
-            await update.message.reply_text("Würfelanzahl muss mindestens 1 sein.")
-            return
-        if sides < 2 or sides > 100000:
-            await update.message.reply_text("Seitenzahl bitte zwischen 2 und 100000.")
-            return
-
-    lines: List[str] = [f"🎲 {display_expr}"]
-    grand_total = 0
-
-    for idx, (sign, cnt, sides) in enumerate(dice_terms):
-        rolls = [random.randint(1, sides) for _ in range(cnt)]
-        raw_sum = sum(rolls)
-        applied = raw_sum * sign
-        grand_total += applied
-
-        sign_txt = "-" if sign < 0 else "+"
-        prefix = sign_txt if idx > 0 else ("" if sign > 0 else "-")
-
-        rolls_text = ", ".join(map(str, rolls))
-        lines.append(f"{prefix}{cnt}d{sides}: {rolls_text} (Summe {applied})")
-
-    if flat_mod:
-        grand_total += flat_mod
-        lines.append(f"Mod: {flat_mod:+d}")
-
-    lines.append(f"Gesamt: {grand_total}")
-
-    await update.message.reply_text("\n".join(lines))
 
 async def rolloracle_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data.pop("oracle_question", None)
@@ -772,7 +797,6 @@ async def rolloracle_pick_chaos(update: Update, context: ContextTypes.DEFAULT_TY
     question = context.user_data.get("oracle_question", "Ohne konkrete Frage")
 
     result = oracle_outcome(odds_key, chaos)
-
     odds_label = next((lbl for lbl, key in ODDS_OPTIONS if key == odds_key), odds_key)
 
     msg = (
@@ -801,9 +825,10 @@ async def rolloracle_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Orakel abgebrochen 🙂")
     return ConversationHandler.END
 
-# =====
+
+# =======================
 # ROLLCHANCE SYSTEM
-# =====
+# =======================
 ATTR_TABLE = {
     1: ("STÄ", "💪"),
     2: ("GES", "🏃‍♂️"),
@@ -888,9 +913,10 @@ async def rollchance(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(msg)
 
-# =====
+
+# =======================
 # ROLLHUNT SYSTEM
-# =====
+# =======================
 HUNT_MOD_CHOICES = list(range(-4, 7))
 
 def build_hunt_mod_keyboard() -> InlineKeyboardMarkup:
@@ -1000,9 +1026,10 @@ async def rollhunt_cancel_cb(update: Update, context: ContextTypes.DEFAULT_TYPE)
     await query.answer()
     await query.edit_message_text("Rollhunt abgebrochen 🙂")
 
-# =====
+
+# =======================
 # WALDKARTE SYSTEM
-# =====
+# =======================
 WALDKARTE_LEVELS = ["1-4", "5-10", "11-16", "17-20"]
 
 def build_waldkarte_level_keyboard() -> InlineKeyboardMarkup:
@@ -1170,7 +1197,6 @@ async def rollwaldkarte_pick_level(update: Update, context: ContextTypes.DEFAULT
 
     card_roll = pending.get("card_roll", "?")
     kind = pending.get("type", "encounter")
-
     context.user_data.pop("waldkarte_pending", None)
 
     biome = "Wald"
@@ -1198,15 +1224,15 @@ async def rollwaldkarte_pick_level(update: Update, context: ContextTypes.DEFAULT
             msg += "\n\nWürfe:\n" + "\n".join(dice_details)
 
         await query.edit_message_text(msg)
-    except KeyError:
-        await query.edit_message_text(
-            f"Für Biom {biome} und Stufe {level} habe ich keine passende Tabelle gefunden.\n"
-            f"Check die Überschrift in encounters_de.txt."
-        )
 
-# =====
+    except KeyError as e:
+        path = _encounter_file_path().resolve()
+        await query.edit_message_text(f"{str(e)}\nDatei: {path}")
+
+
+# =======================
 # HELP
-# =====
+# =======================
 async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = (
         "🧰 Befehle\n\n"
@@ -1220,16 +1246,18 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/biom  zeigt dein aktuelles Biom\n"
         "/rollbiom [Biom]  würfelt das nächste Biom (optional vorher setzen)\n\n"
         "⚔️ Encounters\n"
-        "/rollencounter [Biom]  würfelt einen Encounter (nutzt sonst dein aktuelles Biom)\n\n"
+        "/rollencounter [Biom]  würfelt einen Encounter (nutzt sonst dein aktuelles Biom)\n"
+        "/encdebug  zeigt geladene Encounter Tabellen und Dateipfad\n\n"
         "🔮 Orakel\n"
         "/rolloracle [Frage]  Ja Nein Orakel\n"
         "/cancel  bricht Orakel oder Encounter Auswahl ab"
     )
     await update.message.reply_text(msg)
 
-# =====
+
+# =======================
 # MAIN
-# =====
+# =======================
 def main():
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     base_url = os.environ.get("BASE_URL")
@@ -1261,6 +1289,8 @@ def main():
     app.add_handler(CommandHandler("biom", biom))
     app.add_handler(CommandHandler("rollbiom", rollbiom))
     app.add_handler(CallbackQueryHandler(setbiom_pick, pattern=r"^biom_set:"))
+
+    app.add_handler(CommandHandler("encdebug", encdebug))
 
     encounter_conv = ConversationHandler(
         entry_points=[CommandHandler("rollencounter", rollencounter_start)],
