@@ -278,7 +278,7 @@ Das Abbild einer ernst wirkenden Frau mit langen, wallenden Haaren, das in die S
 1 Uralter weißer Drache mit 1W3 Jungen weißen Drachen
 
 
-Bergbegegnungen (Stufe 1–4)
+Bergbegegnungen (Stufe 1 bis 4)
 W100 – Begegnung
 
 01–02
@@ -420,7 +420,7 @@ Ein sprudelnder Wasserlauf, der aus einer Felsspalte dringt.
 1 Frostriese
 
 
-Bergbegegnungen (Stufe 5–10)
+Bergbegegnungen (Stufe 5 bis 10)
 W100 – Begegnung
 
 01–02
@@ -526,7 +526,7 @@ Eine Reihe von 1W10 + 40 Pfählen, auf welchen die Körper von Kobolden, Zwergen
 1W4 Frostriesen
 
 
-Bergbegegnungen (Stufe 11–16)
+Bergbegegnungen (Stufe 11 bis 16)
 W100 – Begegnung
 
 01–02
@@ -605,7 +605,7 @@ Ein breiter Felsabgrund, dessen Tiefe mit Nebel verhüllt ist
 1 Uralter roter Drache
 
 
-Bergbegegnungen (Stufe 17–20)
+Bergbegegnungen (Stufe 17 bis 20)
 W100 – Begegnung
 
 01–05
@@ -3509,7 +3509,7 @@ Eine große Höhle, in welcher eine 15 m hohe Götzenstatue des Blutidols steht.
 2W4 Abolethen
 
 
-Unterwasserbegegnungen (Stufe 1–4)
+Unterwasserbegegnungen (Stufe 1 bis 4)
 W100 – Begegnung
 
 01–10
@@ -3582,7 +3582,7 @@ Eine Schule silbriger Fische, die durch das Wasser huschen.
 1 Sahuagin-Baron
 
 
-Unterwasserbegegnungen (Stufe 5-10)
+Unterwasserbegegnungen (Stufe 5 bis 10)
 W100 Begegnung
 
 01 bis 02
@@ -3655,7 +3655,7 @@ Eine schaurige Statue eines hockenden Humanoiden mit Fledermausflügeln auf dem 
 1 Sturmriesen
 
 
-Unterwasserbegegnungen (Stufe 11-20)
+Unterwasserbegegnungen (Stufe 11 bis 20)
 W100 Begegnung
 
 01 bis 10
