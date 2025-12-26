@@ -4256,7 +4256,7 @@ Ein Hügelgrab auf einem flachen Hügel
 1 uralter Golddrache
 
 
-Wüstenbegegnungen (Stufe 1–4)
+Wuestenbegegnungen (Stufe 1–4)
 W100 – Begegnung
 
 01
@@ -4431,7 +4431,7 @@ Ein Haufen menschlicher Knochen, umwickelt mit einem verwitterten Tuch
 1 Yuan-ti-Scheusal
 
 
-Wüstenbegegnungen (Stufe 5–10)
+Wuestenbegegnungen (Stufe 5–10)
 W100 – Begegnung
 
 01
@@ -4573,7 +4573,7 @@ Heftiger Wind wirbelt Sand auf und reduziert die Sichtweite für die nächsten 1
 1 ausgewachsener Messingdrache
 
 
-Wüstenbegegnungen (Stufe 11–16)
+Wuestenbegegnungen (Stufe 11–16)
 W100 – Begegnung
 
 01
@@ -4684,7 +4684,8 @@ Eine geplünderte Pyramide
 00
 1 uralter blauer Drache
 
-Wüstenbegegnungen (Stufe 17–20)
+
+Wuestenbegegnungen (Stufe 17–20)
 W100 – Begegnung
 
 01–05
@@ -4747,3 +4748,4 @@ Ein alter Wegweiser, der nur auf einen Ort deutet, genannt Pazar
 
 
 Hier musst du schauen, manchmal steht zb 86 bis 90 oder 86-90 damit ist das selbe gemeint. Es geht ja um die würfelwürfe und damit ist dann der wert von 86-90 dann gemeint.
+
