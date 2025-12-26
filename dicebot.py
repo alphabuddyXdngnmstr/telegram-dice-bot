@@ -24,13 +24,6 @@ DICE_TERM_RE = re.compile(r"^(?P<count>\d+)[dw](?P<sides>\d+)$", re.IGNORECASE)
 ROLL_TOKEN_RE = re.compile(r"[+-]?[^+-]+")
 
 def parse_roll_expression(expr: str) -> Tuple[List[Tuple[int, int, int]], int, str]:
-    """
-    Parse eine Roll-Expression wie '2d6+1d4+3' oder '1w8 + 2w6 - 1'.
-    Rückgabe:
-      - dice_terms: Liste aus (sign, count, sides)
-      - flat_mod: int
-      - display_expr: normalisierte Expression für die Ausgabe
-    """
     raw = (expr or "").strip()
     if not raw:
         raise ValueError("empty")
@@ -337,17 +330,23 @@ def _load_encounter_raw_text() -> str:
     path = Path(__file__).with_name("encounters_de.txt")
     if not path.exists():
         return ""
-    return path.read_text(encoding="utf-8", errors="replace")
+
+    try:
+        return path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        return path.read_text(encoding="cp1252", errors="replace")
 
 def _load_encounters_from_text(text: str) -> Dict[str, Dict[str, List[Tuple[int, int, str]]]]:
     lines = [ln.strip() for ln in text.splitlines()]
 
+    sep = r"(?:-|–|—|bis)"
+
     heading_re = re.compile(
-        r"^(?P<biome>.+?)\s*\(\s*Stufe\s*(?P<a>\d+)\s*(?:-|bis)\s*(?P<b>\d+)\s*\)",
+        rf"^(?P<biome>.+?)\s*\(\s*Stufe\s*(?P<a>\d+)\s*{sep}\s*(?P<b>\d+)\s*\)",
         re.IGNORECASE,
     )
     range_re = re.compile(
-        r"^(?P<s>\d{2})(?:\s*(?:-|bis)\s*(?P<e>\d{2}))?\s*(?P<rest>.*)$",
+        rf"^(?P<s>\d{{2}})(?:\s*{sep}\s*(?P<e>\d{{2}}))?\s*(?P<rest>.*)$",
         re.IGNORECASE,
     )
 
@@ -599,7 +598,7 @@ async def rollencounter_cancel(update: Update, context: ContextTypes.DEFAULT_TYP
     return ConversationHandler.END
 
 # =====
-# ORACLE + DICE
+# ORACLE
 # =====
 def clamp(n: int, lo: int, hi: int) -> int:
     return max(lo, min(hi, n))
