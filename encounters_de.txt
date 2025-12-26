@@ -2936,7 +2936,7 @@ Eine übelriechende Pfütze, wo schleimiges Wasser von der Decke tropft.
 1 Geisternaga
 
 
-Underdark-Begegnungen (Stufe 5 bis 10)
+Unterreichbegegnungen (Stufe 5 bis 10)
 W100 Begegnung
 
 01
@@ -3183,7 +3183,7 @@ Eine Händlerkarawane, bestehend aus 1 Drow-Magus, 2 Drow-Elitekriegern und 2W10
 1 Betrachter
 
 
-Underdark-Begegnungen (Stufe 11 bis 16)
+Unterreichbegegnungen (Stufe 11 bis 16)
 W100 Begegnung
 
 01 bis 02
@@ -3379,7 +3379,7 @@ Ein zerstörtes Dorf, das einmal Tiefengnomen gehörte. Wird es durchsucht, best
 1 Purpurwurm
 
 
-Underdark-Begegnungen (Stufe 17 bis 20)
+Unterreichbegegnungen (Stufe 17 bis 20)
 W100 Begegnung
 
 01
@@ -4023,6 +4023,7 @@ Eine kleine Hütte, fast von tiefem Wald versteckt. Das Innere ist bis auf einen
 35
 1W6 Pegasi
 
+
 Waldbegegnungen (Stufe 5–10)
 W100 – Begegnung
 
@@ -4321,6 +4322,7 @@ Ein Hügelgrab auf einem flachen Hügel
 
 00
 1 uralter Golddrache
+
 
 Wüstenbegegnungen (Stufe 1–4)
 W100 – Begegnung
@@ -4749,6 +4751,7 @@ Eine geplünderte Pyramide
 
 00
 1 uralter blauer Drache
+
 
 Wüstenbegegnungen (Stufe 17–20)
 W100 – Begegnung
