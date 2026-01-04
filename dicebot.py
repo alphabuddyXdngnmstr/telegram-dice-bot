@@ -1451,7 +1451,6 @@ HOARD_LOOT: Dict[str, List[Tuple[int, int, Optional[Tuple[str, Tuple[int, int], 
         (86, 100, ("gems", (2, 6), 10000), [("H", "1W2"), ("I", "1")]),
     ],
 }
-}
 
 def _cr_label(cr_key: str) -> str:
     if cr_key == "0-4":
@@ -2064,5 +2063,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
