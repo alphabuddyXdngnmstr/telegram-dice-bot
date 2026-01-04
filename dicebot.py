@@ -1416,17 +1416,12 @@ HOARD_COINS: Dict[str, List[Tuple[str, int, int, int]]] = {
     "17+": [("GM", 12, 6, 1000), ("PM", 8, 6, 1000)],
 }
 
-# HOARD_LOOT bleibt wie bei dir (das ist lang, aber syntaktisch ok in deinem Post)
-HOARD_LOOT: Dict[str, List[Tuple[int, int, Optional[Tuple[str, Tuple[int, int], int]], List[Tuple[str, str]]]]] = {
-    # -----------------------
 # HOARD_LOOT
 # Struktur pro Eintrag:
 # (von, bis, gem_art_spec, magic_rolls)
 # gem_art_spec ist None oder ("gems" oder "art", (würfelanzahl, würfelseiten), wert_pro_stück)
 # magic_rolls ist Liste von (Tabelle, Anzahl) wobei Anzahl "1" oder "xWy" sein darf
-# -----------------------
-
-HOARD_LOOT = {
+HOARD_LOOT: Dict[str, List[Tuple[int, int, Optional[Tuple[str, Tuple[int, int], int]], List[Tuple[str, str]]]]] = {
     "0-4": [
         (1, 30, ("gems", (2, 6), 10), []),
         (31, 60, ("gems", (2, 6), 50), [("A", "1W6")]),
@@ -1455,6 +1450,7 @@ HOARD_LOOT = {
         (61, 85, ("art", (2, 4), 7500), [("G", "1W6")]),
         (86, 100, ("gems", (2, 6), 10000), [("H", "1W2"), ("I", "1")]),
     ],
+}
 }
 
 def _cr_label(cr_key: str) -> str:
@@ -2068,4 +2064,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
