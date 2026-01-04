@@ -1970,8 +1970,10 @@ async def rollschatz_cancel_cb(update: Update, context: ContextTypes.DEFAULT_TYP
 
 
 # -----------------------
-# ROLLDUNGEON SYSTEM
+# ROLLDUNGEON SYSTEM (DE)
 # -----------------------
+
+DNG_PICK_LEVEL, DNG_PICK_COUNT = range(2)
 
 SUITS = {
     1: "♣",
@@ -1980,157 +1982,164 @@ SUITS = {
     4: "♠",
 }
 
+SUIT_NAMES_DE = {
+    "♣": "Kreuz",
+    "♦": "Karo",
+    "♥": "Herz",
+    "♠": "Pik",
+}
+
 JOKER_NPCS = [
-    ("Marie", "Stanley", "Class"),
-    ("Marve", "Stanley", "Fighter"),
-    ("Kavia", "Corwin", "Rogue"),
-    ("Joselyn", "Leon", "Bard"),
-    ("Tellava", "Hadar", "Wizard"),
-    ("Bess", "Baelin", "Cleric"),
-    ("Nura", "Torgil", "Druid"),
+    ("Marie", "Stanley", "Klasse"),
+    ("Marve", "Stanley", "Kämpfer"),
+    ("Kavia", "Corwin", "Schurke"),
+    ("Joselyn", "Leon", "Barde"),
+    ("Tellava", "Hadar", "Zauberer"),
+    ("Bess", "Baelin", "Kleriker"),
+    ("Nura", "Torgil", "Druide"),
     ("Rala", "Vasar", "Paladin"),
-    ("Elera", "Zelmio", "Ranger"),
-    ("Sylthir", "Tcham", "Warlock"),
+    ("Elera", "Zelmio", "Waldläufer"),
+    ("Sylthir", "Tcham", "Hexenmeister"),
 ]
 
 JOKER_ITEMS = [
-    ("Weapon", "Unknown", "100gp"),
-    ("Armor", "Tiny", "150gp"),
-    ("Book", "Fragile", "200gp"),
-    ("Scroll", "Glowing", "250gp"),
-    ("Map", "Ancient", "500gp"),
-    ("Ring", "Magical", "750gp"),
+    ("Waffe", "Unbekannt", "100 GM"),
+    ("Rüstung", "Winzig", "150 GM"),
+    ("Buch", "Fragil", "200 GM"),
+    ("Schriftrolle", "Leuchtend", "250 GM"),
+    ("Karte", "Uralte", "500 GM"),
+    ("Ring", "Magisch", "750 GM"),
 ]
 
 QUEST_TABLES = [
     [
-        (2, 4, "Convince an NPC to return to town"),
-        (5, 6, "Kill a monster who holds an ITEM"),
-        (10, 13, "Rescue an imprisoned NPC"),
-        (14, 17, "Stop an evil NPC from killing locals"),
-        (18, 99, "Find and destroy a dangerous ITEM"),
+        (2, 4, "Überzeuge einen NSC, in die Stadt zurückzukehren"),
+        (5, 6, "Töte ein Monster, das einen GEGENSTAND besitzt"),
+        (10, 13, "Befreie einen gefangenen NSC"),
+        (14, 17, "Stoppe einen bösen NSC, der die Einheimischen tötet"),
+        (18, 99, "Finde und zerstöre einen gefährlichen GEGENSTAND"),
     ],
     [
-        (2, 5, "Map dungeon lvl 1 for an NPC"),
-        (6, 9, "Rescue a potentially lost NPC"),
-        (10, 13, "Kill a small group of evil monsters"),
-        (14, 17, "Retrieve an ITEM for a wealthy NPC"),
-        (18, 99, "Clear the dungeon of all monsters"),
+        (2, 5, "Kartiere Dungeon Ebene 1 für einen NSC"),
+        (6, 9, "Rette einen möglicherweise verlorenen NSC"),
+        (10, 13, "Töte eine kleine Gruppe böser Monster"),
+        (14, 17, "Besorge einen GEGENSTAND für einen reichen NSC"),
+        (18, 99, "Säubere den Dungeon von allen Monstern"),
     ],
     [
-        (2, 4, "Find an ITEM for a local innkeeper"),
-        (5, 7, "Rumors of 200gp on dungeon lvl 2"),
-        (8, 10, "Legends tell of a rare ITEM inside"),
-        (11, 13, "Save the family member of a PC"),
-        (14, 16, "Slay a small group of evil NPCs"),
-        (17, 19, "Kill or delay a powerful monster"),
-        (20, 99, "Stop cultists summoning demons"),
+        (2, 4, "Finde einen GEGENSTAND für einen örtlichen Gastwirt"),
+        (5, 7, "Gerüchte über 200 GM auf Dungeon Ebene 2"),
+        (8, 10, "Legenden sprechen von einem seltenen GEGENSTAND im Inneren"),
+        (11, 13, "Rette das Familienmitglied eines SC"),
+        (14, 16, "Töte eine kleine Gruppe böser NSCs"),
+        (17, 19, "Töte oder verzögere ein mächtiges Monster"),
+        (20, 99, "Stoppe Kultisten bei einer Dämonenbeschwörung"),
     ],
     [
-        (2, 4, "Discover what is hiding in the ruins"),
-        (5, 7, "PCs find a map leading to dungeon"),
-        (8, 10, "A strange ITEM is said to be on lvl 2"),
-        (11, 13, "Map dungeon lvl 2 (1d4) for an NPC"),
-        (14, 16, "Bring back the head of a monster"),
-        (17, 19, "Find a rare ITEM before an evil NPC"),
-        (20, 99, "Slay a dragon to save the locals"),
+        (2, 4, "Finde heraus, was sich in den Ruinen verbirgt"),
+        (5, 7, "Die SC finden eine Karte, die zum Dungeon führt"),
+        (8, 10, "Ein seltsamer GEGENSTAND soll auf Ebene 2 liegen"),
+        (11, 13, "Kartiere Dungeon Ebene 2 (1W4) für einen NSC"),
+        (14, 16, "Bring den Kopf eines Monsters zurück"),
+        (17, 19, "Finde einen seltenen GEGENSTAND vor einem bösen NSC"),
+        (20, 99, "Töte einen Drachen, um die Einheimischen zu retten"),
     ],
 ]
 
 HALLWAY_TABLES = [
     [
-        (1, 3, "Nothing"),
-        (4, 6, "Backpack (empty)"),
-        (7, 8, "Small patches of dried blood"),
-        (9, 9, "Rusty axe + 1d8 torches"),
-        (10, 10, "Backpack (healing potion)"),
+        (1, 3, "Nichts"),
+        (4, 6, "Rucksack (leer)"),
+        (7, 8, "Kleine getrocknete Blutflecken"),
+        (9, 9, "Rostige Axt und 1W8 Fackeln"),
+        (10, 10, "Rucksack (Heiltrank)"),
     ],
     [
-        (1, 1, "Nothing"),
-        (2, 2, "Dead rat"),
-        (3, 3, "Rubble"),
-        (4, 4, "Moldy cheese"),
-        (5, 5, "Iron ingots"),
-        (6, 6, "Dagger"),
-        (7, 7, "Dried herbs"),
-        (8, 8, "Bones"),
-        (9, 9, "4d8 gp"),
-        (10, 10, "Tools"),
+        (1, 1, "Nichts"),
+        (2, 2, "Tote Ratte"),
+        (3, 3, "Geröll"),
+        (4, 4, "Schimmeliger Käse"),
+        (5, 5, "Eisenbarren"),
+        (6, 6, "Dolch"),
+        (7, 7, "Getrocknete Kräuter"),
+        (8, 8, "Knochen"),
+        (9, 9, "4W8 GM"),
+        (10, 10, "Werkzeug"),
     ],
     [
-        (1, 2, "Nothing"),
-        (3, 4, "Spider webs + tattered clothes"),
-        (5, 6, "Broken glass bottles"),
-        (7, 8, "Scrapes and cracks in walls"),
-        (9, 9, "Skeletal remains of a horse"),
-        (10, 10, "Backpack (1d4 days of rations)"),
+        (1, 2, "Nichts"),
+        (3, 4, "Spinnweben und zerrissene Kleidung"),
+        (5, 6, "Zerbrochene Glasflaschen"),
+        (7, 8, "Kratzer und Risse in den Wänden"),
+        (9, 9, "Skelettreste eines Pferdes"),
+        (10, 10, "Rucksack (1W4 Tage Rationen)"),
     ],
 ]
 
 ROOM_CONTENT_TIER = {
     1: [
-        (1, 3, "Backpack (3d6 gp + 50' rope)"),
-        (4, 6, "Broken chairs + thick layer of dust"),
-        (7, 9, "Kobold corpse (3d10 cp)"),
-        (10, 10, "Desk + chair + high quality bed"),
+        (1, 3, "Rucksack (3W6 GM und 15m Seil)"),
+        (4, 6, "Zerbrochene Stühle und eine dicke Staubschicht"),
+        (7, 9, "Kobold Leiche (3W10 KM)"),
+        (10, 10, "Schreibtisch, Stuhl und ein hochwertiges Bett"),
     ],
     2: [
-        (1, 1, "Nothing"),
-        (2, 4, "1d6 stone statues"),
-        (5, 6, "Halfling corpse (4d8 gp)"),
-        (7, 8, "Broken glass bottles"),
-        (9, 9, "Lizardfolk corpse"),
-        (10, 10, "Scorch marks on walls"),
+        (1, 1, "Nichts"),
+        (2, 4, "1W6 Steinfiguren"),
+        (5, 6, "Halbling Leiche (4W8 GM)"),
+        (7, 8, "Zerbrochene Glasflaschen"),
+        (9, 9, "Echsenmenschen Leiche"),
+        (10, 10, "Brandspuren an den Wänden"),
     ],
     3: [
-        (1, 2, "Nothing"),
-        (3, 4, "2d8 sacks of wheat"),
-        (5, 6, "Broken chest (empty)"),
-        (7, 8, "Human corpse"),
-        (9, 9, "Chains + cages"),
-        (10, 10, "Sack (1d10 x 100 cp)"),
+        (1, 2, "Nichts"),
+        (3, 4, "2W8 Säcke Weizen"),
+        (5, 6, "Zerbrochene Truhe (leer)"),
+        (7, 8, "Menschen Leiche"),
+        (9, 9, "Ketten und Käfige"),
+        (10, 10, "Sack (1W10 mal 100 KM)"),
     ],
 }
 
 SOUND_TABLES = [
-    {1: "None", 2: "Wind", 3: "Hissing", 4: "Dripping", 5: "Moans", 6: "Faint music"},
-    {1: "None", 2: "Footsteps", 3: "Rumbling", 4: "Clanking", 5: "Thumping", 6: "Screams"},
-    {1: "None", 2: "Faint whispering voices", 3: "Splintering of wood", 4: "Rattling of chains", 5: "Clinking of falling coins", 6: "Distant gutteral laughter"},
-    {1: "None", 2: "Groans", 3: "Splashing", 4: "Footsteps", 5: "Sobbing", 6: "Roaring"},
+    {1: "Nichts", 2: "Wind", 3: "Zischen", 4: "Tropfen", 5: "Stöhnen", 6: "Leise Musik"},
+    {1: "Nichts", 2: "Schritte", 3: "Grollen", 4: "Klappern", 5: "Dumpfes Pochen", 6: "Schreie"},
+    {1: "Nichts", 2: "Leises Flüstern", 3: "Splitterndes Holz", 4: "Rasselnde Ketten", 5: "Klingende fallende Münzen", 6: "Fernes kehliges Lachen"},
+    {1: "Nichts", 2: "Stöhnen", 3: "Platschen", 4: "Schritte", 5: "Schluchzen", 6: "Brüllen"},
 ]
 
 SMELL_TABLES = [
-    {1: "None", 2: "Metallic", 3: "Dried sweat", 4: "Acidic", 5: "Incense", 6: "Rotten meat"},
-    {1: "None", 2: "Burnt wood", 3: "Dirt/Soil", 4: "Excrement", 5: "Lamp oil", 6: "Sulfur"},
-    {1: "None", 2: "Burnt meat", 3: "Urine", 4: "Rotting flesh", 5: "Straw", 6: "Mold"},
+    {1: "Nichts", 2: "Metallisch", 3: "Getrockneter Schweiß", 4: "Säuerlich", 5: "Räucherwerk", 6: "Verrottetes Fleisch"},
+    {1: "Nichts", 2: "Verbranntes Holz", 3: "Erde", 4: "Exkremente", 5: "Lampenöl", 6: "Schwefel"},
+    {1: "Nichts", 2: "Verbranntes Fleisch", 3: "Urin", 4: "Fauliges Fleisch", 5: "Stroh", 6: "Schimmel"},
 ]
 
 MAGIC_POOLS = {
     1: [
-        (1, 4, "No noticeable effect (GM decides)"),
-        (5, 7, "drink 1/day: restore 1d8 HP"),
-        (8, 9, "touch 1/day: deafened for 1 hour"),
-        (10, 11, "drink 1/week: for 1d12 hours deal 1d6 bonus damage each hit"),
-        (12, 12, "touch 1/day: suffer 1d12 damage"),
+        (1, 4, "Keine spürbare Wirkung (SL entscheidet)"),
+        (5, 7, "Trinken 1 mal pro Tag: Stelle 1W8 TP wieder her"),
+        (8, 9, "Berühren 1 mal pro Tag: Taub für 1 Stunde"),
+        (10, 11, "Trinken 1 mal pro Woche: Für 1W12 Stunden plus 1W6 Bonusschaden pro Treffer"),
+        (12, 12, "Berühren 1 mal pro Tag: Erleide 1W12 Schaden"),
     ],
     2: [
-        (1, 4, "No noticeable effect (GM decides)"),
-        (5, 7, "drink 1/week: restore 1d20 HP"),
-        (8, 9, "touch 1/day: blinded for 1 hour"),
-        (10, 11, "touch 1/week: for 3d6 x 10 mins advantage on initiative rolls"),
-        (12, 12, "drink 1/day: suffer 2d12 damage"),
+        (1, 4, "Keine spürbare Wirkung (SL entscheidet)"),
+        (5, 7, "Trinken 1 mal pro Woche: Stelle 1W20 TP wieder her"),
+        (8, 9, "Berühren 1 mal pro Tag: Blind für 1 Stunde"),
+        (10, 11, "Berühren 1 mal pro Woche: Für 3W6 mal 10 Minuten Vorteil auf Initiative"),
+        (12, 12, "Trinken 1 mal pro Tag: Erleide 2W12 Schaden"),
     ],
     3: [
-        (1, 6, "No noticeable effect"),
-        (7, 9, "drink 1/day: restore 2d10 HP"),
-        (10, 11, "touch 1/day: poisoned 1d3 hours"),
-        (12, 12, "drink 1/day: for 3d6 x 10 mins move twice as fast on land"),
+        (1, 6, "Keine spürbare Wirkung"),
+        (7, 9, "Trinken 1 mal pro Tag: Stelle 2W10 TP wieder her"),
+        (10, 11, "Berühren 1 mal pro Tag: Vergiftet für 1W3 Stunden"),
+        (12, 12, "Trinken 1 mal pro Tag: Für 3W6 mal 10 Minuten doppelte Laufgeschwindigkeit an Land"),
     ],
     4: [
-        (1, 6, "No noticeable effect"),
-        (7, 9, "drink 1/day: restore 2d10 HP"),
-        (10, 11, "touch 1/day: poisoned 1d3 hours"),
-        (12, 12, "drink 1/day: for 3d6 x 10 mins move twice as fast on land"),
+        (1, 6, "Keine spürbare Wirkung"),
+        (7, 9, "Trinken 1 mal pro Tag: Stelle 2W10 TP wieder her"),
+        (10, 11, "Berühren 1 mal pro Tag: Vergiftet für 1W3 Stunden"),
+        (12, 12, "Trinken 1 mal pro Tag: Für 3W6 mal 10 Minuten doppelte Laufgeschwindigkeit an Land"),
     ],
 }
 
@@ -2143,18 +2152,11 @@ def _tier_from_level(lvl: int) -> int:
         return 3
     return 4
 
-def _roll_table_ranges(ranges: List[Tuple[int, int, str]], die_sides: int) -> Tuple[int, str]:
-    r = random.randint(1, die_sides)
-    for a, b, txt in ranges:
-        if a <= r <= b:
-            return r, txt
-    return r, "Nothing"
-
-def _pick_range_from_total(ranges: List[Tuple[int, int, str]], total: int) -> str:
+def _pick_range_from_total(ranges, total: int) -> str:
     for a, b, txt in ranges:
         if a <= total <= b:
             return txt
-    return "Nothing"
+    return "Nichts"
 
 def _roll_sound() -> str:
     table = random.choice(SOUND_TABLES)
@@ -2167,21 +2169,22 @@ def _roll_smell() -> str:
     return f"W6: {r} -> {table[r]}"
 
 def _roll_hallway() -> str:
-    ranges = []
-    for t in random.choice(HALLWAY_TABLES):
-        ranges.append(t)
+    ranges = list(random.choice(HALLWAY_TABLES))
     r = random.randint(1, 10)
-    txt = _pick_range(ranges, r)
+    txt = _pick_range_from_total(ranges, r)
+
     extra = ""
-    if "1d8 torches" in txt:
-        x, rolls = _roll_scaled(1, 8, 1)
-        extra = f" | 1W8: {rolls[0]} -> {x} Fackeln"
-    if "4d8 gp" in txt:
-        x, rolls = _roll_scaled(4, 8, 1)
-        extra = f" | 4W8: {', '.join(map(str, rolls))} -> {_fmt_num(x)} GM"
-    if "1d4 days of rations" in txt:
-        x, rolls = _roll_scaled(1, 4, 1)
-        extra = f" | 1W4: {rolls[0]} -> {x} Tage Rationen"
+    if "1W8 Fackeln" in txt:
+        x = random.randint(1, 8)
+        extra = f" | 1W8: {x} -> {x} Fackeln"
+    if "4W8 GM" in txt:
+        rolls = [random.randint(1, 8) for _ in range(4)]
+        total = sum(rolls)
+        extra = f" | 4W8: {', '.join(map(str, rolls))} -> {total} GM"
+    if "1W4 Tage Rationen" in txt:
+        x = random.randint(1, 4)
+        extra = f" | 1W4: {x} -> {x} Tage"
+
     return f"W10: {r} -> {txt}{extra}"
 
 def _roll_room_contents(tier: int) -> str:
@@ -2193,27 +2196,27 @@ def _roll_room_contents(tier: int) -> str:
         ranges = ROOM_CONTENT_TIER[3]
 
     r = random.randint(1, 10)
-    txt = _pick_range(ranges, r)
-    extra = ""
+    txt = _pick_range_from_total(ranges, r)
 
-    if "3d6 gp" in txt:
-        x, rolls = _roll_scaled(3, 6, 1)
-        extra = f" | 3W6: {', '.join(map(str, rolls))} -> {_fmt_num(x)} GM"
-    if "3d10 cp" in txt:
-        x, rolls = _roll_scaled(3, 10, 1)
-        extra = f" | 3W10: {', '.join(map(str, rolls))} -> {_fmt_num(x)} KM"
-    if "4d8 gp" in txt:
-        x, rolls = _roll_scaled(4, 8, 1)
-        extra = f" | 4W8: {', '.join(map(str, rolls))} -> {_fmt_num(x)} GM"
-    if "2d8 sacks" in txt:
-        x, rolls = _roll_scaled(2, 8, 1)
-        extra = f" | 2W8: {', '.join(map(str, rolls))} -> {x} Säcke"
-    if "1d6 stone statues" in txt:
-        x, rolls = _roll_scaled(1, 6, 1)
-        extra = f" | 1W6: {rolls[0]} -> {x} Statuen"
-    if "1d10 x 100 cp" in txt:
-        base = random.randint(1, 10)
-        extra = f" | 1W10: {base} -> {_fmt_num(base * 100)} KM"
+    extra = ""
+    if "3W6 GM" in txt:
+        rolls = [random.randint(1, 6) for _ in range(3)]
+        extra = f" | 3W6: {', '.join(map(str, rolls))} -> {sum(rolls)} GM"
+    if "3W10 KM" in txt:
+        rolls = [random.randint(1, 10) for _ in range(3)]
+        extra = f" | 3W10: {', '.join(map(str, rolls))} -> {sum(rolls)} KM"
+    if "4W8 GM" in txt:
+        rolls = [random.randint(1, 8) for _ in range(4)]
+        extra = f" | 4W8: {', '.join(map(str, rolls))} -> {sum(rolls)} GM"
+    if "2W8 Säcke" in txt:
+        rolls = [random.randint(1, 8) for _ in range(2)]
+        extra = f" | 2W8: {', '.join(map(str, rolls))} -> {sum(rolls)} Säcke"
+    if "1W6 Steinfiguren" in txt:
+        x = random.randint(1, 6)
+        extra = f" | 1W6: {x} -> {x}"
+    if "1W10 mal 100 KM" in txt:
+        x = random.randint(1, 10)
+        extra = f" | 1W10: {x} -> {x * 100} KM"
 
     return f"W10: {r} -> {txt}{extra}"
 
@@ -2221,37 +2224,34 @@ def _roll_magic_pool(tier: int) -> str:
     ranges = MAGIC_POOLS.get(tier, MAGIC_POOLS[1])
     r = random.randint(1, 12)
     txt = _pick_range_from_total(ranges, r)
-    extra = ""
 
-    if "restore 1d8 HP" in txt:
-        x, rolls = _roll_scaled(1, 8, 1)
-        extra = f" | 1W8: {rolls[0]} -> {x} HP"
-    if "for 1d12 hours" in txt:
-        x, rolls = _roll_scaled(1, 12, 1)
-        extra = f" | 1W12: {rolls[0]} -> {x} Stunden"
-        y, yrolls = _roll_scaled(1, 6, 1)
-        extra += f" | 1W6: {yrolls[0]} -> +{y} Schaden pro Treffer"
-    if "suffer 1d12 damage" in txt:
-        x, rolls = _roll_scaled(1, 12, 1)
-        extra = f" | 1W12: {rolls[0]} -> {x} Schaden"
-    if "restore 1d20 HP" in txt:
-        x, rolls = _roll_scaled(1, 20, 1)
-        extra = f" | 1W20: {rolls[0]} -> {x} HP"
-    if "for 3d6 x 10 mins" in txt:
-        base, rolls = _roll_scaled(3, 6, 1)
-        extra = f" | 3W6: {', '.join(map(str, rolls))} -> {base * 10} Minuten"
-    if "suffer 2d12 damage" in txt:
-        x, rolls = _roll_scaled(2, 12, 1)
-        extra = f" | 2W12: {', '.join(map(str, rolls))} -> {x} Schaden"
-    if "restore 2d10 HP" in txt:
-        x, rolls = _roll_scaled(2, 10, 1)
-        extra = f" | 2W10: {', '.join(map(str, rolls))} -> {x} HP"
-    if "poisoned 1d3 hours" in txt:
-        x, rolls = _roll_scaled(1, 3, 1)
-        extra = f" | 1W3: {rolls[0]} -> {x} Stunden"
-    if "move twice as fast" in txt:
-        base, rolls = _roll_scaled(3, 6, 1)
-        extra = f" | 3W6: {', '.join(map(str, rolls))} -> {base * 10} Minuten"
+    extra = ""
+    if "1W8 TP" in txt:
+        x = random.randint(1, 8)
+        extra = f" | 1W8: {x} -> {x} TP"
+    if "1W12 Stunden" in txt:
+        h = random.randint(1, 12)
+        d = random.randint(1, 6)
+        extra = f" | 1W12: {h} -> {h} Stunden | 1W6: {d} -> +{d} Schaden"
+    if "1W12 Schaden" in txt:
+        x = random.randint(1, 12)
+        extra = f" | 1W12: {x} -> {x} Schaden"
+    if "1W20 TP" in txt:
+        x = random.randint(1, 20)
+        extra = f" | 1W20: {x} -> {x} TP"
+    if "3W6 mal 10 Minuten" in txt:
+        rolls = [random.randint(1, 6) for _ in range(3)]
+        minutes = sum(rolls) * 10
+        extra = f" | 3W6: {', '.join(map(str, rolls))} -> {minutes} Minuten"
+    if "2W12 Schaden" in txt:
+        rolls = [random.randint(1, 12) for _ in range(2)]
+        extra = f" | 2W12: {', '.join(map(str, rolls))} -> {sum(rolls)} Schaden"
+    if "2W10 TP" in txt:
+        rolls = [random.randint(1, 10) for _ in range(2)]
+        extra = f" | 2W10: {', '.join(map(str, rolls))} -> {sum(rolls)} TP"
+    if "1W3 Stunden" in txt:
+        x = random.randint(1, 3)
+        extra = f" | 1W3: {x} -> {x} Stunden"
 
     return f"W12: {r} -> {txt}{extra}"
 
@@ -2259,77 +2259,80 @@ def _roll_trap(pc_level: int, tier: int) -> str:
     d4 = random.randint(1, 4)
     total = d4 + pc_level
 
+    def fmt(res: str) -> str:
+        return f"1W4+Stufe: {d4}+{pc_level}={total} -> {res}"
+
     if tier <= 1:
         if total <= 4:
-            return f"1W4+Lvl: {d4}+{pc_level}={total} -> None"
+            return fmt("Keine")
         if 5 <= total <= 7:
-            return f"1W4+Lvl: {d4}+{pc_level}={total} -> Simple pit trap"
+            return fmt("Einfache Fallgrube")
         if 8 <= total <= 9:
-            return f"1W4+Lvl: {d4}+{pc_level}={total} -> Hidden pit trap"
+            return fmt("Versteckte Fallgrube")
         if total == 10:
-            return f"1W4+Lvl: {d4}+{pc_level}={total} -> Falling net trap"
-        return f"1W4+Lvl: {d4}+{pc_level}={total} -> Poison darts trap"
+            return fmt("Fallnetz")
+        return fmt("Giftspeere")
 
     if tier == 2:
         if total <= 4:
-            return f"1W4+Lvl: {d4}+{pc_level}={total} -> None"
+            return fmt("Keine")
         if 5 <= total <= 7:
-            return f"1W4+Lvl: {d4}+{pc_level}={total} -> Hidden pit trap"
+            return fmt("Versteckte Fallgrube")
         if 8 <= total <= 9:
-            return f"1W4+Lvl: {d4}+{pc_level}={total} -> Spiked pit trap"
+            return fmt("Stachelgrube")
         if total == 10:
-            return f"1W4+Lvl: {d4}+{pc_level}={total} -> Collapsing roof trap"
-        return f"1W4+Lvl: {d4}+{pc_level}={total} -> Poison darts trap"
+            return fmt("Einstürzendes Dach")
+        return fmt("Giftspeere")
 
     if tier == 3:
         if total <= 4:
-            return f"1W4+Lvl: {d4}+{pc_level}={total} -> None"
+            return fmt("Keine")
         if 5 <= total <= 7:
-            return f"1W4+Lvl: {d4}+{pc_level}={total} -> Locking pit trap"
+            return fmt("Verriegelnde Fallgrube")
         if 8 <= total <= 9:
-            return f"1W4+Lvl: {d4}+{pc_level}={total} -> Spiked pit trap"
+            return fmt("Stachelgrube")
         if total == 10:
-            return f"1W4+Lvl: {d4}+{pc_level}={total} -> Collapsing roof trap"
-        return f"1W4+Lvl: {d4}+{pc_level}={total} -> Fire-breathing statue"
+            return fmt("Einstürzendes Dach")
+        return fmt("Feuerspeiende Statue")
 
     if total <= 4:
-        return f"1W4+Lvl: {d4}+{pc_level}={total} -> None"
+        return fmt("Keine")
     if 5 <= total <= 7:
-        return f"1W4+Lvl: {d4}+{pc_level}={total} -> Locking pit trap"
+        return fmt("Verriegelnde Fallgrube")
     if 8 <= total <= 9:
-        return f"1W4+Lvl: {d4}+{pc_level}={total} -> Spiked pit trap"
+        return fmt("Stachelgrube")
     if total == 10:
-        return f"1W4+Lvl: {d4}+{pc_level}={total} -> Collapsing roof trap"
-    return f"1W4+Lvl: {d4}+{pc_level}={total} -> Fire-breathing statue"
+        return fmt("Einstürzendes Dach")
+    return fmt("Feuerspeiende Statue")
 
 MONSTER_POOLS = {
     1: {
-        "9-10": ["goblin", "skeleton", "zombie", "kobold"],
-        "11-12": ["orc", "bandit", "giant spider", "harpy"],
-        "13-14": ["bugbear", "ghoul", "lizardfolk", "wererat"],
-        "15-16": ["ogre", "wight", "gargoyle", "berserker"],
-        "17+": ["troll", "umber hulk", "basilisk", "wraith"],
+        "9-10": ["Goblin", "Skelett", "Zombie", "Kobold"],
+        "11-12": ["Ork", "Bandit", "Riesenspinne", "Harpyie"],
+        "13-14": ["Bugbär", "Ghul", "Echsenmensch", "Wererat"],
+        "15-16": ["Oger", "Wight", "Wasserspeier", "Berserker"],
+        "17+": ["Troll", "Umber Hulk", "Basilisk", "Wraith"],
     },
     2: {
-        "9-10": ["giant spider", "orc", "ghoul", "bugbear"],
-        "11-12": ["mimic", "wereboar", "orc war chief", "druid"],
-        "13-14": ["minotaur", "black pudding", "drow", "griffon"],
-        "15-16": ["drow elite warrior", "troll", "yuan-ti", "wight"],
-        "17+": ["shadow demon", "vampire spawn", "gorgon", "hydra"],
+        "9-10": ["Riesenspinne", "Ork", "Ghul", "Bugbär"],
+        "11-12": ["Mimik", "Wereschwein", "Ork Kriegshäuptling", "Druide"],
+        "13-14": ["Minotaurus", "Schwarzer Schleim", "Drow", "Greif"],
+        "15-16": ["Drow Elitekrieger", "Troll", "Yuan Ti", "Wight"],
+        "17+": ["Schatten Dämon", "Vampirbrut", "Gorgon", "Hydra"],
     },
     3: {
-        "9-10": ["gargoyle", "ogre", "wight", "giant hyena"],
-        "11-12": ["giant turtle", "mummy", "black dragon wyrmling", "displacer beast"],
-        "13-14": ["basilisk", "orc war chief", "drow", "werebear"],
-        "15-16": ["gorgon", "cambion", "quasit + cult fanatics", "chimera"],
-        "17+": ["revenant", "vampire spawn", "stone golem", "shadow demon"],
+        "9-10": ["Wasserspeier", "Oger", "Wight", "Riesenhyäne"],
+        "11-12": ["Riesenschildkröte", "Mumie", "Schwarzer Drache Jungdrache", "Displacer Beast"],
+        "13-14": ["Basilisk", "Ork Kriegshäuptling", "Drow", "Werbär"],
+        "15-16": ["Gorgon", "Cambion", "Quasit und Kultisten", "Chimäre"],
+        "17+": ["Revenant", "Vampirbrut", "Steingolem", "Schatten Dämon"],
     },
     4: {
-        "9-10": ["mummy", "vampire spawn", "gorgon", "wyvern"],
-        "11-12": ["giant", "young dragon", "stone golem", "cambion"],
-        "13-14": ["adult dragon", "demon", "devil", "lich cult leader"],
-        "15-16": ["ancient dragon", "balor", "pit fiend", "empowered lich"],
-        "17+": ["campaign boss", "something unfair on purpose", "two bosses arguing", "the dungeon itself awakens"],
+        "9-10": ["Mumie", "Vampirbrut", "Gorgon", "Wyvern"],
+        "11-12": ["Riese", "Junger Drache", "Steingolem", "Cambion"],
+        "13-14": ["Erwachsener Drache", "Dämon", "Teufel", "Lich Kultführer"],
+        "15-16": ["Uralter Drache", "Balor", "Pit Fiend", "Gestärkter Lich"],
+        "17+": ["Kampagnenboss", "Etwas absichtlich Fieses", "Zwei Bosse streiten", "Der Dungeon erwacht"],
     },
 }
 
@@ -2339,25 +2342,25 @@ def _roll_monsters(pc_level: int, pc_count: int, dungeon_level: int, hard: bool)
     total = d6 + pc_level + (2 if hard else 0)
 
     if total <= 8:
-        return f"1W6+Lvl{'(+2)' if hard else ''}: {d6}+{pc_level}{'+2' if hard else ''}={total} -> None"
+        add = "+2" if hard else ""
+        return f"1W6+Stufe{'+2' if hard else ''}: {d6}+{pc_level}{add}={total} -> Keine"
 
     pool = MONSTER_POOLS.get(tier, MONSTER_POOLS[1])
 
-    if 9 <= total <= 10:
-        monster = random.choice(pool["9-10"])
-        return f"1W6+Lvl{'(+2)' if hard else ''}: {d6}+{pc_level}{'+2' if hard else ''}={total} -> {pc_count} x {monster} (pro PC)"
-    if 11 <= total <= 12:
-        monster = random.choice(pool["11-12"])
-        return f"1W6+Lvl{'(+2)' if hard else ''}: {d6}+{pc_level}{'+2' if hard else ''}={total} -> {pc_count} x {monster} (pro PC)"
-    if 13 <= total <= 14:
-        monster = random.choice(pool["13-14"])
-        return f"1W6+Lvl{'(+2)' if hard else ''}: {d6}+{pc_level}{'+2' if hard else ''}={total} -> {pc_count} x {monster} (pro PC)"
-    if 15 <= total <= 16:
-        monster = random.choice(pool["15-16"])
-        return f"1W6+Lvl{'(+2)' if hard else ''}: {d6}+{pc_level}{'+2' if hard else ''}={total} -> {pc_count} x {monster} (pro PC)"
+    def line(key: str) -> str:
+        add = "+2" if hard else ""
+        m = random.choice(pool[key])
+        return f"1W6+Stufe{'+2' if hard else ''}: {d6}+{pc_level}{add}={total} -> {pc_count} x {m} pro Spieler"
 
-    monster = random.choice(pool["17+"])
-    return f"1W6+Lvl{'(+2)' if hard else ''}: {d6}+{pc_level}{'+2' if hard else ''}={total} -> {pc_count} x {monster} (pro PC)"
+    if 9 <= total <= 10:
+        return line("9-10")
+    if 11 <= total <= 12:
+        return line("11-12")
+    if 13 <= total <= 14:
+        return line("13-14")
+    if 15 <= total <= 16:
+        return line("15-16")
+    return line("17+")
 
 def _cr_band_from_level(lvl: int) -> str:
     if lvl <= 4:
@@ -2374,8 +2377,8 @@ def _roll_quest(pc_level: int) -> str:
     total = d8 + pc_level
     for a, b, txt in table:
         if a <= total <= b:
-            return f"1W8+Lvl: {d8}+{pc_level}={total} -> {txt}"
-    return f"1W8+Lvl: {d8}+{pc_level}={total} -> Quest (improv)"
+            return f"1W8+Stufe: {d8}+{pc_level}={total} -> {txt}"
+    return f"1W8+Stufe: {d8}+{pc_level}={total} -> Quest nach Gefühl"
 
 def _roll_joker() -> str:
     n = random.randint(1, 10)
@@ -2383,39 +2386,73 @@ def _roll_joker() -> str:
     npc = JOKER_NPCS[n - 1]
     item = JOKER_ITEMS[i - 1]
     return (
-        f"NPC W10: {n} -> {npc[0]} {npc[1]} ({npc[2]})\n"
-        f"Quest ITEM W6: {i} -> {item[0]} ({item[1]}) Wert: {item[2]}"
+        f"NSC W10: {n} -> {npc[0]} {npc[1]} ({npc[2]})\n"
+        f"Quest Gegenstand W6: {i} -> {item[0]} ({item[1]}) Wert: {item[2]}"
     )
 
-async def rolldungeon(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    pc_level = 1
-    pc_count = 1
-    dungeon_level = 1
-    rooms = None
+def build_dng_level_keyboard() -> InlineKeyboardMarkup:
+    rows = []
+    row = []
+    for lvl in range(1, 21):
+        row.append(InlineKeyboardButton(str(lvl), callback_data=f"dng_lvl:{lvl}"))
+        if len(row) == 4:
+            rows.append(row)
+            row = []
+    if row:
+        rows.append(row)
+    rows.append([InlineKeyboardButton("Abbrechen", callback_data="dng_cancel")])
+    return InlineKeyboardMarkup(rows)
 
-    try:
-        if len(context.args) >= 1:
-            pc_level = int(context.args[0])
-        if len(context.args) >= 2:
-            pc_count = int(context.args[1])
-        if len(context.args) >= 3:
-            dungeon_level = int(context.args[2])
-        else:
-            dungeon_level = pc_level
-        if len(context.args) >= 4:
-            rooms = int(context.args[3])
-    except Exception:
-        pc_level = 1
-        pc_count = 1
-        dungeon_level = 1
-        rooms = None
+def build_dng_count_keyboard() -> InlineKeyboardMarkup:
+    rows = [[
+        InlineKeyboardButton("1", callback_data="dng_pcs:1"),
+        InlineKeyboardButton("2", callback_data="dng_pcs:2"),
+        InlineKeyboardButton("3", callback_data="dng_pcs:3"),
+    ], [
+        InlineKeyboardButton("4", callback_data="dng_pcs:4"),
+        InlineKeyboardButton("5", callback_data="dng_pcs:5"),
+        InlineKeyboardButton("6", callback_data="dng_pcs:6"),
+    ], [
+        InlineKeyboardButton("Abbrechen", callback_data="dng_cancel")
+    ]]
+    return InlineKeyboardMarkup(rows)
 
-    pc_level = max(1, min(20, pc_level))
-    pc_count = max(1, min(8, pc_count))
-    dungeon_level = max(1, min(20, dungeon_level))
+async def rolldungeon_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data.pop("dng_pc_level", None)
+    context.user_data.pop("dng_pc_count", None)
 
-    if rooms is None:
-        rooms = random.randint(1, 6) + 5
+    await update.message.reply_text(
+        "🗺️ Rolldungeon\nWähle die Spielerstufe",
+        reply_markup=build_dng_level_keyboard()
+    )
+    return DNG_PICK_LEVEL
+
+async def rolldungeon_pick_level(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    lvl = int(query.data.split(":", 1)[1])
+    lvl = max(1, min(20, lvl))
+    context.user_data["dng_pc_level"] = lvl
+
+    await query.edit_message_text(
+        f"🗺️ Rolldungeon\nSpielerstufe: {lvl}\nWähle die Spieleranzahl",
+        reply_markup=build_dng_count_keyboard()
+    )
+    return DNG_PICK_COUNT
+
+async def rolldungeon_pick_count(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    pc_count = int(query.data.split(":", 1)[1])
+    pc_count = max(1, min(6, pc_count))
+    context.user_data["dng_pc_count"] = pc_count
+
+    pc_level = int(context.user_data.get("dng_pc_level", 1))
+    dungeon_level = pc_level
+
+    rooms = random.randint(1, 6) + 5
     rooms = max(3, min(20, rooms))
 
     tier = _tier_from_level(dungeon_level)
@@ -2423,8 +2460,8 @@ async def rolldungeon(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     header = (
         "🗺️ Rolldungeon\n"
-        f"PCs: {pc_count} | PC Stufe: {pc_level} | Dungeon Stufe: {dungeon_level} | Räume: {rooms}\n"
-        "Tipp: Spoiler in Telegram per Strg+Shift+P (Desktop) oder Text markieren und Spoiler wählen.\n\n"
+        f"Spieleranzahl: {pc_count} | Spielerstufe: {pc_level} | Dungeon Stufe: {dungeon_level} | Räume: {rooms}\n"
+        "Tipp: Spoiler in Telegram per Strg+Shift+P oder Text markieren und Spoiler wählen.\n\n"
         "Räume sind als Spoiler vorbereitet. Klick drauf zum Aufdecken.\n"
     )
 
@@ -2447,40 +2484,45 @@ async def rolldungeon(update: Update, context: ContextTypes.DEFAULT_TYPE):
         rank_roll = random.randint(1, 12)
         suit_roll = random.randint(1, 4)
         suit = SUITS[suit_roll]
+        suit_name = SUIT_NAMES_DE[suit]
 
         if rank_roll <= 9:
             rank = str(rank_roll + 1)
         elif rank_roll == 10:
-            rank = "J"
+            rank = "B"
         elif rank_roll == 11:
-            rank = "Q"
+            rank = "D"
         else:
-            rank = "🃏"
+            rank = "JOKER"
 
         is_hard = (suit == "♠")
-        room_lines: List[str] = []
-        room_lines.append(f"Generator: Rang W12={rank_roll} -> {rank} | Symbol W4={suit_roll} -> {suit}")
 
-        if rank == "🃏":
-            room_lines.append("Special: Joker Raum")
+        room_lines: List[str] = []
+        room_lines.append(f"Generator: Rang W12={rank_roll} -> {rank} | Symbol W4={suit_roll} -> {suit_name} {suit}")
+
+        if rank == "JOKER":
+            room_lines.append("Spezial: Joker Raum")
             room_lines.append(_roll_joker())
             if random.random() < 0.5:
                 room_lines.append(f"Geräusch: {_roll_sound()}")
             if random.random() < 0.5:
                 room_lines.append(f"Geruch: {_roll_smell()}")
+
         else:
             if suit == "♦":
-                if rank in {"7", "8", "9", "10", "Q"}:
+                if rank in {"7", "8", "9", "10", "D"}:
                     room_lines.append("Typ: Schatzraum")
                     if random.random() < 0.35:
-                        room_lines.append("Falle: Poison needle trap (kleiner Klassiker)")
+                        room_lines.append("Falle: Gift Nadel Falle")
+                    room_lines.append("Schatz:")
                     room_lines.append(generate_single_treasure(cr_band))
                 else:
                     room_lines.append("Typ: Falle")
                     room_lines.append(_roll_trap(pc_level, tier))
                     if random.random() < 0.6:
-                        room_lines.append("Danach: Monster im Lärm angezogen")
+                        room_lines.append("Danach: Monster durch den Lärm angelockt")
                         room_lines.append(_roll_monsters(pc_level, pc_count, dungeon_level, is_hard))
+
             elif suit == "♥":
                 if rank in {"6", "9", "10"} and random.random() < 0.7:
                     room_lines.append("Typ: Magischer Pool")
@@ -2488,16 +2530,20 @@ async def rolldungeon(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 else:
                     room_lines.append("Typ: Raum Inhalt")
                     room_lines.append(_roll_room_contents(tier))
+
                 if random.random() < 0.6:
                     room_lines.append(f"Geräusch: {_roll_sound()}")
                 if random.random() < 0.6:
                     room_lines.append(f"Geruch: {_roll_smell()}")
+
             else:
                 room_lines.append("Typ: Monsterraum")
                 room_lines.append(_roll_monsters(pc_level, pc_count, dungeon_level, is_hard))
+
                 if random.random() < 0.4:
                     room_lines.append("Beute: kleiner Bonus Schatz")
                     room_lines.append(generate_single_treasure(cr_band))
+
                 if random.random() < 0.5:
                     room_lines.append(f"Geräusch: {_roll_sound()}")
                 if random.random() < 0.5:
@@ -2507,7 +2553,7 @@ async def rolldungeon(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 room_lines.append("Nebenflur: Inhalt")
                 room_lines.append(_roll_hallway())
 
-        room_title = f"{rank}{suit}"
+        room_title = f"{rank} {suit_name} {suit}"
         room_txt = "\n".join(room_lines)
 
         sections.append(
@@ -2515,19 +2561,21 @@ async def rolldungeon(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"<span class=\"tg-spoiler\">{html.escape(room_txt)}</span>\n"
         )
 
-    end_choice = "Questziel" if random.random() < 0.6 else "Treppe zum nächsten Level"
+    finale_is_quest = random.random() < 0.6
     end_lines = [
-        f"Finale: {end_choice}",
+        "Finale",
         f"Geräusch: {_roll_sound()}",
         f"Geruch: {_roll_smell()}",
     ]
 
-    if end_choice == "Questziel":
+    if finale_is_quest:
+        end_lines.append("Ziel: Questziel")
         end_lines.append("Boss Encounter")
         end_lines.append(_roll_monsters(pc_level, pc_count, dungeon_level, True))
-        end_lines.append("Schatzhort als Belohnung")
+        end_lines.append("Belohnung: Schatzhort")
         end_lines.append(generate_hoard_treasure(cr_band))
     else:
+        end_lines.append("Ziel: Treppe zur nächsten Ebene")
         end_lines.append("Abstieg gesichert, kleiner Abschiedsschatz")
         end_lines.append(generate_single_treasure(cr_band))
 
@@ -2547,9 +2595,18 @@ async def rolldungeon(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if current:
         chunks.append(current)
 
+    await query.edit_message_text("Dungeon wird generiert 🙂")
     for ch in chunks:
-        await update.message.reply_text(ch, parse_mode="HTML")
+        await query.message.reply_text(ch, parse_mode="HTML")
 
+    return ConversationHandler.END
+
+async def rolldungeon_cancel_cb(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    if query:
+        await query.answer()
+        await query.edit_message_text("Rolldungeon abgebrochen 🙂")
+    return ConversationHandler.END
 
 # -----------------------
 # HELP
@@ -2565,7 +2622,7 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/rollhunt  Jagdwurf mit Mod Auswahl\n"
         "/rollwaldkarte  zieht eine Waldkarte (Skillchance, Ruhe, Entdeckung, Encounter, Hort, NPC)\n"
         "/rollschatz  Schatz würfeln (Einzeln oder Hort, dann HG Auswahl)\n"
-        "/rolldungeon [pc_lvl] [pc_count] [dungeon_lvl] [rooms]  Dungeon als Würfelsystem, alle Räume auf einmal als Spoiler\n\n"
+        "/rolldungeon  Dungeon per Klick Auswahl, alle Räume auf einmal als Spoiler\n\n"
         "🌍 Biom\n"
         "/setbiom <Biom>  setzt dein aktuelles Biom (oder ohne Parameter per Buttons)\n"
         "/biom  zeigt dein aktuelles Biom\n"
@@ -2631,7 +2688,22 @@ def main():
     )
     app.add_handler(treasure_conv)
 
-    app.add_handler(CommandHandler("rolldungeon", rolldungeon))
+    dungeon_conv = ConversationHandler(
+        entry_points=[CommandHandler("rolldungeon", rolldungeon_start)],
+        states={
+            DNG_PICK_LEVEL: [
+                CallbackQueryHandler(rolldungeon_pick_level, pattern=r"^dng_lvl:"),
+                CallbackQueryHandler(rolldungeon_cancel_cb, pattern=r"^dng_cancel$"),
+            ],
+            DNG_PICK_COUNT: [
+                CallbackQueryHandler(rolldungeon_pick_count, pattern=r"^dng_pcs:"),
+                CallbackQueryHandler(rolldungeon_cancel_cb, pattern=r"^dng_cancel$"),
+            ],
+        },
+        fallbacks=[CommandHandler("cancel", rolldungeon_cancel_cb)],
+        allow_reentry=True,
+    )
+    app.add_handler(dungeon_conv)
 
     encounter_conv = ConversationHandler(
         entry_points=[CommandHandler("rollencounter", rollencounter_start)],
