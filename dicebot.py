@@ -1456,7 +1456,6 @@ HOARD_LOOT = {
         (86, 100, ("gems", (2, 6), 10000), [("H", "1W2"), ("I", "1")]),
     ],
 }
-}
 
 def _cr_label(cr_key: str) -> str:
     if cr_key == "0-4":
@@ -2069,3 +2068,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
