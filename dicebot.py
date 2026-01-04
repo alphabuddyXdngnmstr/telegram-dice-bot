@@ -1118,6 +1118,32 @@ async def rollwaldkarte_pick_level(update: Update, context: ContextTypes.DEFAULT
 
 
 # -----------------------
+# ROLLPLAYERBEHAVIOUR SYSTEM
+# -----------------------
+
+PLAYER_BEHAVIOUR_TABLE = {
+    1: ("Chaotisch Dumm", "Du stehst vor einer Tür, was tust du? Schlüssel gegen Tür werfen!"),
+    2: ("Chaotisch", "Du stehst vor einer Tür, was tust du? Schlüssel gegen Tür werfen und auf das Schloss zielen!"),
+    3: ("Neutral, Neutral", "Du stehst vor einer Tür, was tust du? Schlüssel ins Schloss stecken."),
+    4: ("Neutral Prüfend", "Du stehst vor einer Tür, was tust du? An der Tür stehen Schlüssel betrachten und ins Schloss stecken."),
+    5: ("Logisch", "Du stehst vor einer Tür, was tust du? An der Tür lauschen und Entscheidung treffen ggf die Tür zu öffnen"),
+    6: ("Logisch Intelligent", "Du stehst vor einer Tür, was tust du? Lauschen, durch das Schlüsselloch schauen und vorbereiten."),
+}
+
+async def rollplayerbehaviour(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    r = random.randint(1, 6)
+    title, example = PLAYER_BEHAVIOUR_TABLE[r]
+
+    msg = (
+        f"🎭 Rollplayer Behaviour\n"
+        f"1W6: {r}\n"
+        f"Ergebnis: {title}\n"
+        f"Bsp: {example}"
+    )
+    await update.message.reply_text(msg)
+
+
+# -----------------------
 # HELP
 # -----------------------
 
@@ -1128,7 +1154,8 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/roll <Ausdruck>  Würfeln, z.B. /roll 1d6 oder /roll 2d20+3 oder /roll 1d20+2d6+3 (auch 1w6)\n"
         "/rollchance  Skillwurf plus SG und Belohnung\n"
         "/rollhunt  Jagdwurf mit Mod Auswahl\n"
-        "/rollwaldkarte  zieht eine Waldkarte (Skillchance, Ruhe, Entdeckung, Encounter, Hort, NPC)\n\n"
+        "/rollwaldkarte  zieht eine Waldkarte (Skillchance, Ruhe, Entdeckung, Encounter, Hort, NPC)\n"
+        "/rollplayerbehaviour  würfelt Rollplayer Behaviour (1W6)\n\n"
         "🌍 Biom\n"
         "/setbiom <Biom>  setzt dein aktuelles Biom (oder ohne Parameter per Buttons)\n"
         "/biom  zeigt dein aktuelles Biom\n"
@@ -1168,6 +1195,8 @@ def main():
 
     app.add_handler(CommandHandler("rollwaldkarte", rollwaldkarte))
     app.add_handler(CallbackQueryHandler(rollwaldkarte_pick_level, pattern=r"^waldkarte_level:"))
+
+    app.add_handler(CommandHandler("rollplayerbehaviour", rollplayerbehaviour))
 
     app.add_handler(CommandHandler("setbiom", setbiom))
     app.add_handler(CommandHandler("biom", biom))
