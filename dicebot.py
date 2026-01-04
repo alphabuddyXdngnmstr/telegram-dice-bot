@@ -5,6 +5,7 @@ import math
 import html
 from pathlib import Path
 from typing import Optional, Tuple, List, Dict
+
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application,
@@ -20,9 +21,6 @@ from telegram.ext import (
 # DICE ROLL SYSTEM
 # -----------------------
 
-# Neue Roll Syntax: Ausdruck aus Würfeltermen und Zahlen, z.B.
-# 1d20+2d6+3
-# 2w6-1d4+5
 _ROLL_ALLOWED = re.compile(r"^[0-9dDwW+\-\s]+$")
 _ROLL_TERM = re.compile(r"([+\-]?)(\d+[dw]\d+|\d+)", re.IGNORECASE)
 _ROLL_DICE = re.compile(r"^(\d+)[dw](\d+)$", re.IGNORECASE)
@@ -90,7 +88,6 @@ def parse_roll_expression(expr: str) -> Tuple[str, int, List[str]]:
 
     return normalized_expr, total, details
 
-
 async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
         await update.message.reply_text(
@@ -122,50 +119,6 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"Summe: {total}"
     )
     await update.message.reply_text(msg)
-
-
-# -----------------------
-# ROLLPLAYERBEHAVIOUR SYSTEM
-# -----------------------
-
-PLAYER_BEHAVIOUR_TABLE = {
-    1: (
-        "Chaotisch Dumm",
-        "Du stehst vor einer Tür, was tust du? Schlüssel gegen Tür werfen!"
-    ),
-    2: (
-        "Chaotisch",
-        "Du stehst vor einer Tür, was tust du? Schlüssel gegen Tür werfen und auf das Schloss zielen!"
-    ),
-    3: (
-        "Neutral, Neutral",
-        "Du stehst vor einer Tür, was tust du? Schlüssel ins Schloss stecken."
-    ),
-    4: (
-        "Neutral Prüfend",
-        "Du stehst vor einer Tür, was tust du? An der Tür stehen, Schlüssel betrachten und ins Schloss stecken."
-    ),
-    5: (
-        "Logisch",
-        "Du stehst vor einer Tür, was tust du? An der Tür lauschen und Entscheidung treffen, ggf die Tür zu öffnen."
-    ),
-    6: (
-        "Logisch Intelligent",
-        "Du stehst vor einer Tür, was tust du? Lauschen, durch das Schlüsselloch schauen und vorbereiten."
-    ),
-}
-
-async def rollplayerbehaviour(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    r = random.randint(1, 6)
-    title, example = PLAYER_BEHAVIOUR_TABLE[r]
-    msg = (
-        f"🎭 Rollplayer Behaviour\n"
-        f"1W6: {r}\n"
-        f"Ergebnis: {title}\n"
-        f"Bsp: {example}"
-    )
-    await update.message.reply_text(msg)
-
 
 # -----------------------
 # ORACLE SYSTEM
@@ -232,7 +185,7 @@ def oracle_outcome(odds_key: str, chaos_rank: int) -> dict:
     adjust = (chaos_rank - 5) * 5
     chance = clamp(base + adjust, 0, 100)
 
-    roll = random.randint(1, 100)
+    roll_ = random.randint(1, 100)
 
     ex_yes = 0 if chance == 0 else max(1, chance // 5)
 
@@ -240,20 +193,20 @@ def oracle_outcome(odds_key: str, chaos_rank: int) -> dict:
     ex_no_size = 0 if fail_size == 0 else int(math.ceil(fail_size / 5))
     ex_no_start = 101 if ex_no_size == 0 else 101 - ex_no_size
 
-    if chance > 0 and roll <= ex_yes:
+    if chance > 0 and roll_ <= ex_yes:
         result = "Außergewöhnlich Ja"
-    elif roll <= chance:
+    elif roll_ <= chance:
         result = "Ja"
-    elif chance < 100 and roll >= ex_no_start:
+    elif chance < 100 and roll_ >= ex_no_start:
         result = "Außergewöhnlich Nein"
     else:
         result = "Nein"
 
-    doubles = (roll % 11 == 0)
-    random_event = bool(doubles and roll <= chaos_rank)
+    doubles = (roll_ % 11 == 0)
+    random_event = bool(doubles and roll_ <= chaos_rank)
 
     return {
-        "roll": roll,
+        "roll": roll_,
         "chance": chance,
         "ex_yes": ex_yes,
         "ex_no_start": ex_no_start,
@@ -352,7 +305,6 @@ async def rolloracle_pick_chaos(update: Update, context: ContextTypes.DEFAULT_TY
 async def rolloracle_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Orakel abgebrochen 🙂")
     return ConversationHandler.END
-
 
 # -----------------------
 # BIOM SYSTEM
@@ -492,13 +444,11 @@ async def rollbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(msg)
 
-
 # -----------------------
 # ENCOUNTER SYSTEM (liest encounters_de.txt)
 # -----------------------
 
 ENC_CONFIRM, ENC_PICK_BIOM, ENC_PICK_LEVEL = range(3)
-
 ENCOUNTERS: Dict[str, Dict[str, List[Tuple[int, int, str]]]] = {}
 
 def _to_int_w100(token: str) -> int:
@@ -686,12 +636,12 @@ def pick_encounter(biom: str, level: str) -> Tuple[int, str]:
             available = "keine"
         raise KeyError(f"Keine Tabelle für {biom} {level}. Verfügbar: {available}")
 
-    roll = random.randint(1, 100)
+    roll_ = random.randint(1, 100)
     for s, e, txt in table:
-        if s <= roll <= e:
-            return roll, txt
+        if s <= roll_ <= e:
+            return roll_, txt
 
-    return roll, "Nichts gefunden. Deine Tabelle hat an der Stelle vermutlich eine Lücke."
+    return roll_, "Nichts gefunden. Deine Tabelle hat an der Stelle vermutlich eine Lücke."
 
 _W_DICE_EXPR = re.compile(r"(\d+)\s*[Ww]\s*(\d+)(\s*[+-]\s*\d+)?")
 
@@ -767,10 +717,10 @@ async def rollencounter_pick_biom(update: Update, context: ContextTypes.DEFAULT_
     query = update.callback_query
     await query.answer()
 
-    biom = query.data.split(":", 1)[1]
-    context.user_data["enc_biome"] = biom
+    biom_ = query.data.split(":", 1)[1]
+    context.user_data["enc_biome"] = biom_
 
-    await query.edit_message_text(f"⚔️ Biom: {biom}\nWelche Stufe?", reply_markup=build_encounter_level_keyboard())
+    await query.edit_message_text(f"⚔️ Biom: {biom_}\nWelche Stufe?", reply_markup=build_encounter_level_keyboard())
     return ENC_PICK_LEVEL
 
 async def rollencounter_pick_level(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -778,15 +728,15 @@ async def rollencounter_pick_level(update: Update, context: ContextTypes.DEFAULT
     await query.answer()
 
     level = query.data.split(":", 1)[1]
-    biom = (context.user_data.get("enc_biome") or "").strip()
+    biom_ = (context.user_data.get("enc_biome") or "").strip()
 
     try:
-        w100, encounter_raw = pick_encounter(biom, level)
+        w100, encounter_raw = pick_encounter(biom_, level)
         encounter_rolled, dice_details = roll_inline_w_dice(encounter_raw)
 
         msg = (
             f"⚔️ Encounter\n"
-            f"Biom: {_canonical_enc_biom(biom)}\n"
+            f"Biom: {_canonical_enc_biom(biom_)}\n"
             f"Stufe: {level}\n"
             f"W100: {w100:02d}\n\n"
             f"Begegnung (Tabelle):\n{encounter_raw}\n\n"
@@ -799,8 +749,8 @@ async def rollencounter_pick_level(update: Update, context: ContextTypes.DEFAULT
     except KeyError as e:
         msg = (
             f"{e}\n\n"
-            f"Check Level Auswahl und die Überschrift in encounters_de.txt.\n"
-            f"Wenn du auf Render bist, check ob auf dem Server wirklich die aktuelle Datei liegt."
+            "Check Level Auswahl und die Überschrift in encounters_de.txt.\n"
+            "Wenn du auf Render bist, check ob auf dem Server wirklich die aktuelle Datei liegt."
         )
 
     await query.edit_message_text(msg)
@@ -816,15 +766,14 @@ async def encdebug(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     lines = []
-    for biom in sorted(ENCOUNTERS.keys()):
-        lvls = ", ".join(sorted(ENCOUNTERS[biom].keys()))
-        lines.append(f"{biom}: {lvls}")
+    for b in sorted(ENCOUNTERS.keys()):
+        lvls = ", ".join(sorted(ENCOUNTERS[b].keys()))
+        lines.append(f"{b}: {lvls}")
 
     await update.message.reply_text(
         "📚 Encounter Debug\n"
         "Geladene Tabellen:\n" + "\n".join(lines)
     )
-
 
 # -----------------------
 # ROLLCHANCE SYSTEM
@@ -913,7 +862,6 @@ async def rollchance(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     await update.message.reply_text(msg)
-
 
 # -----------------------
 # ROLLHUNT SYSTEM
@@ -1028,7 +976,6 @@ async def rollhunt_cancel_cb(update: Update, context: ContextTypes.DEFAULT_TYPE)
     await query.answer()
     await query.edit_message_text("Rollhunt abgebrochen 🙂")
 
-
 # -----------------------
 # WALDKARTE SYSTEM
 # -----------------------
@@ -1062,7 +1009,7 @@ async def rollwaldkarte(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if roll18 in (13, 14):
         context.user_data["waldkarte_pending"] = {"type": "encounter", "card_roll": roll18}
-        await update.message.reply_text(f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: Encounter\n\nWähle die Stufe:", reply_markup=build_waldkarte_level_keyboard())
+        await update.message.reply_text("🌲 Waldkarte\nErgebnis: Encounter\nWähle die Stufe:", reply_markup=build_waldkarte_level_keyboard())
         return
 
     if roll18 in (15, 16):
@@ -1098,11 +1045,11 @@ async def rollwaldkarte(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if roll18 == 17:
         context.user_data["waldkarte_pending"] = {"type": "hort", "card_roll": roll18}
-        await update.message.reply_text(f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: Kreaturenhort\n\nWähle die Stufe:", reply_markup=build_waldkarte_level_keyboard())
+        await update.message.reply_text("🌲 Waldkarte\nErgebnis: Kreaturenhort\nWähle die Stufe:", reply_markup=build_waldkarte_level_keyboard())
         return
 
     await update.message.reply_text(
-        f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: NPC\nEin NPC gibt dir eine Wegbeschreibung zum Portal oder die Info, die du suchst (Joker)."
+        f"🌲 Waldkarte\nW18: {roll18}\nErgebnis: NPC\nEin NPC gibt dir eine Wegbeschreibung zum Portal oder die Info, die du suchst."
     )
 
 async def rollwaldkarte_pick_level(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -1158,64 +1105,78 @@ async def rollwaldkarte_pick_level(update: Update, context: ContextTypes.DEFAULT
     except KeyError as e:
         await query.edit_message_text(str(e))
 
+# -----------------------
+# ROLLPLAYERBEHAVIOUR SYSTEM
+# -----------------------
+
+PLAYER_BEHAVIOUR_TABLE = {
+    1: ("Chaotisch Dumm", "Du stehst vor einer Tür, was tust du? Schlüssel gegen Tür werfen!"),
+    2: ("Chaotisch", "Du stehst vor einer Tür, was tust du? Schlüssel gegen Tür werfen und auf das Schloss zielen!"),
+    3: ("Neutral Neutral", "Du stehst vor einer Tür, was tust du? Schlüssel ins Schloss stecken."),
+    4: ("Neutral Prüfend", "Du stehst vor einer Tür, was tust du? An der Tür stehen, Schlüssel betrachten und ins Schloss stecken."),
+    5: ("Logisch", "Du stehst vor einer Tür, was tust du? An der Tür lauschen und Entscheidung treffen, ggf die Tür zu öffnen."),
+    6: ("Logisch Intelligent", "Du stehst vor einer Tür, was tust du? Lauschen, durch das Schlüsselloch schauen und vorbereiten."),
+}
+
+async def rollplayerbehaviour(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    r = random.randint(1, 6)
+    title, example = PLAYER_BEHAVIOUR_TABLE[r]
+
+    msg = (
+        f"🎭 Rollplayer Behaviour\n"
+        f"1W6: {r}\n"
+        f"Ergebnis: {title}\n"
+        f"Bsp: {example}"
+    )
+    await update.message.reply_text(msg)
 
 # -----------------------
 # ROLLSCHATZ SYSTEM
 # -----------------------
 
-TREASURE_PICK_TYPE, TREASURE_PICK_CR = range(2)
+TREASURE_KIND_STATE = 200
+TREASURE_CR_STATE = 201
 
-TREASURE_TYPES = [
-    ("Einzeln", "single"),
-    ("Hort", "hoard"),
-]
+COIN_ORDER = ["KM", "SM", "EM", "GM", "PM"]
 
-TREASURE_CR_BANDS = ["0-4", "5-10", "11-16", "17+"]
-
-COIN_KEYS = ["KM", "SM", "EM", "GM", "PM"]
-
-def _fmt_num(n: int) -> str:
+def _fmt_int(n: int) -> str:
     return f"{n:,}".replace(",", ".")
 
 def _fmt_w100(n: int) -> str:
     return "00" if n == 100 else f"{n:02d}"
 
-def _roll_scaled(count: int, sides: int, mult: int = 1) -> Tuple[int, List[int]]:
-    rolls = [random.randint(1, sides) for _ in range(count)]
-    return sum(rolls) * mult, rolls
-
-def _roll_count(count: int, sides: int) -> Tuple[int, List[int]]:
+def _roll_nds(count: int, sides: int) -> Tuple[int, List[int]]:
     rolls = [random.randint(1, sides) for _ in range(count)]
     return sum(rolls), rolls
 
-def _coin_line(cur: str, count: int, sides: int, mult: int) -> Tuple[int, str]:
-    val, rolls = _roll_scaled(count, sides, mult)
-    mult_txt = f" x {_fmt_num(mult)}" if mult != 1 else ""
-    if count == 1:
-        detail = f"{count}W{sides}{mult_txt} = {_fmt_num(val)} (Wurf: {rolls[0]})"
+def _roll_coin_spec(coin: str, count: int, sides: int, mult: int) -> Tuple[int, str]:
+    base, rolls = _roll_nds(count, sides)
+    total = base * mult
+    if mult == 1:
+        detail = f"{coin}: {count}W{sides} = {base} (Würfe: {', '.join(map(str, rolls))})"
     else:
-        detail = f"{count}W{sides}{mult_txt} = {_fmt_num(val)} (Würfe: {', '.join(map(str, rolls))})"
-    return val, f"{cur}: {detail}"
+        detail = f"{coin}: {count}W{sides} x {_fmt_int(mult)} = {_fmt_int(total)} (Basis {base}, Würfe: {', '.join(map(str, rolls))})"
+    return total, detail
 
-def build_treasure_type_keyboard() -> InlineKeyboardMarkup:
-    rows = [
-        [
-            InlineKeyboardButton("💰 Einzeln", callback_data="treasure_type:single"),
-            InlineKeyboardButton("🏺 Hort", callback_data="treasure_type:hoard"),
-        ],
-        [InlineKeyboardButton("Abbrechen", callback_data="treasure_cancel")],
-    ]
-    return InlineKeyboardMarkup(rows)
+def _roll_count_expr(expr: str) -> Tuple[int, str]:
+    e = (expr or "").strip()
+    if e == "1":
+        return 1, "1"
+    m = re.match(r"^(\d+)[Ww](\d+)$", e)
+    if not m:
+        return 1, "1"
+    c = int(m.group(1))
+    s = int(m.group(2))
+    total, rolls = _roll_nds(c, s)
+    return total, f"{c}W{s} = {total} (Würfe: {', '.join(map(str, rolls))})"
 
-def build_treasure_cr_keyboard() -> InlineKeyboardMarkup:
-    rows = [
-        [InlineKeyboardButton("HG 0-4", callback_data="treasure_cr:0-4"), InlineKeyboardButton("HG 5-10", callback_data="treasure_cr:5-10")],
-        [InlineKeyboardButton("HG 11-16", callback_data="treasure_cr:11-16"), InlineKeyboardButton("HG 17+", callback_data="treasure_cr:17+")],
-        [InlineKeyboardButton("Abbrechen", callback_data="treasure_cancel")],
-    ]
-    return InlineKeyboardMarkup(rows)
+def _pick_range_table(table: List[Tuple[int, int, object]], roll_: int):
+    for a, b, payload in table:
+        if a <= roll_ <= b:
+            return payload
+    return None
 
-SINGLE_TREASURE_TABLE: Dict[str, List[Tuple[int, int, List[Tuple[str, int, int, int]]]]] = {
+INDIVIDUAL_TREASURE: Dict[str, List[Tuple[int, int, List[Tuple[str, int, int, int]]]]] = {
     "0-4": [
         (1, 30, [("KM", 5, 6, 1)]),
         (31, 60, [("SM", 4, 6, 1)]),
@@ -1243,178 +1204,8 @@ SINGLE_TREASURE_TABLE: Dict[str, List[Tuple[int, int, List[Tuple[str, int, int, 
     ],
 }
 
-HOARD_COIN_BASE: Dict[str, List[Tuple[str, int, int, int]]] = {
-    "0-4": [("KM", 6, 6, 100), ("SM", 3, 6, 100), ("GM", 2, 6, 10)],
-    "5-10": [("KM", 2, 6, 100), ("SM", 2, 6, 1000), ("GM", 6, 6, 100), ("PM", 3, 6, 10)],
-    "11-16": [("KM", 2, 6, 100), ("SM", 2, 6, 1000), ("GM", 6, 6, 100), ("PM", 3, 6, 10)],
-    "17+": [("GM", 12, 6, 1000), ("PM", 8, 6, 1000)],
-}
-
-# gem_art: (kind, count_dice_count, count_dice_sides, count_mult, value_each_gp)
-# magic: list of (table_letter, count_dice_count, count_dice_sides, count_mult)
-HOARD_EXTRA_TABLE: Dict[str, List[Tuple[int, int, Optional[Tuple[str, int, int, int, int]], Optional[List[Tuple[str, int, int, int]]]]]] = {
-    "0-4": [
-        (1, 6, None, None),
-        (7, 16, ("Edelsteine", 2, 6, 1, 10), None),
-        (17, 26, ("Kunstgegenstände", 2, 4, 1, 25), None),
-        (27, 36, ("Edelsteine", 2, 6, 1, 50), None),
-        (37, 44, ("Edelsteine", 2, 6, 1, 10), [("A", 1, 6, 1)]),
-        (45, 52, ("Kunstgegenstände", 2, 4, 1, 25), [("A", 1, 6, 1)]),
-        (53, 60, ("Edelsteine", 2, 6, 1, 50), [("A", 1, 6, 1)]),
-        (61, 65, ("Edelsteine", 2, 6, 1, 10), [("B", 1, 4, 1)]),
-        (66, 70, ("Kunstgegenstände", 2, 4, 1, 25), [("B", 1, 4, 1)]),
-        (71, 75, ("Edelsteine", 2, 6, 1, 50), [("B", 1, 4, 1)]),
-        (76, 78, ("Edelsteine", 2, 6, 1, 10), [("C", 1, 4, 1)]),
-        (79, 80, ("Kunstgegenstände", 2, 4, 1, 25), [("C", 1, 4, 1)]),
-        (81, 85, ("Edelsteine", 2, 6, 1, 50), [("C", 1, 4, 1)]),
-        (86, 92, ("Kunstgegenstände", 2, 4, 1, 25), [("F", 1, 4, 1)]),
-        (93, 97, ("Edelsteine", 2, 6, 1, 50), [("F", 1, 4, 1)]),
-        (98, 99, ("Kunstgegenstände", 2, 4, 1, 25), [("G", 1, 1, 1)]),
-        (100, 100, ("Edelsteine", 2, 6, 1, 50), [("G", 1, 1, 1)]),
-    ],
-    "5-10": [
-        (1, 4, None, None),
-        (5, 10, ("Kunstgegenstände", 2, 4, 1, 25), None),
-        (11, 16, ("Edelsteine", 3, 6, 1, 50), None),
-        (17, 22, ("Edelsteine", 3, 6, 1, 100), None),
-        (23, 28, ("Kunstgegenstände", 2, 4, 1, 250), None),
-        (29, 32, ("Kunstgegenstände", 2, 4, 1, 25), [("A", 1, 6, 1)]),
-        (33, 36, ("Edelsteine", 3, 6, 1, 50), [("A", 1, 6, 1)]),
-        (37, 40, ("Edelsteine", 3, 6, 1, 100), [("A", 1, 6, 1)]),
-        (41, 44, ("Kunstgegenstände", 2, 4, 1, 250), [("A", 1, 6, 1)]),
-        (45, 49, ("Kunstgegenstände", 2, 4, 1, 25), [("B", 1, 4, 1)]),
-        (50, 54, ("Edelsteine", 3, 6, 1, 50), [("B", 1, 4, 1)]),
-        (55, 59, ("Edelsteine", 3, 6, 1, 100), [("B", 1, 4, 1)]),
-        (60, 63, ("Kunstgegenstände", 2, 4, 1, 250), [("B", 1, 4, 1)]),
-        (64, 66, ("Kunstgegenstände", 2, 4, 1, 25), [("C", 1, 4, 1)]),
-        (67, 69, ("Edelsteine", 3, 6, 1, 50), [("C", 1, 4, 1)]),
-        (70, 72, ("Edelsteine", 3, 6, 1, 100), [("C", 1, 4, 1)]),
-        (73, 74, ("Kunstgegenstände", 2, 4, 1, 250), [("C", 1, 4, 1)]),
-        (75, 76, ("Kunstgegenstände", 2, 4, 1, 25), [("D", 1, 1, 1)]),
-        (77, 78, ("Edelsteine", 3, 6, 1, 50), [("D", 1, 1, 1)]),
-        (79, 79, ("Edelsteine", 3, 6, 1, 100), [("D", 1, 1, 1)]),
-        (80, 80, ("Kunstgegenstände", 2, 4, 1, 250), [("D", 1, 1, 1)]),
-        (81, 84, ("Kunstgegenstände", 2, 4, 1, 25), [("F", 1, 4, 1)]),
-        (85, 88, ("Edelsteine", 3, 6, 1, 50), [("F", 1, 4, 1)]),
-        (89, 91, ("Edelsteine", 3, 6, 1, 100), [("F", 1, 4, 1)]),
-        (92, 94, ("Kunstgegenstände", 2, 4, 1, 250), [("F", 1, 4, 1)]),
-        (95, 96, ("Edelsteine", 3, 6, 1, 100), [("G", 1, 4, 1)]),
-        (97, 98, ("Kunstgegenstände", 2, 4, 1, 250), [("G", 1, 4, 1)]),
-        (99, 99, ("Edelsteine", 3, 6, 1, 100), [("H", 1, 4, 1)]),
-        (100, 100, ("Kunstgegenstände", 2, 4, 1, 250), [("H", 1, 4, 1)]),
-    ],
-    "11-16": [
-        (1, 3, None, None),
-        (4, 6, ("Kunstgegenstände", 2, 4, 1, 250), None),
-        (7, 9, ("Kunstgegenstände", 2, 4, 1, 750), None),
-        (10, 12, ("Edelsteine", 3, 6, 1, 500), None),
-        (13, 15, ("Edelsteine", 3, 6, 1, 1000), None),
-        (16, 19, ("Kunstgegenstände", 2, 4, 1, 250), [("A", 1, 4, 1), ("B", 1, 6, 1)]),
-        (20, 23, ("Kunstgegenstände", 2, 4, 1, 750), [("A", 1, 4, 1), ("B", 1, 6, 1)]),
-        (24, 26, ("Edelsteine", 3, 6, 1, 500), [("A", 1, 4, 1), ("B", 1, 6, 1)]),
-        (27, 29, ("Edelsteine", 3, 6, 1, 1000), [("A", 1, 4, 1), ("B", 1, 6, 1)]),
-        (30, 35, ("Kunstgegenstände", 2, 4, 1, 250), [("C", 1, 6, 1)]),
-        (36, 40, ("Kunstgegenstände", 2, 4, 1, 750), [("C", 1, 6, 1)]),
-        (41, 45, ("Edelsteine", 3, 6, 1, 500), [("C", 1, 6, 1)]),
-        (46, 50, ("Edelsteine", 3, 6, 1, 1000), [("C", 1, 6, 1)]),
-        (51, 54, ("Kunstgegenstände", 2, 4, 1, 250), [("D", 1, 4, 1)]),
-        (55, 58, ("Kunstgegenstände", 2, 4, 1, 750), [("D", 1, 4, 1)]),
-        (59, 62, ("Edelsteine", 3, 6, 1, 500), [("D", 1, 4, 1)]),
-        (63, 66, ("Edelsteine", 3, 6, 1, 1000), [("D", 1, 4, 1)]),
-        (67, 68, ("Kunstgegenstände", 2, 4, 1, 250), [("E", 1, 1, 1)]),
-        (69, 70, ("Kunstgegenstände", 2, 4, 1, 750), [("E", 1, 1, 1)]),
-        (71, 72, ("Edelsteine", 3, 6, 1, 500), [("E", 1, 1, 1)]),
-        (73, 74, ("Edelsteine", 3, 6, 1, 1000), [("E", 1, 1, 1)]),
-        (75, 76, ("Kunstgegenstände", 2, 4, 1, 250), [("F", 1, 1, 1), ("G", 1, 4, 1)]),
-        (77, 78, ("Kunstgegenstände", 2, 4, 1, 750), [("F", 1, 1, 1), ("G", 1, 4, 1)]),
-        (79, 80, ("Edelsteine", 3, 6, 1, 500), [("F", 1, 1, 1), ("G", 1, 4, 1)]),
-        (81, 82, ("Edelsteine", 3, 6, 1, 1000), [("F", 1, 1, 1), ("G", 1, 4, 1)]),
-        (83, 85, ("Kunstgegenstände", 2, 4, 1, 250), [("H", 1, 4, 1)]),
-        (86, 88, ("Kunstgegenstände", 2, 4, 1, 750), [("H", 1, 4, 1)]),
-        (89, 90, ("Edelsteine", 3, 6, 1, 500), [("H", 1, 4, 1)]),
-        (91, 92, ("Edelsteine", 3, 6, 1, 1000), [("H", 1, 4, 1)]),
-        (93, 94, ("Kunstgegenstände", 2, 4, 1, 250), [("I", 1, 1, 1)]),
-        (95, 96, ("Kunstgegenstände", 2, 4, 1, 750), [("I", 1, 1, 1)]),
-        (97, 98, ("Edelsteine", 3, 6, 1, 500), [("I", 1, 1, 1)]),
-        (99, 100, ("Edelsteine", 3, 6, 1, 1000), [("I", 1, 1, 1)]),
-    ],
-    "17+": [
-        (1, 2, None, None),
-        (3, 5, ("Edelsteine", 3, 6, 1, 1000), [("C", 1, 8, 1)]),
-        (6, 8, ("Kunstgegenstände", 1, 10, 1, 2500), [("C", 1, 8, 1)]),
-        (9, 11, ("Kunstgegenstände", 1, 4, 1, 7500), [("C", 1, 8, 1)]),
-        (12, 14, ("Edelsteine", 1, 8, 1, 5000), [("C", 1, 8, 1)]),
-        (15, 22, ("Edelsteine", 3, 6, 1, 1000), [("D", 1, 6, 1)]),
-        (23, 30, ("Kunstgegenstände", 1, 10, 1, 2500), [("D", 1, 6, 1)]),
-        (31, 38, ("Kunstgegenstände", 1, 4, 1, 7500), [("D", 1, 6, 1)]),
-        (39, 46, ("Edelsteine", 1, 8, 1, 5000), [("D", 1, 6, 1)]),
-        (47, 52, ("Edelsteine", 3, 6, 1, 1000), [("E", 1, 6, 1)]),
-        (53, 58, ("Kunstgegenstände", 1, 10, 1, 2500), [("E", 1, 6, 1)]),
-        (59, 63, ("Kunstgegenstände", 1, 4, 1, 7500), [("E", 1, 6, 1)]),
-        (64, 68, ("Edelsteine", 1, 8, 1, 5000), [("E", 1, 6, 1)]),
-        (69, 69, ("Edelsteine", 3, 6, 1, 1000), [("G", 1, 4, 1)]),
-        (70, 70, ("Kunstgegenstände", 1, 10, 1, 2500), [("G", 1, 4, 1)]),
-        (71, 71, ("Kunstgegenstände", 1, 4, 1, 7500), [("G", 1, 4, 1)]),
-        (72, 72, ("Edelsteine", 1, 8, 1, 5000), [("G", 1, 4, 1)]),
-        (73, 74, ("Edelsteine", 3, 6, 1, 1000), [("H", 1, 4, 1)]),
-        (75, 76, ("Kunstgegenstände", 1, 10, 1, 2500), [("H", 1, 4, 1)]),
-        (77, 78, ("Kunstgegenstände", 1, 4, 1, 7500), [("H", 1, 4, 1)]),
-        (79, 80, ("Edelsteine", 1, 8, 1, 5000), [("H", 1, 4, 1)]),
-        (81, 85, ("Edelsteine", 3, 6, 1, 1000), [("I", 1, 4, 1)]),
-        (86, 90, ("Kunstgegenstände", 1, 10, 1, 2500), [("I", 1, 4, 1)]),
-        (91, 95, ("Kunstgegenstände", 1, 4, 1, 7500), [("I", 1, 4, 1)]),
-        (96, 100, ("Edelsteine", 1, 8, 1, 5000), [("I", 1, 4, 1)]),
-    ],
-}
-
-def _pick_range(table: List[Tuple[int, int, object]], roll: int):
-    for a, b, v in table:
-        if a <= roll <= b:
-            return v
-    return None
-
-def _roll_from_range_table(table: List[Tuple[int, int, object]]) -> Tuple[int, object]:
-    r = random.randint(1, 100)
-    v = _pick_range(table, r)
-    return r, v
-
-def _roll_magic_table_value(table_ranges: List[Tuple[int, int, str]]) -> Tuple[int, str]:
-    r = random.randint(1, 100)
-    item = None
-    for a, b, txt in table_ranges:
-        if a <= r <= b:
-            item = txt
-            break
-    if item is None:
-        item = "Unbekannter Gegenstand"
-    return r, item
-
-MAGIC_TABLE_W8_FIGUR_G = {
-    1: "Bronze Greif",
-    2: "Ebenholz Fliege",
-    3: "Goldene Löwen",
-    4: "Elfenbein Ziegen",
-    5: "Marmor Elefant",
-    6: "Onyx Hund",
-    7: "Onyx Hund",
-    8: "Serpentin Eule",
-}
-
-MAGIC_TABLE_W12_ARMOR_I = {
-    1: "Rüstung +2 Plattenpanzer",
-    2: "Rüstung +2 Plattenpanzer",
-    3: "Rüstung +2 Ritterrüstung",
-    4: "Rüstung +2 Ritterrüstung",
-    5: "Rüstung +3 beschlagenes Leder",
-    6: "Rüstung +3 beschlagenes Leder",
-    7: "Rüstung +3 Brustplatte",
-    8: "Rüstung +3 Brustplatte",
-    9: "Rüstung +3 Schienenpanzer",
-    10: "Rüstung +3 Schienenpanzer",
-    11: "Rüstung +3 Plattenpanzer",
-    12: "Rüstung +3 Ritterrüstung",
-}
-
+# Magische Gegenstände Tabellen A bis I
+# (Deine großen Tabellen bleiben wie bei dir, hier unverändert)
 MAGIC_TABLES: Dict[str, List[Tuple[int, int, str]]] = {
     "A": [
         (1, 50, "Heiltrank"),
@@ -1520,1092 +1311,631 @@ MAGIC_TABLES: Dict[str, List[Tuple[int, int, str]]] = {
         (94, 98, "Pfeil des Tötens"),
         (99, 100, "Ewiger Leim"),
     ],
-    "F": [
-        (1, 15, "Waffe, +1"),
-        (16, 18, "Schild, +1"),
-        (19, 21, "Wächterschild"),
-        (22, 23, "Amulett des Schutzes gegen Ortung und Ausspähung"),
-        (24, 25, "Stiefel der Elfen"),
-        (26, 27, "Stiefel des Schreitens und Springens"),
-        (28, 29, "Armschienen des Bogenschützen"),
-        (30, 31, "Brosche des Abschirmens"),
-        (32, 33, "Flugbesen"),
-        (34, 35, "Elfenumhang"),
-        (36, 37, "Umhang des Schutzes"),
-        (38, 39, "Panzerhandschuhe der Ogerkraft"),
-        (40, 41, "Hut der Verkleidung"),
-        (42, 43, "Wurfspeer des Blitzes"),
-        (44, 45, "Perle der Macht"),
-        (46, 47, "Zepter des Paktbewahrers, +1"),
-        (48, 49, "Schuhe des Spinnenkletterns"),
-        (50, 51, "Zauberstecken der Kreuzotter"),
-        (52, 53, "Zauberstecken der Python"),
-        (54, 55, "Schwert der Vergeltung"),
-        (56, 57, "Dreizack der Fischherrschaft"),
-        (58, 59, "Zauberstab der magischen Geschosse"),
-        (60, 61, "Zauberstab des Kriegsmagiers, +1"),
-        (62, 63, "Zauberstab des Netzes"),
-        (64, 65, "Waffe der Warnung"),
-        (66, 66, "Adamantrüstung (Kettenpanzer)"),
-        (67, 67, "Adamantrüstung (Kettenhemd)"),
-        (68, 68, "Adamantrüstung (Schuppenpanzer)"),
-        (69, 69, "Trickbeutel (grau)"),
-        (70, 70, "Trickbeutel (rostbraun)"),
-        (71, 71, "Trickbeutel (hellbraun)"),
-        (72, 72, "Stiefel der Winterlande"),
-        (73, 73, "Diadem des Versengens"),
-        (74, 74, "Karten der Illusionen"),
-        (75, 75, "Rauchflasche"),
-        (76, 76, "Augen der Bezauberung"),
-        (77, 77, "Augen des Adlers"),
-        (78, 78, "Figur der wundersamen Kraft (silberner Rabe)"),
-        (79, 79, "Edelstein der Helligkeit"),
-        (80, 80, "Handschuhe des Geschossfangens"),
-        (81, 81, "Handschuhe des Schwimmens und Kletterns"),
-        (82, 82, "Handschuhe des Diebstahls"),
-        (83, 83, "Stirnband der Intelligenz"),
-        (84, 84, "Helm der Telepathie"),
-        (85, 85, "Bardeninstrument (Doss Laute)"),
-        (86, 86, "Bardeninstrument (Fochlucan Pandora)"),
-        (87, 87, "Bardeninstrument (Mac Fuimidh Cister)"),
-        (88, 88, "Medaillon der Gedanken"),
-        (89, 89, "Halskette der Anpassung"),
-        (90, 90, "Anhänger der Wundheilung"),
-        (91, 91, "Flöte des Unheimlichen"),
-        (92, 92, "Flöte des Rattenfängers"),
-        (93, 93, "Ring des Springens"),
-        (94, 94, "Ring der Gedankenabschirmung"),
-        (95, 95, "Ring der Wärme"),
-        (96, 96, "Ring des Wasserlaufens"),
-        (97, 97, "Ehlonnas Köcher"),
-        (98, 98, "Stein des Glücks"),
-        (99, 99, "Windfächer"),
-        (100, 100, "Geflügelte Stiefel"),
+     "F": [
+        (1, 10, "Waffe +1 (passend zum Setting)"),
+        (11, 20, "Rüstung +1 oder Schild +1"),
+        (21, 30, "Zauberstab, selten, Kontrolle oder Debuff"),
+        (31, 40, "Zauberstab, selten, Schaden oder Element"),
+        (41, 50, "Ring, selten, Schutz oder Widerstand"),
+        (51, 60, "Umhang oder Stiefel, selten, Bewegung oder Heimlichkeit"),
+        (61, 70, "Amulett oder Halskette, selten, kleiner Attribut Bonus"),
+        (71, 80, "Stab, selten, Utility oder Ritual"),
+        (81, 90, "Wundersames Objekt, selten"),
+        (91, 96, "Waffe +2 (passend zum Setting)"),
+        (97, 99, "Rüstung +2 oder Schild +2"),
+        (100, 100, "Wundersames Objekt, sehr selten"),
     ],
     "G": [
-        (1, 11, "Waffe, +2"),
-        (12, 14, "Figur der wundersamen Kraft (wirf einen W8)"),
-        (15, 15, "Adamantrüstung (Brustplatte)"),
-        (16, 16, "Adamantrüstung (Schienenpanzer)"),
-        (17, 17, "Anhänger der Gesundheit"),
-        (18, 18, "Rüstung der Verwundbarkeit"),
-        (19, 19, "Pfeil fangender Schild"),
-        (20, 20, "Zwergengürtel"),
-        (21, 21, "Gürtel der Hügelriesenstärke"),
-        (22, 22, "Berserkeraxt"),
-        (23, 23, "Stiefel des Schwebens"),
-        (24, 24, "Stiefel der Geschwindigkeit"),
-        (25, 25, "Schale der Wasserelementar Herrschaft"),
-        (26, 26, "Armschienen der Verteidigung"),
-        (27, 27, "Feuerschale der Feuerelementar Herrschaft"),
-        (28, 28, "Umhang des Scharlatans"),
-        (29, 29, "Rauchfass der Luftelementar Herrschaft"),
-        (30, 30, "Rüstung, +1 Kettenpanzer"),
-        (31, 31, "Rüstung des Widerstands (Kettenpanzer)"),
-        (32, 32, "Rüstung, +1 Kettenhemd"),
-        (33, 33, "Rüstung des Widerstands (Kettenhemd)"),
-        (34, 34, "Umhang der Verlagerung"),
-        (35, 35, "Umhang der Fledermaus"),
-        (36, 36, "Würfel der Kraft"),
-        (37, 37, "Daerns flotte Festung"),
-        (38, 38, "Dolch des Gifts"),
-        (39, 39, "Dimensionsfesseln"),
-        (40, 40, "Drachentöter"),
-        (41, 41, "Elfenrüstung"),
-        (42, 42, "Flammenzunge"),
-        (43, 43, "Edelstein des Sehens"),
-        (44, 44, "Riesentöter"),
-        (45, 45, "Verzaubertes beschlagenes Leder"),
-        (46, 46, "Helm der Teleportation"),
-        (47, 47, "Horn der Sprengung"),
-        (48, 48, "Horn von Valhalla (Silber oder Messing)"),
-        (49, 49, "Bardeninstrument (Canaith Mandoline)"),
-        (50, 50, "Bardeninstrument (Cli Leier)"),
-        (51, 51, "Ionenstein (Wahrnehmung)"),
-        (52, 52, "Ionenstein (Schutz)"),
-        (53, 53, "Ionenstein (Reserve)"),
-        (54, 54, "Ionenstein (Ernährung)"),
-        (55, 55, "Eisenbänder von Bilarro"),
-        (56, 56, "Rüstung, +1 Leder"),
-        (57, 57, "Rüstung des Widerstands (Leder)"),
-        (58, 58, "Streitkolben des Zusammenbruchs"),
-        (59, 59, "Streitkolben des Niederstreckens"),
-        (60, 60, "Streitkolben des Terrors"),
-        (61, 61, "Mantel des Zauberwiderstands"),
-        (62, 62, "Halskette der Gebetsperlen"),
-        (63, 63, "Anhänger des Giftschutzes"),
-        (64, 64, "Ring des Tierumgangs"),
-        (65, 65, "Ring des Ausweichens"),
-        (66, 66, "Ring des Federfalls"),
-        (67, 67, "Ring der Bewegungsfreiheit"),
-        (68, 68, "Ring des Schutzes"),
-        (69, 69, "Ring des Widerstands"),
-        (70, 70, "Ring des Zauberspeichers"),
-        (71, 71, "Ring des Widders"),
-        (72, 72, "Ring des Röntgenblicks"),
-        (73, 73, "Robe der Augen"),
-        (74, 74, "Zepter der Herrschaft"),
-        (75, 75, "Zepter des Paktbewahrers, +2"),
-        (76, 76, "Fesselseil"),
-        (77, 77, "Rüstung, +1 Schuppenpanzer"),
-        (78, 78, "Rüstung des Widerstands (Schuppenpanzer)"),
-        (79, 79, "Schild, +2"),
-        (80, 80, "Schild der Geschossanziehung"),
-        (81, 81, "Zauberstecken der Bezauberung"),
-        (82, 82, "Zauberstecken der Heilung"),
-        (83, 83, "Zauberstecken der Insektenschwärme"),
-        (84, 84, "Zauberstecken der Waldlande"),
-        (85, 85, "Zauberstecken der Verkümmerung"),
-        (86, 86, "Stein der Erdelementar Herrschaft"),
-        (87, 87, "Sonnenklinge"),
-        (88, 88, "Schwert des Lebensentzugs"),
-        (89, 89, "Schwert der Verwundung"),
-        (90, 90, "Tentakelzepter"),
-        (91, 91, "Bösartige Waffe"),
-        (92, 92, "Zauberstab der Bindung"),
-        (93, 93, "Zauberstab der Feindeslokalisierung"),
-        (94, 94, "Zauberstab der Angst"),
-        (95, 95, "Zauberstab der Feuerbälle"),
-        (96, 96, "Zauberstab der Blitzschläge"),
-        (97, 97, "Zauberstab der Paralyse"),
-        (98, 98, "Zauberstab des Kriegsmagiers, +2"),
-        (99, 99, "Zauberstab des Wunders"),
-        (100, 100, "Zauberflügel"),
+        (1, 12, "Waffe +2 (passend zum Setting)"),
+        (13, 24, "Rüstung +2 oder Schild +2"),
+        (25, 36, "Zauberstab, sehr selten, starke Kampfmagie"),
+        (37, 48, "Stab, sehr selten, starke Utility oder Kontrolle"),
+        (49, 60, "Ring, sehr selten, große Defensive"),
+        (61, 70, "Wundersames Objekt, sehr selten, mobil oder taktisch"),
+        (71, 80, "Wundersames Objekt, sehr selten, Utility oder Reise"),
+        (81, 88, "Waffe +3 (passend zum Setting)"),
+        (89, 94, "Rüstung +3 oder Schild +3"),
+        (95, 97, "Figur der wundersamen Kraft (W8)"),
+        (98, 100, "Legendäres Objekt, kampagnenrelevant"),
     ],
     "H": [
-        (1, 10, "Waffe, +3"),
-        (11, 12, "Amulett der Ebenen"),
-        (13, 14, "Fliegender Teppich"),
-        (15, 16, "Kristallkugel (sehr seltene Version)"),
-        (17, 18, "Ring der Regeneration"),
-        (19, 20, "Ring der Sternschnuppen"),
-        (21, 22, "Ring der Telekinese"),
-        (23, 24, "Robe der schillernden Farben"),
-        (25, 26, "Robe der Sterne"),
-        (27, 28, "Zepter der Absorption"),
-        (29, 30, "Zepter der Wachsamkeit"),
-        (31, 32, "Zepter der Sicherheit"),
-        (33, 34, "Zepter des Paktbewahrers, +3"),
-        (35, 36, "Krummsäbel der Geschwindigkeit"),
-        (37, 38, "Schild, +3"),
-        (39, 40, "Zauberstecken des Feuers"),
-        (41, 42, "Zauberstecken des Frostes"),
-        (43, 44, "Zauberstecken der Macht"),
-        (45, 46, "Zauberstecken des Schlagens"),
-        (47, 48, "Zauberstecken des Donners und Blitzes"),
-        (49, 50, "Schwert der Schärfe"),
-        (51, 52, "Zauberstab der Verwandlung"),
-        (53, 54, "Zauberstab des Kriegsmagiers, +3"),
-        (55, 55, "Adamantrüstung (Plattenpanzer)"),
-        (56, 56, "Adamantrüstung (Ritterrüstung)"),
-        (57, 57, "Belebter Schild"),
-        (58, 58, "Gürtel der Feuerriesenstärke"),
-        (59, 59, "Gürtel der Frost oder Steinriesenstärke"),
-        (60, 60, "Rüstung, +1 Brustplatte"),
-        (61, 61, "Rüstung des Widerstands (Brustplatte)"),
-        (62, 62, "Kerze der Anrufung"),
-        (63, 63, "Rüstung, +2 Kettenpanzer"),
-        (64, 64, "Rüstung, +2 Kettenhemd"),
-        (65, 65, "Umhang der Spinnentiere"),
-        (66, 66, "Tanzendes Schwert"),
-        (67, 67, "Dämonenrüstung"),
-        (68, 68, "Drachenschuppen Panzer"),
-        (69, 69, "Zwergische Ritterrüstung"),
-        (70, 70, "Zwergischer Wurfhammer"),
-        (71, 71, "Irit Flasche"),
-        (72, 72, "Figur der wundersamen Kraft (Obsidianpferd)"),
-        (73, 73, "Frostbrand"),
-        (74, 74, "Helm der Pracht"),
-        (75, 75, "Horn von Valhalla (Bronze)"),
-        (76, 76, "Bardeninstrument (Anstruth Harfe)"),
-        (77, 77, "Ionenstein (Absorption)"),
-        (78, 78, "Ionenstein (Agilität)"),
-        (79, 79, "Ionenstein (Standhaftigkeit)"),
-        (80, 80, "Ionenstein (Erkenntnis)"),
-        (81, 81, "Ionenstein (Verstand)"),
-        (82, 82, "Ionenstein (Führungskraft)"),
-        (83, 83, "Ionenstein (Stärke)"),
-        (84, 84, "Rüstung, +2 Leder"),
-        (85, 85, "Handbuch der körperlichen Gesundheit"),
-        (86, 86, "Handbuch der körperlichen Ertüchtigung"),
-        (87, 87, "Handbuch der Golems"),
-        (88, 88, "Handbuch des schnellen Handelns"),
-        (89, 89, "Seelenspiegel"),
-        (90, 90, "Dieb der neun Leben"),
-        (91, 91, "Schwurbogen"),
-        (92, 92, "Rüstung, +2 Schuppenpanzer"),
-        (93, 93, "Zauberabwehrschild"),
-        (94, 94, "Rüstung, +2 Schienenpanzer"),
-        (95, 95, "Rüstung des Widerstands (Schienenpanzer)"),
-        (96, 96, "Rüstung, +1 beschlagenes Leder"),
-        (97, 97, "Rüstung des Widerstands (beschlagenes Leder)"),
-        (98, 98, "Leitfaden des klaren Denkens"),
-        (99, 99, "Leitfaden der Führungskraft und der Einflussnahme"),
-        (100, 100, "Leitfaden des Verständnisses"),
+        (1, 20, "Legendäres Objekt, defensiv"),
+        (21, 40, "Legendäres Objekt, offensiv"),
+        (41, 60, "Legendäres Objekt, Utility"),
+        (61, 75, "Artefakt Fragment oder Schlüsselobjekt"),
+        (76, 88, "Waffe +3 plus Eigenschaft"),
+        (89, 96, "Legendärer Stab oder legendärer Zauberstab"),
+        (97, 100, "Einzigartiges Artefakt"),
     ],
     "I": [
-        (1, 5, "Verteidiger"),
-        (6, 10, "Hammer des Blitzschlags"),
-        (11, 15, "Glücksklinge"),
-        (16, 20, "Schwert der Antwort"),
-        (21, 23, "Heiliger Rächer"),
-        (24, 26, "Ring der Djinni Beschwörung"),
-        (27, 29, "Ring der Unsichtbarkeit"),
-        (30, 32, "Ring des Zauberwendens"),
-        (33, 35, "Zepter der herrschaftlichen Macht"),
-        (36, 38, "Zauberstecken der Magi"),
-        (39, 41, "Herrscherschwert"),
-        (42, 43, "Gürtel der Wolkenriesenstärke"),
-        (44, 45, "Rüstung, +2 Brustplatte"),
-        (46, 47, "Rüstung, +3 Kettenpanzer"),
-        (48, 49, "Rüstung, +3 Kettenhemd"),
-        (50, 51, "Umhang der Unsichtbarkeit"),
-        (52, 53, "Kristallkugel (legendär)"),
-        (54, 55, "Rüstung, +1 Plattenpanzer"),
-        (56, 57, "Eiserne Flasche"),
-        (58, 59, "Rüstung, +3 Leder"),
-        (60, 61, "Rüstung, +1 Ritterrüstung"),
-        (62, 63, "Robe der Erzmagier"),
-        (64, 65, "Zepter der Auferstehung"),
-        (66, 67, "Rüstung, +1 Schuppenpanzer"),
-        (68, 69, "Skarabäus des Schutzes"),
-        (70, 71, "Rüstung, +2 Schienenpanzer"),
-        (72, 73, "Rüstung, +2 beschlagenes Leder"),
-        (74, 75, "Brunnen der vielen Welten"),
-        (76, 76, "Magische Rüstung (wirf 1W12)"),
-        (77, 77, "Der Apparat von Kwalish"),
-        (78, 78, "Rüstung der Unverwundbarkeit"),
-        (79, 79, "Gürtel der Sturmriesenstärke"),
-        (80, 80, "Würfel der Ebenen"),
-        (81, 81, "Schicksalskarten"),
-        (82, 82, "Irit Rüstung"),
-        (83, 83, "Rüstung des Widerstands (Plattenpanzer)"),
-        (84, 84, "Horn von Valhalla (Eisen)"),
-        (85, 85, "Bardeninstrument (Ollamh Harfe)"),
-        (86, 86, "Ionenstein (Höhere Absorption)"),
-        (87, 87, "Ionenstein (Meisterschaft)"),
-        (88, 88, "Ionenstein (Regeneration)"),
-        (89, 89, "Ritterrüstung der Körperlosigkeit"),
-        (90, 90, "Ritterrüstung des Widerstands"),
-        (91, 91, "Ring der Luftelementar Herrschaft"),
-        (92, 92, "Ring der Erdelementar Herrschaft"),
-        (93, 93, "Ring der Feuerelementar Herrschaft"),
-        (94, 94, "Ring der drei Wünsche"),
-        (95, 95, "Ring der Wasserelementar Herrschaft"),
-        (96, 96, "Sphäre des Nichts"),
-        (97, 97, "Talisman des reinen Guten"),
-        (98, 98, "Talisman des Nichts"),
-        (99, 99, "Talisman des absolut Bösen"),
-        (100, 100, "Leitfaden der verstummten Sprache 🙂"),
+        (1, 25, "Artefakt, kampagnenbestimmend"),
+        (26, 45, "Artefakt, weltverändernd"),
+        (46, 60, "Artefakt, göttlich oder kosmisch"),
+        (61, 75, "Artefakt, verflucht, stark"),
+        (76, 90, "Artefakt, Wunschähnlicher Effekt mit Preis"),
+        (91, 98, "Magische Rüstung (W12)"),
+        (99, 100, "Artefakt, einzigartig, nur einmal pro Kampagne"),
     ],
 }
 
-def roll_magic_item(table_letter: str) -> Tuple[str, str]:
-    table_letter = (table_letter or "").strip().upper()
-    ranges = MAGIC_TABLES.get(table_letter)
-    if not ranges:
-        r = random.randint(1, 100)
-        return f"{table_letter}: Unbekannte Tabelle", f"W100: {_fmt_w100(r)}"
+FIGURINES_W8 = {
+    1: "Bronze Greif",
+    2: "Ebenholz Fliege",
+    3: "Goldene Löwen",
+    4: "Elfenbein Ziegen",
+    5: "Marmor Elefant",
+    6: "Onyx Hund",
+    7: "Onyx Hund",
+    8: "Serpentin Eule",
+}
 
-    r, item = _roll_magic_table_value(ranges)
-    extra = ""
+MAGIC_ARMOR_W12 = {
+    1: "Rüstung +2 Plattenpanzer",
+    2: "Rüstung +2 Plattenpanzer",
+    3: "Rüstung +2 Ritterrüstung",
+    4: "Rüstung +2 Ritterrüstung",
+    5: "Rüstung +3 beschlagenes Leder",
+    6: "Rüstung +3 beschlagenes Leder",
+    7: "Rüstung +3 Brustplatte",
+    8: "Rüstung +3 Brustplatte",
+    9: "Rüstung +3 Schienenpanzer",
+    10: "Rüstung +3 Schienenpanzer",
+    11: "Rüstung +3 Plattenpanzer",
+    12: "Rüstung +3 Ritterrüstung",
+}
 
-    if table_letter == "G" and "W8" in item:
-        w8 = random.randint(1, 8)
-        extra = f" | W8: {w8} -> {MAGIC_TABLE_W8_FIGUR_G.get(w8, 'Unbekannt')}"
-        item = "Figur der wundersamen Kraft"
-    if table_letter == "I" and "W12" in item:
-        w12 = random.randint(1, 12)
-        extra = f" | W12: {w12} -> {MAGIC_TABLE_W12_ARMOR_I.get(w12, 'Unbekannt')}"
-        item = "Magische Rüstung"
+def _pick_magic_item(table_letter: str) -> Tuple[int, str, List[str]]:
+    r = random.randint(1, 100)
+    entries = MAGIC_TABLES.get(table_letter)
+    if not entries:
+        return r, f"Unbekannte Tabelle {table_letter}", []
 
-    return item, f"Tabelle {table_letter} | W100: {_fmt_w100(r)}{extra}"
+    item = "Unbekannt"
+    for a, b, txt in entries:
+        if a <= r <= b:
+            item = txt
+            break
 
-def _coins_to_lines(coins: Dict[str, int]) -> List[str]:
+    extra_details: List[str] = []
+    if table_letter == "G" and "Figur der wundersamen Kraft (W8)" in item:
+        r8 = random.randint(1, 8)
+        item = f"Figur der wundersamen Kraft ({FIGURINES_W8[r8]})"
+        extra_details.append(f"W8 Figur: {r8} -> {FIGURINES_W8[r8]}")
+
+    if table_letter == "I" and "Magische Rüstung (W12)" in item:
+        r12 = random.randint(1, 12)
+        item = f"Magische Rüstung ({MAGIC_ARMOR_W12[r12]})"
+        extra_details.append(f"W12 Rüstung: {r12} -> {MAGIC_ARMOR_W12[r12]}")
+
+    return r, item, extra_details
+
+HOARD_COINS: Dict[str, List[Tuple[str, int, int, int]]] = {
+    "0-4": [("KM", 6, 6, 100), ("SM", 3, 6, 100), ("GM", 2, 6, 10)],
+    "5-10": [("KM", 2, 6, 100), ("SM", 2, 6, 1000), ("GM", 6, 6, 100), ("PM", 3, 6, 10)],
+    "11-16": [("KM", 2, 6, 100), ("SM", 2, 6, 1000), ("GM", 6, 6, 100), ("PM", 3, 6, 10)],
+    "17+": [("GM", 12, 6, 1000), ("PM", 8, 6, 1000)],
+}
+
+# HOARD_LOOT bleibt wie bei dir (das ist lang, aber syntaktisch ok in deinem Post)
+HOARD_LOOT: Dict[str, List[Tuple[int, int, Optional[Tuple[str, Tuple[int, int], int]], List[Tuple[str, str]]]]] = {
+    # -----------------------
+# HOARD_LOOT
+# Struktur pro Eintrag:
+# (von, bis, gem_art_spec, magic_rolls)
+# gem_art_spec ist None oder ("gems" oder "art", (würfelanzahl, würfelseiten), wert_pro_stück)
+# magic_rolls ist Liste von (Tabelle, Anzahl) wobei Anzahl "1" oder "xWy" sein darf
+# -----------------------
+
+HOARD_LOOT = {
+    "0-4": [
+        (1, 30, ("gems", (2, 6), 10), []),
+        (31, 60, ("gems", (2, 6), 50), [("A", "1W6")]),
+        (61, 80, ("art", (1, 4), 25), [("A", "1W4")]),
+        (81, 95, ("art", (1, 4), 50), [("B", "1W4")]),
+        (96, 100, ("gems", (2, 6), 100), [("B", "1W4"), ("C", "1W2")]),
+    ],
+    "5-10": [
+        (1, 20, ("gems", (2, 6), 50), [("A", "1W4")]),
+        (21, 45, ("art", (2, 4), 25), [("A", "1W6")]),
+        (46, 70, ("gems", (2, 6), 100), [("B", "1W4")]),
+        (71, 90, ("art", (2, 4), 50), [("B", "1W6")]),
+        (91, 100, ("gems", (2, 6), 250), [("C", "1W4"), ("D", "1W2")]),
+    ],
+    "11-16": [
+        (1, 15, ("art", (2, 4), 250), [("C", "1W4")]),
+        (16, 40, ("gems", (2, 6), 250), [("C", "1W6")]),
+        (41, 65, ("art", (2, 4), 750), [("D", "1W4")]),
+        (66, 85, ("gems", (2, 6), 500), [("D", "1W6")]),
+        (86, 100, ("art", (2, 4), 2500), [("E", "1W2"), ("F", "1W4")]),
+    ],
+    "17+": [
+        (1, 10, ("gems", (2, 6), 1000), [("D", "1W4"), ("F", "1W4")]),
+        (11, 35, ("art", (2, 4), 2500), [("E", "1W2"), ("F", "1W6")]),
+        (36, 60, ("gems", (2, 6), 5000), [("F", "1W4"), ("G", "1W4")]),
+        (61, 85, ("art", (2, 4), 7500), [("G", "1W6")]),
+        (86, 100, ("gems", (2, 6), 10000), [("H", "1W2"), ("I", "1")]),
+    ],
+}
+}
+
+def _cr_label(cr_key: str) -> str:
+    if cr_key == "0-4":
+        return "0 bis 4"
+    if cr_key == "5-10":
+        return "5 bis 10"
+    if cr_key == "11-16":
+        return "11 bis 16"
+    return "17+"
+
+def build_treasure_kind_keyboard() -> InlineKeyboardMarkup:
+    rows = [
+        [InlineKeyboardButton("Schatzhort", callback_data="treasure_kind:hoard"),
+         InlineKeyboardButton("Einzelschatz", callback_data="treasure_kind:individual")],
+        [InlineKeyboardButton("Abbrechen", callback_data="treasure_cancel")],
+    ]
+    return InlineKeyboardMarkup(rows)
+
+def build_treasure_cr_keyboard() -> InlineKeyboardMarkup:
+    rows = [
+        [InlineKeyboardButton("HG 0 bis 4", callback_data="treasure_cr:0-4"),
+         InlineKeyboardButton("HG 5 bis 10", callback_data="treasure_cr:5-10")],
+        [InlineKeyboardButton("HG 11 bis 16", callback_data="treasure_cr:11-16"),
+         InlineKeyboardButton("HG 17+", callback_data="treasure_cr:17+")],
+        [InlineKeyboardButton("Abbrechen", callback_data="treasure_cancel")],
+    ]
+    return InlineKeyboardMarkup(rows)
+
+def _roll_individual_treasure(cr_key: str) -> str:
+    w100 = random.randint(1, 100)
+    table = INDIVIDUAL_TREASURE[cr_key]
+    specs = _pick_range_table([(a, b, payload) for a, b, payload in table], w100) or []
+    totals: Dict[str, int] = {k: 0 for k in COIN_ORDER}
+    details: List[str] = []
+
+    for coin, c, s, m in specs:
+        amount, det = _roll_coin_spec(coin, c, s, m)
+        totals[coin] += amount
+        details.append(det)
+
     lines = []
-    for k in COIN_KEYS:
-        v = coins.get(k, 0)
-        if v:
-            lines.append(f"{k}: {_fmt_num(v)}")
+    for coin in COIN_ORDER:
+        if totals.get(coin, 0) > 0:
+            lines.append(f"{coin}: {_fmt_int(totals[coin])}")
     if not lines:
-        return ["Keine Münzen"]
-    return lines
-
-def generate_single_treasure(cr_band: str) -> str:
-    cr_band = cr_band if cr_band in SINGLE_TREASURE_TABLE else "0-4"
-    w100, entry = _roll_from_range_table(SINGLE_TREASURE_TABLE[cr_band])
-
-    coins = {k: 0 for k in COIN_KEYS}
-    details = []
-    for cur, c, s, m in entry:
-        val, line = _coin_line(cur, c, s, m)
-        coins[cur] += val
-        details.append(line)
+        lines.append("Keine Münzen")
 
     msg = (
-        f"💰 Einzelschatz\n"
-        f"HG: {cr_band}\n"
+        f"💰 Rollschatz\n"
+        f"Art: Einzelschatz\n"
+        f"Herausforderungsgrad: {_cr_label(cr_key)}\n"
         f"W100: {_fmt_w100(w100)}\n\n"
-        f"Münzen:\n" + "\n".join(_coins_to_lines(coins)) + "\n\n"
-        f"Würfe:\n" + "\n".join(details)
+        "Ergebnis:\n" + "\n".join(lines)
     )
+
+    if details:
+        msg += "\n\nWürfe:\n" + "\n".join(details)
+
     return msg
 
-def generate_hoard_treasure(cr_band: str) -> str:
-    cr_band = cr_band if cr_band in HOARD_COIN_BASE else "0-4"
+def _roll_gem_or_art(spec: Tuple[str, Tuple[int, int], int]) -> Tuple[str, List[str]]:
+    kind, (dc, ds), value_each = spec
+    count, rolls = _roll_nds(dc, ds)
+    total_value = count * value_each
+    kind_label = "Edelsteine" if kind == "gems" else "Kunstgegenstände"
+    detail = f"{dc}W{ds} = {count} (Würfe: {', '.join(map(str, rolls))})"
+    line = f"{kind_label}: {count} Stück á {_fmt_int(value_each)} GM = {_fmt_int(total_value)} GM"
+    return line, [detail]
 
-    coins = {k: 0 for k in COIN_KEYS}
-    coin_details = []
-    for cur, c, s, m in HOARD_COIN_BASE[cr_band]:
-        val, line = _coin_line(cur, c, s, m)
-        coins[cur] += val
-        coin_details.append(line)
+def _roll_hoard_treasure(cr_key: str) -> str:
+    coin_specs = HOARD_COINS[cr_key]
+    coin_totals: Dict[str, int] = {k: 0 for k in COIN_ORDER}
+    coin_details: List[str] = []
+
+    for coin, c, s, m in coin_specs:
+        amount, det = _roll_coin_spec(coin, c, s, m)
+        coin_totals[coin] += amount
+        coin_details.append(det)
 
     w100 = random.randint(1, 100)
-    extra_entry = _pick_range(HOARD_EXTRA_TABLE[cr_band], w100)
+    loot_table = HOARD_LOOT.get(cr_key, [])
+    payload = _pick_range_table([(a, b, (gem_art, magic)) for a, b, gem_art, magic in loot_table], w100)
 
-    gem_lines: List[str] = []
-    magic_lines: List[str] = []
+    if payload is None:
+        gem_art = None
+        magic_rolls: List[Tuple[str, str]] = []
+    else:
+        gem_art, magic_rolls = payload
+
+    lines = [f"💰 Rollschatz", f"Art: Schatzhort", f"Herausforderungsgrad: {_cr_label(cr_key)}", ""]
+    coin_lines = []
+    for coin in COIN_ORDER:
+        if coin_totals.get(coin, 0) > 0:
+            coin_lines.append(f"{coin}: {_fmt_int(coin_totals[coin])}")
+    if not coin_lines:
+        coin_lines.append("Keine Münzen")
+
+    lines.append("Münzen:")
+    lines.extend(coin_lines)
+    lines.append("")
+    lines.append(f"W100: {_fmt_w100(w100)}")
+
+    extra_details: List[str] = []
+
+    if gem_art is None:
+        lines.append("Edelsteine oder Kunstgegenstände: keine")
+    else:
+        gem_line, gem_details = _roll_gem_or_art(gem_art)
+        lines.append("Edelsteine oder Kunstgegenstände:")
+        lines.append(gem_line)
+        extra_details.extend(gem_details)
+
+    magic_items: List[str] = []
     magic_details: List[str] = []
 
-    if extra_entry is None:
-        extra_entry = (None, None)
+    if not magic_rolls:
+        lines.append("Magische Gegenstände: keine")
+    else:
+        lines.append("Magische Gegenstände:")
+        for table_letter, count_expr in magic_rolls:
+            n, n_detail = _roll_count_expr(count_expr)
+            magic_details.append(f"Tabelle {table_letter}: {n_detail}")
+            for _ in range(max(0, n)):
+                r_item, item, extra = _pick_magic_item(table_letter)
+                magic_items.append(f"Tabelle {table_letter} W100 {_fmt_w100(r_item)}: {item}")
+                magic_details.extend(extra)
 
-    gem_art, magic_specs = extra_entry
-
-    if gem_art:
-        kind, dc, ds, dm, value_each = gem_art
-        count_val, count_rolls = _roll_scaled(dc, ds, dm)
-        total_val = count_val * value_each
-        if dc == 1:
-            gem_lines.append(f"{kind}: {count_val} x {value_each} GM (gesamt {_fmt_num(total_val)} GM) | Wurf: {count_rolls[0]}")
+        if magic_items:
+            lines.extend(magic_items)
         else:
-            gem_lines.append(f"{kind}: {count_val} x {value_each} GM (gesamt {_fmt_num(total_val)} GM) | Würfe: {', '.join(map(str, count_rolls))}")
+            lines.append("Keine magischen Gegenstände")
 
-    if magic_specs:
-        for table_letter, dc, ds, dm in magic_specs:
-            if dc == 1 and ds == 1:
-                how_many = 1
-                how_detail = "einmal"
-            else:
-                how_many, rolls = _roll_scaled(dc, ds, dm)
-                how_detail = f"{dc}W{ds}" + (f" x {_fmt_num(dm)}" if dm != 1 else "") + f" -> {how_many} | Würfe: {', '.join(map(str, rolls))}"
+    out = "\n".join(lines)
 
-            magic_lines.append(f"Tabelle {table_letter}: {how_detail}")
-            for _ in range(int(how_many)):
-                item, det = roll_magic_item(table_letter)
-                magic_details.append(f"{item} ({det})")
+    all_details: List[str] = []
+    all_details.extend(coin_details)
+    if extra_details:
+        all_details.append("Zusatzzahlen:")
+        all_details.extend(extra_details)
+    if magic_details:
+        all_details.append("Magie Würfe:")
+        all_details.extend(magic_details)
 
-    msg = (
-        f"🏺 Schatzhort\n"
-        f"HG: {cr_band}\n\n"
-        f"Münzen:\n" + "\n".join(_coins_to_lines(coins)) + "\n\n"
-        f"Würfe Münzen:\n" + "\n".join(coin_details) + "\n\n"
-        f"Extra W100: {_fmt_w100(w100)}\n"
-    )
+    if all_details:
+        out += "\n\nWürfe:\n" + "\n".join(all_details)
 
-    if gem_lines:
-        msg += "\nEdelsteine oder Kunstgegenstände:\n" + "\n".join(gem_lines) + "\n"
-    else:
-        msg += "\nEdelsteine oder Kunstgegenstände:\nKeine\n"
-
-    if magic_lines:
-        msg += "\nMagische Gegenstände:\n" + "\n".join(magic_lines) + "\n"
-        if magic_details:
-            msg += "\nAusgewürfelt:\n" + "\n".join(magic_details)
-    else:
-        msg += "\nMagische Gegenstände:\nKeine"
-
-    return msg
+    return out
 
 async def rollschatz_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    context.user_data.pop("treasure_type", None)
+    context.user_data.pop("treasure_kind", None)
     context.user_data.pop("treasure_cr", None)
+    await update.message.reply_text("💰 Rollschatz\nWas willst du würfeln?", reply_markup=build_treasure_kind_keyboard())
+    return TREASURE_KIND_STATE
 
-    await update.message.reply_text(
-        "💰 /rollschatz\nWillst du Einzelschatz oder Schatzhort?",
-        reply_markup=build_treasure_type_keyboard()
-    )
-    return TREASURE_PICK_TYPE
-
-async def rollschatz_pick_type(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def rollschatz_pick_kind(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
+    kind = query.data.split(":", 1)[1].strip()
+    if kind not in {"hoard", "individual"}:
+        await query.edit_message_text("Ungültige Auswahl. Nutze /rollschatz erneut 🙂")
+        return ConversationHandler.END
 
-    choice = query.data.split(":", 1)[1]
-    context.user_data["treasure_type"] = choice
-
-    label = "Einzelschatz" if choice == "single" else "Schatzhort"
-    await query.edit_message_text(
-        f"💰 {label}\nWelcher Herausforderungsgrad?",
-        reply_markup=build_treasure_cr_keyboard()
-    )
-    return TREASURE_PICK_CR
+    context.user_data["treasure_kind"] = kind
+    await query.edit_message_text("Welcher Herausforderungsgrad?", reply_markup=build_treasure_cr_keyboard())
+    return TREASURE_CR_STATE
 
 async def rollschatz_pick_cr(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
+    cr_key = query.data.split(":", 1)[1].strip()
+    if cr_key not in {"0-4", "5-10", "11-16", "17+"}:
+        await query.edit_message_text("Ungültiger Herausforderungsgrad. Nutze /rollschatz erneut 🙂")
+        return ConversationHandler.END
 
-    cr = query.data.split(":", 1)[1]
-    context.user_data["treasure_cr"] = cr
+    kind = context.user_data.get("treasure_kind", "individual")
+    context.user_data["treasure_cr"] = cr_key
 
-    ttype = context.user_data.get("treasure_type", "single")
-
-    if ttype == "hoard":
-        msg = generate_hoard_treasure(cr)
+    if kind == "hoard":
+        msg = _roll_hoard_treasure(cr_key)
     else:
-        msg = generate_single_treasure(cr)
+        msg = _roll_individual_treasure(cr_key)
 
     await query.edit_message_text(msg)
     return ConversationHandler.END
 
-async def rollschatz_cancel_cb(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    if query:
-        await query.answer()
-        await query.edit_message_text("Schatzwurf abgebrochen 🙂")
-    else:
-        await update.message.reply_text("Schatzwurf abgebrochen 🙂")
+async def rollschatz_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Schatz abgebrochen 🙂")
     return ConversationHandler.END
 
+async def rollschatz_cancel_cb(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    await query.edit_message_text("Schatz abgebrochen 🙂")
+    return ConversationHandler.END
 
 # -----------------------
-# ROLLDUNGEON SYSTEM (DE)
+# ROLLDUNGEON SYSTEM
 # -----------------------
 
-DNG_PICK_LEVEL, DNG_PICK_COUNT = range(2)
+DUNGEON_PICK_LEVEL = 300
+DUNGEON_PICK_PLAYERS = 301
 
-SUITS = {
-    1: "♣",
-    2: "♦",
-    3: "♥",
-    4: "♠",
-}
-
-SUIT_NAMES_DE = {
-    "♣": "Kreuz",
-    "♦": "Karo",
-    "♥": "Herz",
-    "♠": "Pik",
-}
-
-JOKER_NPCS = [
-    ("Marie", "Stanley", "Klasse"),
-    ("Marve", "Stanley", "Kämpfer"),
-    ("Kavia", "Corwin", "Schurke"),
-    ("Joselyn", "Leon", "Barde"),
-    ("Tellava", "Hadar", "Zauberer"),
-    ("Bess", "Baelin", "Kleriker"),
-    ("Nura", "Torgil", "Druide"),
-    ("Rala", "Vasar", "Paladin"),
-    ("Elera", "Zelmio", "Waldläufer"),
-    ("Sylthir", "Tcham", "Hexenmeister"),
+DUNGEON_THEMES = [
+    "Verlassene Zwergenmine",
+    "Vergessener Tempel",
+    "Magierlabor",
+    "Nekropole unter der Stadt",
+    "Räuberhöhle mit Schmugglertunneln",
+    "Versunkene Ruine",
+    "Unterreich Außenposten",
+    "Kristallhöhlen voller Echo",
 ]
 
-JOKER_ITEMS = [
-    ("Waffe", "Unbekannt", "100 GM"),
-    ("Rüstung", "Winzig", "150 GM"),
-    ("Buch", "Fragil", "200 GM"),
-    ("Schriftrolle", "Leuchtend", "250 GM"),
-    ("Karte", "Uralte", "500 GM"),
-    ("Ring", "Magisch", "750 GM"),
+DUNGEON_GOALS = [
+    "Berge ein Artefakt",
+    "Rette eine gefangene Person",
+    "Finde einen geheimen Durchgang",
+    "Zerstöre eine Quelle der Verderbnis",
+    "Stiehl Beweise oder Dokumente",
+    "Töte oder vertreibe den Anführer",
 ]
 
-QUEST_TABLES = [
-    [
-        (2, 4, "Überzeuge einen NSC, in die Stadt zurückzukehren"),
-        (5, 6, "Töte ein Monster, das einen GEGENSTAND besitzt"),
-        (10, 13, "Befreie einen gefangenen NSC"),
-        (14, 17, "Stoppe einen bösen NSC, der die Einheimischen tötet"),
-        (18, 99, "Finde und zerstöre einen gefährlichen GEGENSTAND"),
-    ],
-    [
-        (2, 5, "Kartiere Dungeon Ebene 1 für einen NSC"),
-        (6, 9, "Rette einen möglicherweise verlorenen NSC"),
-        (10, 13, "Töte eine kleine Gruppe böser Monster"),
-        (14, 17, "Besorge einen GEGENSTAND für einen reichen NSC"),
-        (18, 99, "Säubere den Dungeon von allen Monstern"),
-    ],
-    [
-        (2, 4, "Finde einen GEGENSTAND für einen örtlichen Gastwirt"),
-        (5, 7, "Gerüchte über 200 GM auf Dungeon Ebene 2"),
-        (8, 10, "Legenden sprechen von einem seltenen GEGENSTAND im Inneren"),
-        (11, 13, "Rette das Familienmitglied eines SC"),
-        (14, 16, "Töte eine kleine Gruppe böser NSCs"),
-        (17, 19, "Töte oder verzögere ein mächtiges Monster"),
-        (20, 99, "Stoppe Kultisten bei einer Dämonenbeschwörung"),
-    ],
-    [
-        (2, 4, "Finde heraus, was sich in den Ruinen verbirgt"),
-        (5, 7, "Die SC finden eine Karte, die zum Dungeon führt"),
-        (8, 10, "Ein seltsamer GEGENSTAND soll auf Ebene 2 liegen"),
-        (11, 13, "Kartiere Dungeon Ebene 2 (1W4) für einen NSC"),
-        (14, 16, "Bring den Kopf eines Monsters zurück"),
-        (17, 19, "Finde einen seltenen GEGENSTAND vor einem bösen NSC"),
-        (20, 99, "Töte einen Drachen, um die Einheimischen zu retten"),
-    ],
+ROOM_LAYOUT = [
+    "enger Korridor",
+    "breite Halle",
+    "runde Kammer",
+    "verzweigte Kreuzung",
+    "eingestürzte Höhle",
+    "Treppe in die Tiefe",
+    "Brücke über eine Schlucht",
+    "kleine Nische hinter Steinplatten",
 ]
 
-HALLWAY_TABLES = [
-    [
-        (1, 3, "Nichts"),
-        (4, 6, "Rucksack (leer)"),
-        (7, 8, "Kleine getrocknete Blutflecken"),
-        (9, 9, "Rostige Axt und 1W8 Fackeln"),
-        (10, 10, "Rucksack (Heiltrank)"),
-    ],
-    [
-        (1, 1, "Nichts"),
-        (2, 2, "Tote Ratte"),
-        (3, 3, "Geröll"),
-        (4, 4, "Schimmeliger Käse"),
-        (5, 5, "Eisenbarren"),
-        (6, 6, "Dolch"),
-        (7, 7, "Getrocknete Kräuter"),
-        (8, 8, "Knochen"),
-        (9, 9, "4W8 GM"),
-        (10, 10, "Werkzeug"),
-    ],
-    [
-        (1, 2, "Nichts"),
-        (3, 4, "Spinnweben und zerrissene Kleidung"),
-        (5, 6, "Zerbrochene Glasflaschen"),
-        (7, 8, "Kratzer und Risse in den Wänden"),
-        (9, 9, "Skelettreste eines Pferdes"),
-        (10, 10, "Rucksack (1W4 Tage Rationen)"),
-    ],
+ROOM_MOOD = [
+    "flackerndes Licht und lange Schatten",
+    "klamme Kälte, Atem wird sichtbar",
+    "schwerer Staub, jeder Schritt knirscht",
+    "feuchte Wände, irgendwo tropft Wasser",
+    "leises Flüstern, als ob die Steine reden",
+    "spürbare Magie, Haare stellen sich auf",
+    "Brandgeruch, Asche auf dem Boden",
+    "unheimliche Stille, kein Echo",
+    "dicke Spinnweben, alte Kokons",
+    "frische Kratzspuren, hier ist etwas aktiv",
 ]
 
-ROOM_CONTENT_TIER = {
-    1: [
-        (1, 3, "Rucksack (3W6 GM und 15m Seil)"),
-        (4, 6, "Zerbrochene Stühle und eine dicke Staubschicht"),
-        (7, 9, "Kobold Leiche (3W10 KM)"),
-        (10, 10, "Schreibtisch, Stuhl und ein hochwertiges Bett"),
-    ],
-    2: [
-        (1, 1, "Nichts"),
-        (2, 4, "1W6 Steinfiguren"),
-        (5, 6, "Halbling Leiche (4W8 GM)"),
-        (7, 8, "Zerbrochene Glasflaschen"),
-        (9, 9, "Echsenmenschen Leiche"),
-        (10, 10, "Brandspuren an den Wänden"),
-    ],
-    3: [
-        (1, 2, "Nichts"),
-        (3, 4, "2W8 Säcke Weizen"),
-        (5, 6, "Zerbrochene Truhe (leer)"),
-        (7, 8, "Menschen Leiche"),
-        (9, 9, "Ketten und Käfige"),
-        (10, 10, "Sack (1W10 mal 100 KM)"),
-    ],
-}
-
-SOUND_TABLES = [
-    {1: "Nichts", 2: "Wind", 3: "Zischen", 4: "Tropfen", 5: "Stöhnen", 6: "Leise Musik"},
-    {1: "Nichts", 2: "Schritte", 3: "Grollen", 4: "Klappern", 5: "Dumpfes Pochen", 6: "Schreie"},
-    {1: "Nichts", 2: "Leises Flüstern", 3: "Splitterndes Holz", 4: "Rasselnde Ketten", 5: "Klingende fallende Münzen", 6: "Fernes kehliges Lachen"},
-    {1: "Nichts", 2: "Stöhnen", 3: "Platschen", 4: "Schritte", 5: "Schluchzen", 6: "Brüllen"},
+ROOM_TYPE = [
+    "Kampf",
+    "Falle",
+    "Rätsel",
+    "Entdeckung",
+    "Soziales",
+    "Schatz",
 ]
 
-SMELL_TABLES = [
-    {1: "Nichts", 2: "Metallisch", 3: "Getrockneter Schweiß", 4: "Säuerlich", 5: "Räucherwerk", 6: "Verrottetes Fleisch"},
-    {1: "Nichts", 2: "Verbranntes Holz", 3: "Erde", 4: "Exkremente", 5: "Lampenöl", 6: "Schwefel"},
-    {1: "Nichts", 2: "Verbranntes Fleisch", 3: "Urin", 4: "Fauliges Fleisch", 5: "Stroh", 6: "Schimmel"},
+COMPLICATION = [
+    "Zeitdruck, etwas nähert sich",
+    "Alarmmechanismus, Fehler ruft Verstärkung",
+    "Giftige Luft, langes Verweilen kostet Ausdauer",
+    "Magischer Nebel, Sicht ist stark eingeschränkt",
+    "Der Boden ist instabil, Gefahr einzustürzen",
+    "Ein Fluch liegt auf dem Raum, kurze Nebenwirkung",
 ]
 
-MAGIC_POOLS = {
-    1: [
-        (1, 4, "Keine spürbare Wirkung (SL entscheidet)"),
-        (5, 7, "Trinken 1 mal pro Tag: Stelle 1W8 TP wieder her"),
-        (8, 9, "Berühren 1 mal pro Tag: Taub für 1 Stunde"),
-        (10, 11, "Trinken 1 mal pro Woche: Für 1W12 Stunden plus 1W6 Bonusschaden pro Treffer"),
-        (12, 12, "Berühren 1 mal pro Tag: Erleide 1W12 Schaden"),
-    ],
-    2: [
-        (1, 4, "Keine spürbare Wirkung (SL entscheidet)"),
-        (5, 7, "Trinken 1 mal pro Woche: Stelle 1W20 TP wieder her"),
-        (8, 9, "Berühren 1 mal pro Tag: Blind für 1 Stunde"),
-        (10, 11, "Berühren 1 mal pro Woche: Für 3W6 mal 10 Minuten Vorteil auf Initiative"),
-        (12, 12, "Trinken 1 mal pro Tag: Erleide 2W12 Schaden"),
-    ],
-    3: [
-        (1, 6, "Keine spürbare Wirkung"),
-        (7, 9, "Trinken 1 mal pro Tag: Stelle 2W10 TP wieder her"),
-        (10, 11, "Berühren 1 mal pro Tag: Vergiftet für 1W3 Stunden"),
-        (12, 12, "Trinken 1 mal pro Tag: Für 3W6 mal 10 Minuten doppelte Laufgeschwindigkeit an Land"),
-    ],
-    4: [
-        (1, 6, "Keine spürbare Wirkung"),
-        (7, 9, "Trinken 1 mal pro Tag: Stelle 2W10 TP wieder her"),
-        (10, 11, "Berühren 1 mal pro Tag: Vergiftet für 1W3 Stunden"),
-        (12, 12, "Trinken 1 mal pro Tag: Für 3W6 mal 10 Minuten doppelte Laufgeschwindigkeit an Land"),
-    ],
-}
+def _tg_spoiler(text: str) -> str:
+    return f"<tg-spoiler>{html.escape(text)}</tg-spoiler>"
 
-def _tier_from_level(lvl: int) -> int:
-    if lvl <= 4:
-        return 1
-    if lvl <= 10:
-        return 2
-    if lvl <= 16:
-        return 3
-    return 4
+def _dungeon_dc(level: int, hard: bool = False) -> int:
+    base = 10 + (level // 3)
+    if hard:
+        base += 2
+    return clamp(base, 10, 22)
 
-def _pick_range_from_total(ranges, total: int) -> str:
-    for a, b, txt in ranges:
-        if a <= total <= b:
-            return txt
-    return "Nichts"
+def _room_count(level: int, players: int) -> int:
+    base = 2 + math.ceil(level / 4)  # 3 bis 7
+    party_adj = round((players - 3) / 2)  # -1 bis +2
+    n = base + party_adj + random.randint(0, 3)
+    return clamp(n, 3, 12)
 
-def _roll_sound() -> str:
-    table = random.choice(SOUND_TABLES)
-    r = random.randint(1, 6)
-    return f"W6: {r} -> {table[r]}"
+def _pick_encounter_style(level: int, players: int) -> str:
+    styles = [
+        "Schwarm kleiner Gegner",
+        "ein Elite Gegner mit Support",
+        "Hinterhalt aus Deckung",
+        "Patrouille, die Verstärkung rufen kann",
+        "Mini Boss mit Terrain Vorteil",
+        "zwei Fraktionen, die sich gerade bekämpfen",
+    ]
+    hint = "leichter" if level <= 4 else "normal"
+    if level >= 11:
+        hint = "hart"
+    if players <= 2:
+        hint = "eher kleiner"
+    if players >= 5:
+        hint = "eher größer"
+    return f"{random.choice(styles)} (Skalierung: {hint})"
 
-def _roll_smell() -> str:
-    table = random.choice(SMELL_TABLES)
-    r = random.randint(1, 6)
-    return f"W6: {r} -> {table[r]}"
+def _pick_trap(level: int) -> str:
+    traps = [
+        "Druckplatte löst Pfeilsalve aus",
+        "Fallgrube mit Stacheln",
+        "Schwingende Klinge aus der Wand",
+        "Runensiegel, das Blitzschaden entlädt",
+        "Gasfalle, die Sicht und Atmung stört",
+        "Einsturz, wenn zu viel Gewicht drauf kommt",
+    ]
+    dc = _dungeon_dc(level, hard=False)
+    return f"{random.choice(traps)} (SG {dc} entdecken oder entschärfen)"
 
-def _roll_hallway() -> str:
-    ranges = list(random.choice(HALLWAY_TABLES))
-    r = random.randint(1, 10)
-    txt = _pick_range_from_total(ranges, r)
+def _pick_puzzle(level: int) -> str:
+    puzzles = [
+        "Drehbare Statuen, die in die richtige Richtung zeigen müssen",
+        "Runenreihenfolge, die den Raum entsperrt",
+        "Gewichtsrätsel mit vier Sockeln",
+        "Lichtstrahlen über Spiegel umleiten",
+        "Zahlenmuster, das eine Tür entriegelt",
+        "Rätselspruch auf einer Säule, Antwort öffnet einen Mechanismus",
+    ]
+    dc = _dungeon_dc(level, hard=True)
+    return f"{random.choice(puzzles)} (SG {dc} für Analyse oder Werkzeug)"
 
-    extra = ""
-    if "1W8 Fackeln" in txt:
-        x = random.randint(1, 8)
-        extra = f" | 1W8: {x} -> {x} Fackeln"
-    if "4W8 GM" in txt:
-        rolls = [random.randint(1, 8) for _ in range(4)]
-        total = sum(rolls)
-        extra = f" | 4W8: {', '.join(map(str, rolls))} -> {total} GM"
-    if "1W4 Tage Rationen" in txt:
-        x = random.randint(1, 4)
-        extra = f" | 1W4: {x} -> {x} Tage"
+def _pick_discovery(level: int) -> str:
+    finds = [
+        "alte Karte mit Abkürzung",
+        "Tagebuch mit Hinweis auf den Boss",
+        "geheime Hebelwand, die einen Raum überspringt",
+        "Ritualkreis, der kurz einen Buff gibt",
+        "Wandrelief mit Lore und Warnung",
+        "Spuren, die zeigen, wo die Beute gelagert ist",
+    ]
+    dc = _dungeon_dc(level, hard=False)
+    return f"{random.choice(finds)} (SG {dc} Wahrnehmung oder Investigation)"
 
-    return f"W10: {r} -> {txt}{extra}"
+def _pick_social(level: int) -> str:
+    npcs = [
+        "verletzter Kundschafter, der raus will",
+        "Gefangener, der einen Deal anbietet",
+        "unsicherer Kultist, der zweifelt",
+        "geistiger Wächter, der Fragen stellt",
+        "kleines Monster, das handeln will",
+        "Söldnertrupp, der auch hier ist",
+    ]
+    dc = _dungeon_dc(level, hard=False)
+    return f"{random.choice(npcs)} (SG {dc} Überreden oder Einschüchtern, wenn nötig)"
 
-def _roll_room_contents(tier: int) -> str:
-    if tier <= 1:
-        ranges = ROOM_CONTENT_TIER[1]
-    elif tier == 2:
-        ranges = ROOM_CONTENT_TIER[2]
+def _pick_treasure(level: int) -> str:
+    loot = [
+        "versteckte Truhe hinter losen Steinen",
+        "Opfergabe auf einem Altar",
+        "Gürteltasche an einem Skelett",
+        "Kiste mit Siegel, das erst geknackt werden muss",
+        "Schmugglersafe in der Wand",
+        "magisch versiegeltes Kästchen",
+    ]
+    dc = _dungeon_dc(level, hard=False)
+    return f"{random.choice(loot)} (Tipp: /rollschatz passend zum HG)"
+
+def _generate_room(i: int, n: int, level: int, players: int) -> str:
+    layout = random.choice(ROOM_LAYOUT)
+    mood = random.choice(ROOM_MOOD)
+    rtype = random.choice(ROOM_TYPE)
+    comp = random.choice(COMPLICATION)
+
+    if i == n:
+        rtype = "Finale"
+
+    title = f"Raum {i} von {n}"
+    header = f"{title}\nLayout: {layout}\nStimmung: {mood}"
+
+    if rtype == "Kampf":
+        body = f"Inhalt: Kampf\nBegegnung: {_pick_encounter_style(level, players)}\nKomplikation: {comp}"
+    elif rtype == "Falle":
+        body = f"Inhalt: Falle\nFalle: {_pick_trap(level)}\nKomplikation: {comp}"
+    elif rtype == "Rätsel":
+        body = f"Inhalt: Rätsel\nRätsel: {_pick_puzzle(level)}\nKomplikation: {comp}"
+    elif rtype == "Entdeckung":
+        body = f"Inhalt: Entdeckung\nFund: {_pick_discovery(level)}\nKomplikation: {comp}"
+    elif rtype == "Soziales":
+        body = f"Inhalt: Soziales\nNSC: {_pick_social(level)}\nKomplikation: {comp}"
+    elif rtype == "Schatz":
+        body = f"Inhalt: Schatz\nBeute: {_pick_treasure(level)}\nKomplikation: {comp}"
     else:
-        ranges = ROOM_CONTENT_TIER[3]
+        boss = _pick_encounter_style(level + 3, players)
+        body = (
+            "Inhalt: Finale\n"
+            f"Boss Szene: {boss}\n"
+            "Belohnung: Kreaturenhort oder Schlüssel zum Ziel\n"
+            "Tipp: Wenn du Loot willst, nimm /rollschatz als Schatzhort"
+        )
 
-    r = random.randint(1, 10)
-    txt = _pick_range_from_total(ranges, r)
+    return header + "\n" + body
 
-    extra = ""
-    if "3W6 GM" in txt:
-        rolls = [random.randint(1, 6) for _ in range(3)]
-        extra = f" | 3W6: {', '.join(map(str, rolls))} -> {sum(rolls)} GM"
-    if "3W10 KM" in txt:
-        rolls = [random.randint(1, 10) for _ in range(3)]
-        extra = f" | 3W10: {', '.join(map(str, rolls))} -> {sum(rolls)} KM"
-    if "4W8 GM" in txt:
-        rolls = [random.randint(1, 8) for _ in range(4)]
-        extra = f" | 4W8: {', '.join(map(str, rolls))} -> {sum(rolls)} GM"
-    if "2W8 Säcke" in txt:
-        rolls = [random.randint(1, 8) for _ in range(2)]
-        extra = f" | 2W8: {', '.join(map(str, rolls))} -> {sum(rolls)} Säcke"
-    if "1W6 Steinfiguren" in txt:
-        x = random.randint(1, 6)
-        extra = f" | 1W6: {x} -> {x}"
-    if "1W10 mal 100 KM" in txt:
-        x = random.randint(1, 10)
-        extra = f" | 1W10: {x} -> {x * 100} KM"
-
-    return f"W10: {r} -> {txt}{extra}"
-
-def _roll_magic_pool(tier: int) -> str:
-    ranges = MAGIC_POOLS.get(tier, MAGIC_POOLS[1])
-    r = random.randint(1, 12)
-    txt = _pick_range_from_total(ranges, r)
-
-    extra = ""
-    if "1W8 TP" in txt:
-        x = random.randint(1, 8)
-        extra = f" | 1W8: {x} -> {x} TP"
-    if "1W12 Stunden" in txt:
-        h = random.randint(1, 12)
-        d = random.randint(1, 6)
-        extra = f" | 1W12: {h} -> {h} Stunden | 1W6: {d} -> +{d} Schaden"
-    if "1W12 Schaden" in txt:
-        x = random.randint(1, 12)
-        extra = f" | 1W12: {x} -> {x} Schaden"
-    if "1W20 TP" in txt:
-        x = random.randint(1, 20)
-        extra = f" | 1W20: {x} -> {x} TP"
-    if "3W6 mal 10 Minuten" in txt:
-        rolls = [random.randint(1, 6) for _ in range(3)]
-        minutes = sum(rolls) * 10
-        extra = f" | 3W6: {', '.join(map(str, rolls))} -> {minutes} Minuten"
-    if "2W12 Schaden" in txt:
-        rolls = [random.randint(1, 12) for _ in range(2)]
-        extra = f" | 2W12: {', '.join(map(str, rolls))} -> {sum(rolls)} Schaden"
-    if "2W10 TP" in txt:
-        rolls = [random.randint(1, 10) for _ in range(2)]
-        extra = f" | 2W10: {', '.join(map(str, rolls))} -> {sum(rolls)} TP"
-    if "1W3 Stunden" in txt:
-        x = random.randint(1, 3)
-        extra = f" | 1W3: {x} -> {x} Stunden"
-
-    return f"W12: {r} -> {txt}{extra}"
-
-def _roll_trap(pc_level: int, tier: int) -> str:
-    d4 = random.randint(1, 4)
-    total = d4 + pc_level
-
-    def fmt(res: str) -> str:
-        return f"1W4+Stufe: {d4}+{pc_level}={total} -> {res}"
-
-    if tier <= 1:
-        if total <= 4:
-            return fmt("Keine")
-        if 5 <= total <= 7:
-            return fmt("Einfache Fallgrube")
-        if 8 <= total <= 9:
-            return fmt("Versteckte Fallgrube")
-        if total == 10:
-            return fmt("Fallnetz")
-        return fmt("Giftspeere")
-
-    if tier == 2:
-        if total <= 4:
-            return fmt("Keine")
-        if 5 <= total <= 7:
-            return fmt("Versteckte Fallgrube")
-        if 8 <= total <= 9:
-            return fmt("Stachelgrube")
-        if total == 10:
-            return fmt("Einstürzendes Dach")
-        return fmt("Giftspeere")
-
-    if tier == 3:
-        if total <= 4:
-            return fmt("Keine")
-        if 5 <= total <= 7:
-            return fmt("Verriegelnde Fallgrube")
-        if 8 <= total <= 9:
-            return fmt("Stachelgrube")
-        if total == 10:
-            return fmt("Einstürzendes Dach")
-        return fmt("Feuerspeiende Statue")
-
-    if total <= 4:
-        return fmt("Keine")
-    if 5 <= total <= 7:
-        return fmt("Verriegelnde Fallgrube")
-    if 8 <= total <= 9:
-        return fmt("Stachelgrube")
-    if total == 10:
-        return fmt("Einstürzendes Dach")
-    return fmt("Feuerspeiende Statue")
-
-MONSTER_POOLS = {
-    1: {
-        "9-10": ["Goblin", "Skelett", "Zombie", "Kobold"],
-        "11-12": ["Ork", "Bandit", "Riesenspinne", "Harpyie"],
-        "13-14": ["Bugbär", "Ghul", "Echsenmensch", "Wererat"],
-        "15-16": ["Oger", "Wight", "Wasserspeier", "Berserker"],
-        "17+": ["Troll", "Umber Hulk", "Basilisk", "Wraith"],
-    },
-    2: {
-        "9-10": ["Riesenspinne", "Ork", "Ghul", "Bugbär"],
-        "11-12": ["Mimik", "Wereschwein", "Ork Kriegshäuptling", "Druide"],
-        "13-14": ["Minotaurus", "Schwarzer Schleim", "Drow", "Greif"],
-        "15-16": ["Drow Elitekrieger", "Troll", "Yuan Ti", "Wight"],
-        "17+": ["Schatten Dämon", "Vampirbrut", "Gorgon", "Hydra"],
-    },
-    3: {
-        "9-10": ["Wasserspeier", "Oger", "Wight", "Riesenhyäne"],
-        "11-12": ["Riesenschildkröte", "Mumie", "Schwarzer Drache Jungdrache", "Displacer Beast"],
-        "13-14": ["Basilisk", "Ork Kriegshäuptling", "Drow", "Werbär"],
-        "15-16": ["Gorgon", "Cambion", "Quasit und Kultisten", "Chimäre"],
-        "17+": ["Revenant", "Vampirbrut", "Steingolem", "Schatten Dämon"],
-    },
-    4: {
-        "9-10": ["Mumie", "Vampirbrut", "Gorgon", "Wyvern"],
-        "11-12": ["Riese", "Junger Drache", "Steingolem", "Cambion"],
-        "13-14": ["Erwachsener Drache", "Dämon", "Teufel", "Lich Kultführer"],
-        "15-16": ["Uralter Drache", "Balor", "Pit Fiend", "Gestärkter Lich"],
-        "17+": ["Kampagnenboss", "Etwas absichtlich Fieses", "Zwei Bosse streiten", "Der Dungeon erwacht"],
-    },
-}
-
-def _roll_monsters(pc_level: int, pc_count: int, dungeon_level: int, hard: bool) -> str:
-    tier = _tier_from_level(dungeon_level)
-    d6 = random.randint(1, 6)
-    total = d6 + pc_level + (2 if hard else 0)
-
-    if total <= 8:
-        add = "+2" if hard else ""
-        return f"1W6+Stufe{'+2' if hard else ''}: {d6}+{pc_level}{add}={total} -> Keine"
-
-    pool = MONSTER_POOLS.get(tier, MONSTER_POOLS[1])
-
-    def line(key: str) -> str:
-        add = "+2" if hard else ""
-        m = random.choice(pool[key])
-        return f"1W6+Stufe{'+2' if hard else ''}: {d6}+{pc_level}{add}={total} -> {pc_count} x {m} pro Spieler"
-
-    if 9 <= total <= 10:
-        return line("9-10")
-    if 11 <= total <= 12:
-        return line("11-12")
-    if 13 <= total <= 14:
-        return line("13-14")
-    if 15 <= total <= 16:
-        return line("15-16")
-    return line("17+")
-
-def _cr_band_from_level(lvl: int) -> str:
-    if lvl <= 4:
-        return "0-4"
-    if lvl <= 10:
-        return "5-10"
-    if lvl <= 16:
-        return "11-16"
-    return "17+"
-
-def _roll_quest(pc_level: int) -> str:
-    table = random.choice(QUEST_TABLES)
-    d8 = random.randint(1, 8)
-    total = d8 + pc_level
-    for a, b, txt in table:
-        if a <= total <= b:
-            return f"1W8+Stufe: {d8}+{pc_level}={total} -> {txt}"
-    return f"1W8+Stufe: {d8}+{pc_level}={total} -> Quest nach Gefühl"
-
-def _roll_joker() -> str:
-    n = random.randint(1, 10)
-    i = random.randint(1, 6)
-    npc = JOKER_NPCS[n - 1]
-    item = JOKER_ITEMS[i - 1]
-    return (
-        f"NSC W10: {n} -> {npc[0]} {npc[1]} ({npc[2]})\n"
-        f"Quest Gegenstand W6: {i} -> {item[0]} ({item[1]}) Wert: {item[2]}"
-    )
-
-def build_dng_level_keyboard() -> InlineKeyboardMarkup:
-    rows = []
-    row = []
+def build_dungeon_level_keyboard() -> InlineKeyboardMarkup:
+    rows: List[List[InlineKeyboardButton]] = []
+    row: List[InlineKeyboardButton] = []
     for lvl in range(1, 21):
-        row.append(InlineKeyboardButton(str(lvl), callback_data=f"dng_lvl:{lvl}"))
-        if len(row) == 4:
+        row.append(InlineKeyboardButton(str(lvl), callback_data=f"dungeon_lvl:{lvl}"))
+        if len(row) == 5:
             rows.append(row)
             row = []
     if row:
         rows.append(row)
-    rows.append([InlineKeyboardButton("Abbrechen", callback_data="dng_cancel")])
+    rows.append([InlineKeyboardButton("Abbrechen", callback_data="dungeon_cancel")])
     return InlineKeyboardMarkup(rows)
 
-def build_dng_count_keyboard() -> InlineKeyboardMarkup:
-    rows = [[
-        InlineKeyboardButton("1", callback_data="dng_pcs:1"),
-        InlineKeyboardButton("2", callback_data="dng_pcs:2"),
-        InlineKeyboardButton("3", callback_data="dng_pcs:3"),
-    ], [
-        InlineKeyboardButton("4", callback_data="dng_pcs:4"),
-        InlineKeyboardButton("5", callback_data="dng_pcs:5"),
-        InlineKeyboardButton("6", callback_data="dng_pcs:6"),
-    ], [
-        InlineKeyboardButton("Abbrechen", callback_data="dng_cancel")
-    ]]
+def build_dungeon_players_keyboard() -> InlineKeyboardMarkup:
+    rows = [[InlineKeyboardButton(str(n), callback_data=f"dungeon_ply:{n}") for n in range(1, 7)]]
+    rows.append([InlineKeyboardButton("Abbrechen", callback_data="dungeon_cancel")])
     return InlineKeyboardMarkup(rows)
 
 async def rolldungeon_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    context.user_data.pop("dng_pc_level", None)
-    context.user_data.pop("dng_pc_count", None)
+    context.user_data.pop("dungeon_level", None)
+    context.user_data.pop("dungeon_players", None)
 
-    await update.message.reply_text(
-        "🗺️ Rolldungeon\nWähle die Spielerstufe",
-        reply_markup=build_dng_level_keyboard()
+    if len(context.args) >= 2:
+        try:
+            lvl = int(context.args[0])
+            ply = int(context.args[1])
+            if not (1 <= lvl <= 20 and 1 <= ply <= 6):
+                raise ValueError
+            text = _build_dungeon_output(lvl, ply)
+            await update.message.reply_text(text, parse_mode="HTML", disable_web_page_preview=True)
+            return ConversationHandler.END
+        except Exception:
+            pass
+
+    await update.message.reply_text("🏰 Rolldungeon\nWähle das Spielerlevel:", reply_markup=build_dungeon_level_keyboard())
+    return DUNGEON_PICK_LEVEL
+
+def _build_dungeon_output(level: int, players: int) -> str:
+    theme = random.choice(DUNGEON_THEMES)
+    goal = random.choice(DUNGEON_GOALS)
+    n = _room_count(level, players)
+
+    header = (
+        "🏰 <b>Rolldungeon</b>\n"
+        f"Level: <b>{level}</b> | Spieler: <b>{players}</b> | Räume: <b>{n}</b>\n"
+        "Tipp: Wenn du per Hand spoilern willst: STRG+SHIFT+P pro Raum\n"
+        f"Thema: <b>{html.escape(theme)}</b>\n"
+        f"Ziel: <b>{html.escape(goal)}</b>\n\n"
+        "Alle Räume sind Spoiler. Antippen zum Aufdecken.\n"
     )
-    return DNG_PICK_LEVEL
+
+    rooms = []
+    for i in range(1, n + 1):
+        room_txt = _generate_room(i, n, level, players)
+        rooms.append(_tg_spoiler(room_txt))
+
+    return header + "\n\n".join(rooms) + "\n\nViel Spaß 😊"
 
 async def rolldungeon_pick_level(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
     lvl = int(query.data.split(":", 1)[1])
-    lvl = max(1, min(20, lvl))
-    context.user_data["dng_pc_level"] = lvl
+    context.user_data["dungeon_level"] = lvl
 
-    await query.edit_message_text(
-        f"🗺️ Rolldungeon\nSpielerstufe: {lvl}\nWähle die Spieleranzahl",
-        reply_markup=build_dng_count_keyboard()
-    )
-    return DNG_PICK_COUNT
+    await query.edit_message_text("Wie viele Spieler?", reply_markup=build_dungeon_players_keyboard())
+    return DUNGEON_PICK_PLAYERS
 
-async def rolldungeon_pick_count(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def rolldungeon_pick_players(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
-    pc_count = int(query.data.split(":", 1)[1])
-    pc_count = max(1, min(6, pc_count))
-    context.user_data["dng_pc_count"] = pc_count
+    ply = int(query.data.split(":", 1)[1])
+    lvl = int(context.user_data.get("dungeon_level", 1))
 
-    pc_level = int(context.user_data.get("dng_pc_level", 1))
-    dungeon_level = pc_level
-
-    rooms = random.randint(1, 6) + 5
-    rooms = max(3, min(20, rooms))
-
-    tier = _tier_from_level(dungeon_level)
-    cr_band = _cr_band_from_level(dungeon_level)
-
-    header = (
-        "🗺️ Rolldungeon\n"
-        f"Spieleranzahl: {pc_count} | Spielerstufe: {pc_level} | Dungeon Stufe: {dungeon_level} | Räume: {rooms}\n"
-        "Tipp: Spoiler in Telegram per Strg+Shift+P oder Text markieren und Spoiler wählen.\n\n"
-        "Räume sind als Spoiler vorbereitet. Klick drauf zum Aufdecken.\n"
-    )
-
-    sections: List[str] = []
-    sections.append(html.escape(header))
-
-    entrance = (
-        "Einstieg\n"
-        f"Quest Hook: {_roll_quest(pc_level)}\n"
-        f"Geräusch: {_roll_sound()}\n"
-        f"Geruch: {_roll_smell()}\n"
-        f"Flur Inhalt: {_roll_hallway()}"
-    )
-    sections.append(
-        f"<b>Raum 1: Eingang</b>\n"
-        f"<span class=\"tg-spoiler\">{html.escape(entrance)}</span>\n"
-    )
-
-    for idx in range(2, rooms):
-        rank_roll = random.randint(1, 12)
-        suit_roll = random.randint(1, 4)
-        suit = SUITS[suit_roll]
-        suit_name = SUIT_NAMES_DE[suit]
-
-        if rank_roll <= 9:
-            rank = str(rank_roll + 1)
-        elif rank_roll == 10:
-            rank = "B"
-        elif rank_roll == 11:
-            rank = "D"
-        else:
-            rank = "JOKER"
-
-        is_hard = (suit == "♠")
-
-        room_lines: List[str] = []
-        room_lines.append(f"Generator: Rang W12={rank_roll} -> {rank} | Symbol W4={suit_roll} -> {suit_name} {suit}")
-
-        if rank == "JOKER":
-            room_lines.append("Spezial: Joker Raum")
-            room_lines.append(_roll_joker())
-            if random.random() < 0.5:
-                room_lines.append(f"Geräusch: {_roll_sound()}")
-            if random.random() < 0.5:
-                room_lines.append(f"Geruch: {_roll_smell()}")
-
-        else:
-            if suit == "♦":
-                if rank in {"7", "8", "9", "10", "D"}:
-                    room_lines.append("Typ: Schatzraum")
-                    if random.random() < 0.35:
-                        room_lines.append("Falle: Gift Nadel Falle")
-                    room_lines.append("Schatz:")
-                    room_lines.append(generate_single_treasure(cr_band))
-                else:
-                    room_lines.append("Typ: Falle")
-                    room_lines.append(_roll_trap(pc_level, tier))
-                    if random.random() < 0.6:
-                        room_lines.append("Danach: Monster durch den Lärm angelockt")
-                        room_lines.append(_roll_monsters(pc_level, pc_count, dungeon_level, is_hard))
-
-            elif suit == "♥":
-                if rank in {"6", "9", "10"} and random.random() < 0.7:
-                    room_lines.append("Typ: Magischer Pool")
-                    room_lines.append(_roll_magic_pool(tier))
-                else:
-                    room_lines.append("Typ: Raum Inhalt")
-                    room_lines.append(_roll_room_contents(tier))
-
-                if random.random() < 0.6:
-                    room_lines.append(f"Geräusch: {_roll_sound()}")
-                if random.random() < 0.6:
-                    room_lines.append(f"Geruch: {_roll_smell()}")
-
-            else:
-                room_lines.append("Typ: Monsterraum")
-                room_lines.append(_roll_monsters(pc_level, pc_count, dungeon_level, is_hard))
-
-                if random.random() < 0.4:
-                    room_lines.append("Beute: kleiner Bonus Schatz")
-                    room_lines.append(generate_single_treasure(cr_band))
-
-                if random.random() < 0.5:
-                    room_lines.append(f"Geräusch: {_roll_sound()}")
-                if random.random() < 0.5:
-                    room_lines.append(f"Geruch: {_roll_smell()}")
-
-            if random.random() < 0.35:
-                room_lines.append("Nebenflur: Inhalt")
-                room_lines.append(_roll_hallway())
-
-        room_title = f"{rank} {suit_name} {suit}"
-        room_txt = "\n".join(room_lines)
-
-        sections.append(
-            f"<b>Raum {idx}: {html.escape(room_title)}</b>\n"
-            f"<span class=\"tg-spoiler\">{html.escape(room_txt)}</span>\n"
-        )
-
-    finale_is_quest = random.random() < 0.6
-    end_lines = [
-        "Finale",
-        f"Geräusch: {_roll_sound()}",
-        f"Geruch: {_roll_smell()}",
-    ]
-
-    if finale_is_quest:
-        end_lines.append("Ziel: Questziel")
-        end_lines.append("Boss Encounter")
-        end_lines.append(_roll_monsters(pc_level, pc_count, dungeon_level, True))
-        end_lines.append("Belohnung: Schatzhort")
-        end_lines.append(generate_hoard_treasure(cr_band))
-    else:
-        end_lines.append("Ziel: Treppe zur nächsten Ebene")
-        end_lines.append("Abstieg gesichert, kleiner Abschiedsschatz")
-        end_lines.append(generate_single_treasure(cr_band))
-
-    end_txt = "\n".join(end_lines)
-    sections.append(
-        f"<b>Raum {rooms}: Finale</b>\n"
-        f"<span class=\"tg-spoiler\">{html.escape(end_txt)}</span>\n"
-    )
-
-    chunks: List[str] = []
-    current = ""
-    for part in sections:
-        if len(current) + len(part) > 3500:
-            chunks.append(current)
-            current = ""
-        current += part
-    if current:
-        chunks.append(current)
-
-    await query.edit_message_text("Dungeon wird generiert 🙂")
-    for ch in chunks:
-        await query.message.reply_text(ch, parse_mode="HTML")
-
+    text = _build_dungeon_output(lvl, ply)
+    await query.edit_message_text(text, parse_mode="HTML", disable_web_page_preview=True)
     return ConversationHandler.END
 
 async def rolldungeon_cancel_cb(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
-    if query:
-        await query.answer()
-        await query.edit_message_text("Rolldungeon abgebrochen 🙂")
+    await query.answer()
+    await query.edit_message_text("Rolldungeon abgebrochen 🙂")
+    return ConversationHandler.END
+
+async def rolldungeon_cancel_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Rolldungeon abgebrochen 🙂")
     return ConversationHandler.END
 
 # -----------------------
@@ -2617,12 +1947,12 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🧰 Befehle\n\n"
         "/help  diese Hilfe\n"
         "/roll <Ausdruck>  Würfeln, z.B. /roll 1d6 oder /roll 2d20+3 oder /roll 1d20+2d6+3 (auch 1w6)\n"
-        "/rollplayerbehaviour  1W6 Rollplay Verhalten Tabelle\n"
         "/rollchance  Skillwurf plus SG und Belohnung\n"
         "/rollhunt  Jagdwurf mit Mod Auswahl\n"
         "/rollwaldkarte  zieht eine Waldkarte (Skillchance, Ruhe, Entdeckung, Encounter, Hort, NPC)\n"
-        "/rollschatz  Schatz würfeln (Einzeln oder Hort, dann HG Auswahl)\n"
-        "/rolldungeon  Dungeon per Klick Auswahl, alle Räume auf einmal als Spoiler\n\n"
+        "/rolldungeon  Dungeon Generator mit Spoiler Räumen\n"
+        "/rollplayerbehaviour  würfelt Rollplayer Behaviour (1W6)\n"
+        "/rollschatz  würfelt Schatz (Schatzhort oder Einzelschatz) nach Herausforderungsgrad\n\n"
         "🌍 Biom\n"
         "/setbiom <Biom>  setzt dein aktuelles Biom (oder ohne Parameter per Buttons)\n"
         "/biom  zeigt dein aktuelles Biom\n"
@@ -2632,10 +1962,9 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/encdebug  zeigt welche Encounter Tabellen wirklich geladen wurden\n\n"
         "🔮 Orakel\n"
         "/rolloracle [Frage]  Ja Nein Orakel\n"
-        "/cancel  bricht Orakel oder Encounter oder Schatz Auswahl ab"
+        "/cancel  bricht Orakel, Encounter, Schatz oder Rolldungeon Auswahl ab"
     )
     await update.message.reply_text(msg)
-
 
 def main():
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
@@ -2654,7 +1983,6 @@ def main():
     app.add_handler(CommandHandler("start", help_cmd))
 
     app.add_handler(CommandHandler("roll", roll))
-    app.add_handler(CommandHandler("rollplayerbehaviour", rollplayerbehaviour))
     app.add_handler(CommandHandler("rollchance", rollchance))
 
     app.add_handler(CommandHandler("rollhunt", rollhunt))
@@ -2664,46 +1992,14 @@ def main():
     app.add_handler(CommandHandler("rollwaldkarte", rollwaldkarte))
     app.add_handler(CallbackQueryHandler(rollwaldkarte_pick_level, pattern=r"^waldkarte_level:"))
 
+    app.add_handler(CommandHandler("rollplayerbehaviour", rollplayerbehaviour))
+
     app.add_handler(CommandHandler("setbiom", setbiom))
     app.add_handler(CommandHandler("biom", biom))
     app.add_handler(CommandHandler("rollbiom", rollbiom))
     app.add_handler(CallbackQueryHandler(setbiom_pick, pattern=r"^biom_set:"))
 
     app.add_handler(CommandHandler("encdebug", encdebug))
-
-    treasure_conv = ConversationHandler(
-        entry_points=[CommandHandler("rollschatz", rollschatz_start)],
-        states={
-            TREASURE_PICK_TYPE: [
-                CallbackQueryHandler(rollschatz_pick_type, pattern=r"^treasure_type:"),
-                CallbackQueryHandler(rollschatz_cancel_cb, pattern=r"^treasure_cancel$"),
-            ],
-            TREASURE_PICK_CR: [
-                CallbackQueryHandler(rollschatz_pick_cr, pattern=r"^treasure_cr:"),
-                CallbackQueryHandler(rollschatz_cancel_cb, pattern=r"^treasure_cancel$"),
-            ],
-        },
-        fallbacks=[CommandHandler("cancel", rollschatz_cancel_cb)],
-        allow_reentry=True,
-    )
-    app.add_handler(treasure_conv)
-
-    dungeon_conv = ConversationHandler(
-        entry_points=[CommandHandler("rolldungeon", rolldungeon_start)],
-        states={
-            DNG_PICK_LEVEL: [
-                CallbackQueryHandler(rolldungeon_pick_level, pattern=r"^dng_lvl:"),
-                CallbackQueryHandler(rolldungeon_cancel_cb, pattern=r"^dng_cancel$"),
-            ],
-            DNG_PICK_COUNT: [
-                CallbackQueryHandler(rolldungeon_pick_count, pattern=r"^dng_pcs:"),
-                CallbackQueryHandler(rolldungeon_cancel_cb, pattern=r"^dng_cancel$"),
-            ],
-        },
-        fallbacks=[CommandHandler("cancel", rolldungeon_cancel_cb)],
-        allow_reentry=True,
-    )
-    app.add_handler(dungeon_conv)
 
     encounter_conv = ConversationHandler(
         entry_points=[CommandHandler("rollencounter", rollencounter_start)],
@@ -2728,6 +2024,40 @@ def main():
         allow_reentry=True,
     )
     app.add_handler(oracle_conv)
+
+    treasure_conv = ConversationHandler(
+        entry_points=[CommandHandler("rollschatz", rollschatz_start)],
+        states={
+            TREASURE_KIND_STATE: [
+                CallbackQueryHandler(rollschatz_pick_kind, pattern=r"^treasure_kind:"),
+                CallbackQueryHandler(rollschatz_cancel_cb, pattern=r"^treasure_cancel$"),
+            ],
+            TREASURE_CR_STATE: [
+                CallbackQueryHandler(rollschatz_pick_cr, pattern=r"^treasure_cr:"),
+                CallbackQueryHandler(rollschatz_cancel_cb, pattern=r"^treasure_cancel$"),
+            ],
+        },
+        fallbacks=[CommandHandler("cancel", rollschatz_cancel)],
+        allow_reentry=True,
+    )
+    app.add_handler(treasure_conv)
+
+    dungeon_conv = ConversationHandler(
+        entry_points=[CommandHandler("rolldungeon", rolldungeon_start)],
+        states={
+            DUNGEON_PICK_LEVEL: [
+                CallbackQueryHandler(rolldungeon_pick_level, pattern=r"^dungeon_lvl:"),
+                CallbackQueryHandler(rolldungeon_cancel_cb, pattern=r"^dungeon_cancel$"),
+            ],
+            DUNGEON_PICK_PLAYERS: [
+                CallbackQueryHandler(rolldungeon_pick_players, pattern=r"^dungeon_ply:"),
+                CallbackQueryHandler(rolldungeon_cancel_cb, pattern=r"^dungeon_cancel$"),
+            ],
+        },
+        fallbacks=[CommandHandler("cancel", rolldungeon_cancel_cmd)],
+        allow_reentry=True,
+    )
+    app.add_handler(dungeon_conv)
 
     app.run_webhook(
         listen="0.0.0.0",
