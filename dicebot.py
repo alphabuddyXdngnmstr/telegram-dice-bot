@@ -1204,159 +1204,103 @@ INDIVIDUAL_TREASURE: Dict[str, List[Tuple[int, int, List[Tuple[str, int, int, in
     ],
 }
 
+# -----------------------
 # Magische Gegenstände Tabellen A bis I
-# (Deine großen Tabellen bleiben wie bei dir, hier unverändert)
-MAGIC_TABLES: Dict[str, List[Tuple[int, int, str]]] = {
-    "A": [
-        (1, 50, "Heiltrank"),
-        (51, 60, "Zauberschriftrolle (Zaubertrick)"),
-        (61, 70, "Trank des Kletterns"),
-        (71, 90, "Zauberschriftrolle (Zaubergrad 1)"),
-        (91, 94, "Zauberschriftrolle (Zaubergrad 2)"),
-        (95, 98, "Trank der mächtigen Heilung"),
-        (99, 99, "Nimmervoller Beutel"),
-        (100, 100, "Schwebekugel"),
-    ],
-    "B": [
-        (1, 15, "Trank der mächtigen Heilung"),
-        (16, 22, "Trank des Feueratems"),
-        (23, 29, "Trank des Widerstands"),
-        (30, 34, "Geschosse, +1"),
-        (35, 39, "Trank der Tierfreundschaft"),
-        (40, 44, "Trank der Hügelriesenstärke"),
-        (45, 49, "Trank des Wachstums"),
-        (50, 54, "Trank der Wasseratmung"),
-        (55, 59, "Zauberschriftrolle (Zaubergrad 2)"),
-        (60, 64, "Zauberschriftrolle (Zaubergrad 3)"),
-        (65, 67, "Nimmervoller Beutel"),
-        (68, 70, "Keoghtoms Salbe"),
-        (71, 73, "Öl der Glätte"),
-        (74, 75, "Staub des Verschwindens"),
-        (76, 77, "Staub der Trockenheit"),
-        (78, 79, "Staub des Niesens und Erstickens"),
-        (80, 81, "Elementarer Edelstein"),
-        (82, 83, "Liebestrank"),
-        (84, 84, "Alchemiekrug"),
-        (85, 85, "Mütze der Wasseratmung"),
-        (86, 86, "Umhang des Mantarochen"),
-        (87, 87, "Schwebekugel"),
-        (88, 88, "Nachtbrille"),
-        (89, 89, "Helm des Sprachenverstehens"),
-        (90, 90, "Unbewegliches Zepter"),
-        (91, 91, "Laterne der Enttarnung"),
-        (92, 92, "Rüstung des Wassermanns"),
-        (93, 93, "Mithrilrüstung"),
-        (94, 94, "Trank des Gifts"),
-        (95, 95, "Ring des Schwimmens"),
-        (96, 96, "Robe der nützlichen Dinge"),
-        (97, 97, "Seil des Kletterns"),
-        (98, 98, "Sattel des Kavaliers"),
-        (99, 99, "Zauberstab der Magieerkennung"),
-        (100, 100, "Zauberstab der Geheimnisse"),
-    ],
-    "C": [
-        (1, 15, "Trank der überlegenen Heilung"),
-        (16, 22, "Zauberschriftrolle (Zaubergrad 4)"),
-        (23, 27, "Geschosse, +2"),
-        (28, 32, "Trank des Hellsehens"),
-        (33, 37, "Trank der Verkleinerung"),
-        (38, 42, "Trank der gasförmigen Gestalt"),
-        (43, 47, "Trank der Frostriesenstärke"),
-        (48, 52, "Trank der Steinriesenstärke"),
-        (53, 57, "Trank des Heldenmuts"),
-        (58, 62, "Trank der Unverwundbarkeit"),
-        (63, 67, "Trank des Gedankenlesens"),
-        (68, 72, "Zauberschriftrolle (Zaubergrad 5)"),
-        (73, 75, "Elixir der Gesundheit"),
-        (76, 78, "Öl der Körperlosigkeit"),
-        (79, 81, "Trank der Feuerriesenstärke"),
-        (82, 84, "Quaals Feder"),
-        (85, 87, "Schriftrolle des Schutzes"),
-        (88, 89, "Bohnenbeutel"),
-        (90, 91, "Perle der Kraft"),
-        (92, 92, "Glocke des Öffnens"),
-        (93, 93, "Karaffe des endlosen Wassers"),
-        (94, 94, "Augen des präzisen Sehens"),
-        (95, 95, "Faltboot"),
-        (96, 96, "Hewards praktischer Rucksack"),
-        (97, 97, "Hufeisen der Geschwindigkeit"),
-        (98, 98, "Halskette der Feuerbälle"),
-        (99, 99, "Anhänger der Gesundheit"),
-        (100, 100, "Steine der Verständigung"),
-    ],
-    "D": [
-        (1, 20, "Trank der höchsten Heilung"),
-        (21, 30, "Trank der Unsichtbarkeit"),
-        (31, 40, "Trank der Geschwindigkeit"),
-        (41, 50, "Zauberschriftrolle (Zaubergrad 6)"),
-        (51, 57, "Zauberschriftrolle (Zaubergrad 7)"),
-        (58, 62, "Geschosse, +3"),
-        (63, 67, "Öl der Schärfe"),
-        (68, 72, "Trank des Fliegens"),
-        (73, 77, "Trank der Wolkenriesenstärke"),
-        (78, 82, "Trank der Langlebigkeit"),
-        (83, 87, "Trank der Vitalität"),
-        (88, 92, "Zauberschriftrolle (Zaubergrad 8)"),
-        (93, 95, "Hufeisen des Zephyrs"),
-        (96, 98, "Nolzurs Wunderfarben"),
-        (99, 99, "Fraßbeutel"),
-        (100, 100, "Tragbares Loch"),
-    ],
-    "E": [
-        (1, 30, "Zauberschriftrolle (Zaubergrad 8)"),
-        (31, 55, "Trank der Sturmriesenstärke"),
-        (56, 70, "Trank der höchsten Heilung"),
-        (71, 85, "Zauberschriftrolle (Zaubergrad 9)"),
-        (86, 93, "Universelles Lösungsmittel"),
-        (94, 98, "Pfeil des Tötens"),
-        (99, 100, "Ewiger Leim"),
-    ],
-     "F": [
-        (1, 10, "Waffe +1 (passend zum Setting)"),
-        (11, 20, "Rüstung +1 oder Schild +1"),
-        (21, 30, "Zauberstab, selten, Kontrolle oder Debuff"),
-        (31, 40, "Zauberstab, selten, Schaden oder Element"),
-        (41, 50, "Ring, selten, Schutz oder Widerstand"),
-        (51, 60, "Umhang oder Stiefel, selten, Bewegung oder Heimlichkeit"),
-        (61, 70, "Amulett oder Halskette, selten, kleiner Attribut Bonus"),
-        (71, 80, "Stab, selten, Utility oder Ritual"),
-        (81, 90, "Wundersames Objekt, selten"),
-        (91, 96, "Waffe +2 (passend zum Setting)"),
-        (97, 99, "Rüstung +2 oder Schild +2"),
-        (100, 100, "Wundersames Objekt, sehr selten"),
-    ],
-    "G": [
-        (1, 12, "Waffe +2 (passend zum Setting)"),
-        (13, 24, "Rüstung +2 oder Schild +2"),
-        (25, 36, "Zauberstab, sehr selten, starke Kampfmagie"),
-        (37, 48, "Stab, sehr selten, starke Utility oder Kontrolle"),
-        (49, 60, "Ring, sehr selten, große Defensive"),
-        (61, 70, "Wundersames Objekt, sehr selten, mobil oder taktisch"),
-        (71, 80, "Wundersames Objekt, sehr selten, Utility oder Reise"),
-        (81, 88, "Waffe +3 (passend zum Setting)"),
-        (89, 94, "Rüstung +3 oder Schild +3"),
-        (95, 97, "Figur der wundersamen Kraft (W8)"),
-        (98, 100, "Legendäres Objekt, kampagnenrelevant"),
-    ],
-    "H": [
-        (1, 20, "Legendäres Objekt, defensiv"),
-        (21, 40, "Legendäres Objekt, offensiv"),
-        (41, 60, "Legendäres Objekt, Utility"),
-        (61, 75, "Artefakt Fragment oder Schlüsselobjekt"),
-        (76, 88, "Waffe +3 plus Eigenschaft"),
-        (89, 96, "Legendärer Stab oder legendärer Zauberstab"),
-        (97, 100, "Einzigartiges Artefakt"),
-    ],
-    "I": [
-        (1, 25, "Artefakt, kampagnenbestimmend"),
-        (26, 45, "Artefakt, weltverändernd"),
-        (46, 60, "Artefakt, göttlich oder kosmisch"),
-        (61, 75, "Artefakt, verflucht, stark"),
-        (76, 90, "Artefakt, Wunschähnlicher Effekt mit Preis"),
-        (91, 98, "Magische Rüstung (W12)"),
-        (99, 100, "Artefakt, einzigartig, nur einmal pro Kampagne"),
-    ],
-}
+# Jetzt aus TXT laden: Magische Gegenstände Tabelle.txt
+# -----------------------
+
+MAGIC_TABLES: Dict[str, List[Tuple[int, int, str]]] = {}
+
+def _load_magic_tables_raw_text() -> str:
+    path = Path(__file__).with_name("Magische Gegenstände Tabelle.txt")
+    if not path.exists():
+        return ""
+    return path.read_text(encoding="utf-8", errors="replace")
+
+def _clean_magic_line(ln: str) -> str:
+    if ln is None:
+        return ""
+    s = ln.replace("\ufeff", "")
+    s = s.replace("\u00a0", " ")
+    for ch in ["\u2013", "\u2014", "\u2212", "\u2011"]:
+        s = s.replace(ch, "-")
+    return s.strip()
+
+def _normalize_magic_item_text(item: str) -> str:
+    t = (item or "").strip()
+    low = t.lower()
+
+    if "figur der wundersamen kraft" in low and ("w8" in low or "wirf einen w8" in low or "wirf 1w8" in low):
+        return "Figur der wundersamen Kraft (W8)"
+
+    if "magische rüstung" in low and ("w12" in low or "wirf 1w12" in low or "wirf einen w12" in low):
+        return "Magische Rüstung (W12)"
+
+    return t
+
+def _load_magic_tables_from_text(text: str) -> Dict[str, List[Tuple[int, int, str]]]:
+    lines = [_clean_magic_line(ln) for ln in text.splitlines()]
+
+    head_re = re.compile(r"^Magische\s+Gegenstände\s+Tabelle\s+([A-I])\s*$", re.IGNORECASE)
+    entry_re = re.compile(
+        r"^(?P<s>\d{2}|00)\s*(?:\s*(?:bis|-)\s*(?P<e>\d{2}|00))?\s*:\s*(?P<item>.+?)\s*$",
+        re.IGNORECASE,
+    )
+
+    data: Dict[str, List[Tuple[int, int, str]]] = {}
+    cur: Optional[str] = None
+    in_subtable = False
+
+    for ln in lines:
+        if not ln:
+            continue
+
+        m_head = head_re.match(ln)
+        if m_head:
+            cur = m_head.group(1).upper()
+            data.setdefault(cur, [])
+            in_subtable = False
+            continue
+
+        low = ln.lower()
+        if cur is None:
+            continue
+
+        if low.startswith("w100"):
+            continue
+
+        if low.startswith("w8") or low.startswith("w12") or "w8 ergebnisse" in low or "w12 ergebnisse" in low:
+            in_subtable = True
+            continue
+
+        if in_subtable:
+            if head_re.match(ln):
+                in_subtable = False
+            else:
+                continue
+
+        m_ent = entry_re.match(ln)
+        if not m_ent:
+            continue
+
+        s = _to_int_w100(m_ent.group("s"))
+        e_raw = m_ent.group("e")
+        e = _to_int_w100(e_raw) if e_raw else s
+        if s > e:
+            s, e = e, s
+
+        item = _normalize_magic_item_text(m_ent.group("item"))
+        data[cur].append((s, e, item))
+
+    for k in list(data.keys()):
+        data[k].sort(key=lambda x: (x[0], x[1]))
+
+    return data
+
+def init_magic_tables():
+    global MAGIC_TABLES
+    raw = _load_magic_tables_raw_text()
+    MAGIC_TABLES = _load_magic_tables_from_text(raw) if raw.strip() else {}
 
 FIGURINES_W8 = {
     1: "Bronze Greif",
@@ -1416,11 +1360,6 @@ HOARD_COINS: Dict[str, List[Tuple[str, int, int, int]]] = {
     "17+": [("GM", 12, 6, 1000), ("PM", 8, 6, 1000)],
 }
 
-# HOARD_LOOT
-# Struktur pro Eintrag:
-# (von, bis, gem_art_spec, magic_rolls)
-# gem_art_spec ist None oder ("gems" oder "art", (würfelanzahl, würfelseiten), wert_pro_stück)
-# magic_rolls ist Liste von (Tabelle, Anzahl) wobei Anzahl "1" oder "xWy" sein darf
 HOARD_LOOT: Dict[str, List[Tuple[int, int, Optional[Tuple[str, Tuple[int, int], int]], List[Tuple[str, str]]]]] = {
     "0-4": [
         (1, 30, ("gems", (2, 6), 10), []),
@@ -1725,8 +1664,8 @@ def _dungeon_dc(level: int, hard: bool = False) -> int:
     return clamp(base, 10, 22)
 
 def _room_count(level: int, players: int) -> int:
-    base = 2 + math.ceil(level / 4)  # 3 bis 7
-    party_adj = round((players - 3) / 2)  # -1 bis +2
+    base = 2 + math.ceil(level / 4)
+    party_adj = round((players - 3) / 2)
     n = base + party_adj + random.randint(0, 3)
     return clamp(n, 3, 12)
 
@@ -1972,6 +1911,7 @@ def main():
     app = Application.builder().token(token).build()
 
     init_encounters()
+    init_magic_tables()
 
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CommandHandler("start", help_cmd))
@@ -2063,6 +2003,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
