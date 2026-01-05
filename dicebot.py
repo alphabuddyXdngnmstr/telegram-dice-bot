@@ -1205,14 +1205,15 @@ INDIVIDUAL_TREASURE: Dict[str, List[Tuple[int, int, List[Tuple[str, int, int, in
 }
 
 # -----------------------
-# Magische Gegenstände Tabellen A bis I
-# Jetzt aus TXT laden: Magische Gegenstände Tabelle.txt
+# MAGIC TABLES A BIS I (aus Datei)
 # -----------------------
 
 MAGIC_TABLES: Dict[str, List[Tuple[int, int, str]]] = {}
 
-def _load_magic_tables_raw_text() -> str:
+def _load_magic_raw_text() -> str:
     path = Path(__file__).with_name("Magische Gegenstände Tabelle.txt")
+    if not path.exists():
+        path = Path(__file__).with_name("magische_gegenstaende_tabelle.txt")
     if not path.exists():
         return ""
     return path.read_text(encoding="utf-8", errors="replace")
@@ -1226,30 +1227,26 @@ def _clean_magic_line(ln: str) -> str:
         s = s.replace(ch, "-")
     return s.strip()
 
-def _normalize_magic_item_text(item: str) -> str:
-    t = (item or "").strip()
-    low = t.lower()
-
-    if "figur der wundersamen kraft" in low and ("w8" in low or "wirf einen w8" in low or "wirf 1w8" in low):
-        return "Figur der wundersamen Kraft (W8)"
-
-    if "magische rüstung" in low and ("w12" in low or "wirf 1w12" in low or "wirf einen w12" in low):
-        return "Magische Rüstung (W12)"
-
+def _normalize_magic_item_text(txt: str) -> str:
+    t = (txt or "").strip()
+    t = re.sub(r"\s+", " ", t)
     return t
 
 def _load_magic_tables_from_text(text: str) -> Dict[str, List[Tuple[int, int, str]]]:
     lines = [_clean_magic_line(ln) for ln in text.splitlines()]
 
-    head_re = re.compile(r"^Magische\s+Gegenstände\s+Tabelle\s+([A-I])\s*$", re.IGNORECASE)
+    head_re = re.compile(r"^\s*Magische\s+Gegenstände\s+Tabelle\s+([A-I])\s*$", re.IGNORECASE)
     entry_re = re.compile(
-        r"^(?P<s>\d{2}|00)\s*(?:\s*(?:bis|-)\s*(?P<e>\d{2}|00))?\s*:\s*(?P<item>.+?)\s*$",
+        r"^(?P<s>\d{2}|00)\s*(?:-|bis)\s*(?P<e>\d{2}|00)\s*:\s*(?P<item>.+?)\s*$",
+        re.IGNORECASE,
+    )
+    entry_single_re = re.compile(
+        r"^(?P<s>\d{2}|00)\s*:\s*(?P<item>.+?)\s*$",
         re.IGNORECASE,
     )
 
     data: Dict[str, List[Tuple[int, int, str]]] = {}
     cur: Optional[str] = None
-    in_subtable = False
 
     for ln in lines:
         if not ln:
@@ -1259,38 +1256,36 @@ def _load_magic_tables_from_text(text: str) -> Dict[str, List[Tuple[int, int, st
         if m_head:
             cur = m_head.group(1).upper()
             data.setdefault(cur, [])
-            in_subtable = False
             continue
 
-        low = ln.lower()
         if cur is None:
             continue
 
+        low = ln.lower()
+
         if low.startswith("w100"):
             continue
-
-        if low.startswith("w8") or low.startswith("w12") or "w8 ergebnisse" in low or "w12 ergebnisse" in low:
-            in_subtable = True
+        if "w8 ergebnisse" in low or "w12 ergebnisse" in low:
             continue
-
-        if in_subtable:
-            if head_re.match(ln):
-                in_subtable = False
-            else:
-                continue
+        if low.startswith("w8") or low.startswith("w12"):
+            continue
 
         m_ent = entry_re.match(ln)
-        if not m_ent:
+        if m_ent:
+            s = _to_int_w100(m_ent.group("s"))
+            e = _to_int_w100(m_ent.group("e"))
+            if s > e:
+                s, e = e, s
+            item = _normalize_magic_item_text(m_ent.group("item"))
+            data.setdefault(cur, []).append((s, e, item))
             continue
 
-        s = _to_int_w100(m_ent.group("s"))
-        e_raw = m_ent.group("e")
-        e = _to_int_w100(e_raw) if e_raw else s
-        if s > e:
-            s, e = e, s
-
-        item = _normalize_magic_item_text(m_ent.group("item"))
-        data[cur].append((s, e, item))
+        m_one = entry_single_re.match(ln)
+        if m_one:
+            s = _to_int_w100(m_one.group("s"))
+            item = _normalize_magic_item_text(m_one.group("item"))
+            data.setdefault(cur, []).append((s, s, item))
+            continue
 
     for k in list(data.keys()):
         data[k].sort(key=lambda x: (x[0], x[1]))
@@ -1299,7 +1294,7 @@ def _load_magic_tables_from_text(text: str) -> Dict[str, List[Tuple[int, int, st
 
 def init_magic_tables():
     global MAGIC_TABLES
-    raw = _load_magic_tables_raw_text()
+    raw = _load_magic_raw_text()
     MAGIC_TABLES = _load_magic_tables_from_text(raw) if raw.strip() else {}
 
 FIGURINES_W8 = {
@@ -1341,12 +1336,12 @@ def _pick_magic_item(table_letter: str) -> Tuple[int, str, List[str]]:
             break
 
     extra_details: List[str] = []
-    if table_letter == "G" and "Figur der wundersamen Kraft (W8)" in item:
+    if table_letter == "G" and "Figur der wundersamen Kraft" in item:
         r8 = random.randint(1, 8)
         item = f"Figur der wundersamen Kraft ({FIGURINES_W8[r8]})"
         extra_details.append(f"W8 Figur: {r8} -> {FIGURINES_W8[r8]}")
 
-    if table_letter == "I" and "Magische Rüstung (W12)" in item:
+    if table_letter == "I" and "Magische Rüstung" in item:
         r12 = random.randint(1, 12)
         item = f"Magische Rüstung ({MAGIC_ARMOR_W12[r12]})"
         extra_details.append(f"W12 Rüstung: {r12} -> {MAGIC_ARMOR_W12[r12]}")
