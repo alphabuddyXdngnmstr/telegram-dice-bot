@@ -1,0 +1,414 @@
+Magische Gegenstände Tabelle A
+
+W100, Magischer Gegenstand
+01 bis 50: Heiltrank
+51 bis 60: Zauberschriftrolle (Zaubertrick)
+61 bis 70: Trank des Kletterns
+71 bis 90: Zauberschriftrolle (Zaubergrad 1)
+91 bis 94: Zauberschriftrolle (Zaubergrad 2)
+95 bis 98: Trank der mächtigen Heilung
+99: Nimmervoller Beutel
+00: Schwebekugel
+
+Magische Gegenstände Tabelle B
+
+W100, Magischer Gegenstand
+01 bis 15: Trank der mächtigen Heilung
+16 bis 22: Trank des Feueratems
+23 bis 29: Trank des Widerstands
+30 bis 34: Geschosse, +1
+35 bis 39: Trank der Tierfreundschaft
+40 bis 44: Trank der Hügelriesenstärke
+45 bis 49: Trank des Wachstums
+50 bis 54: Trank der Wasseratmung
+55 bis 59: Zauberschriftrolle (Zaubergrad 2)
+60 bis 64: Zauberschriftrolle (Zaubergrad 3)
+65 bis 67: Nimmervoller Beutel
+68 bis 70: Keoghtoms Salbe
+71 bis 73: Öl der Glätte
+74 bis 75: Staub des Verschwindens
+76 bis 77: Staub der Trockenheit
+78 bis 79: Staub des Niesens und Erstickens
+80 bis 81: Elementarer Edelstein
+82 bis 83: Liebestrank
+84: Alchemiekrug
+85: Mütze der Wasseratmung
+86: Umhang des Mantarochen
+87: Schwebekugel
+88: Nachtbrille
+89: Helm des Sprachenverstehens
+90: Unbewegliches Zepter
+91: Laterne der Enttarnung
+92: Rüstung des Wassermanns
+93: Mithrilrüstung
+94: Trank des Gifts
+95: Ring des Schwimmens
+96: Robe der nützlichen Dinge
+97: Seil des Kletterns
+98: Sattel des Kavaliers
+99: Zauberstab der Magieerkennung
+00: Zauberstab der Geheimnisse
+
+Magische Gegenstände Tabelle C
+
+W100, Magischer Gegenstand
+01 bis 15: Trank der überlegenen Heilung
+16 bis 22: Zauberschriftrolle (Zaubergrad 4)
+23 bis 27: Geschosse, +2
+28 bis 32: Trank des Hellsehens
+33 bis 37: Trank der Verkleinerung
+38 bis 42: Trank der gasförmigen Gestalt
+43 bis 47: Trank der Frostriesenstärke
+48 bis 52: Trank der Steinriesenstärke
+53 bis 57: Trank des Heldenmuts
+58 bis 62: Trank der Unverwundbarkeit
+63 bis 67: Trank des Gedankenlesens
+68 bis 72: Zauberschriftrolle (Zaubergrad 5)
+73 bis 75: Elixir der Gesundheit
+76 bis 78: Öl der Körperlosigkeit
+79 bis 81: Trank der Feuerriesenstärke
+82 bis 84: Quaals Feder
+85 bis 87: Schriftrolle des Schutzes
+88 bis 89: Bohnenbeutel
+90 bis 91: Perle der Kraft
+92: Glocke des Öffnens
+93: Karaffe des endlosen Wassers
+94: Augen des präzisen Sehens
+95: Faltboot
+96: Hewards praktischer Rucksack
+97: Hufeisen der Geschwindigkeit
+98: Halskette der Feuerbälle
+99: Anhänger der Gesundheit
+00: Steine der Verständigung
+
+Magische Gegenstände Tabelle D
+
+W100, Magischer Gegenstand
+01 bis 20: Trank der höchsten Heilung
+21 bis 30: Trank der Unsichtbarkeit
+31 bis 40: Trank der Geschwindigkeit
+41 bis 50: Zauberschriftrolle (Zaubergrad 6)
+51 bis 57: Zauberschriftrolle (Zaubergrad 7)
+58 bis 62: Geschosse, +3
+63 bis 67: Öl der Schärfe
+68 bis 72: Trank des Fliegens
+73 bis 77: Trank der Wolkenriesenstärke
+78 bis 82: Trank der Langlebigkeit
+83 bis 87: Trank der Vitalität
+88 bis 92: Zauberschriftrolle (Zaubergrad 8)
+93 bis 95: Hufeisen des Zephyrs
+96 bis 98: Nolzurs Wunderfarben
+99: Fraßbeutel
+00: Tragbares Loch
+
+Magische Gegenstände Tabelle E
+
+W100, Magischer Gegenstand
+01 bis 30: Zauberschriftrolle (Zaubergrad 8)
+31 bis 55: Trank der Sturmriesenstärke
+56 bis 70: Trank der höchsten Heilung
+71 bis 85: Zauberschriftrolle (Zaubergrad 9)
+86 bis 93: Universelles Lösungsmittel
+94 bis 98: Pfeil des Tötens
+99 bis 00: Ewiger Leim
+
+Magische Gegenstände Tabelle F
+
+W100, Magischer Gegenstand
+01 bis 15: Waffe, +1
+16 bis 18: Schild, +1
+19 bis 21: Wächterschild
+22 bis 23: Amulett des Schutzes gegen Ortung und Ausspähung
+24 bis 25: Stiefel der Elfen
+26 bis 27: Stiefel des Schreitens und Springens
+28 bis 29: Armschienen des Bogenschützen
+30 bis 31: Brosche des Abschirmens
+32 bis 33: Flugbesen
+34 bis 35: Elfenumhang
+36 bis 37: Umhang des Schutzes
+38 bis 39: Panzerhandschuhe der Ogerkraft
+40 bis 41: Hut der Verkleidung
+42 bis 43: Wurfspeer des Blitzes
+44 bis 45: Perle der Macht
+46 bis 47: Zepter des Paktbewahrers, +1
+48 bis 49: Schuhe des Spinnenkletterns
+50 bis 51: Zauberstecken der Kreuzotter
+52 bis 53: Zauberstecken der Python
+54 bis 55: Schwert der Vergeltung
+56 bis 57: Dreizack der Fischherrschaft
+58 bis 59: Zauberstab der magischen Geschosse
+60 bis 61: Zauberstab des Kriegsmagiers, +1
+62 bis 63: Zauberstab des Netzes
+64 bis 65: Waffe der Warnung
+66: Adamantrüstung (Kettenpanzer)
+67: Adamantrüstung (Kettenhemd)
+68: Adamantrüstung (Schuppenpanzer)
+69: Trickbeutel (grau)
+70: Trickbeutel (rostbraun)
+71: Trickbeutel (hellbraun)
+72: Stiefel der Winterlande
+73: Diadem des Versengens
+74: Karten der Illusionen
+75: Rauchflasche
+76: Augen der Bezauberung
+77: Augen des Adlers
+78: Figur der wundersamen Kraft (silberner Rabe)
+79: Edelstein der Helligkeit
+80: Handschuhe des Geschossfangens
+81: Handschuhe des Schwimmens und Kletterns
+82: Handschuhe des Diebstahls
+83: Stirnband der Intelligenz
+84: Helm der Telepathie
+85: Bardeninstrument (Doss Laute)
+86: Bardeninstrument (Fochlucan Pandora)
+87: Bardeninstrument (Mac Fuimidh Cister)
+88: Medaillon der Gedanken
+89: Halskette der Anpassung
+90: Anhänger der Wundheilung
+91: Flöte des Unheimlichen
+92: Flöte des Rattenfängers
+93: Ring des Springens
+94: Ring der Gedankenabschirmung
+95: Ring der Wärme
+96: Ring des Wasserlaufens
+97: Ehlonnas Köcher
+98: Stein des Glücks
+99: Windfächer
+00: Geflügelte Stiefel
+
+Magische Gegenstände Tabelle G
+
+W100, Magischer Gegenstand
+01 bis 11: Waffe, +2
+12 bis 14: Figur der wundersamen Kraft (wirf einen W8)
+W8 Ergebnisse
+1: Bronze Greif
+2: Ebenholz Fliege
+3: Goldene Löwen
+4: Elfenbein Ziegen
+5: Marmor Elefant
+6 bis 7: Onyx Hund
+8: Serpentin Eule
+15: Adamantrüstung (Brustplatte)
+16: Adamantrüstung (Schienenpanzer)
+17: Anhänger der Gesundheit
+18: Rüstung der Verwundbarkeit
+19: Pfeil fangender Schild
+20: Zwergengürtel
+21: Gürtel der Hügelriesenstärke
+22: Berserkeraxt
+23: Stiefel des Schwebens
+24: Stiefel der Geschwindigkeit
+25: Schale der Wasserelementar Herrschaft
+26: Armschienen der Verteidigung
+27: Feuerschale der Feuerelementar Herrschaft
+28: Umhang des Scharlatans
+29: Rauchfass der Luftelementar Herrschaft
+30: Rüstung, +1 Kettenpanzer
+31: Rüstung des Widerstands (Kettenpanzer)
+32: Rüstung, +1 Kettenhemd
+33: Rüstung des Widerstands (Kettenhemd)
+34: Umhang der Verlagerung
+35: Umhang der Fledermaus
+36: Würfel der Kraft
+37: Daerns flotte Festung
+38: Dolch des Gifts
+39: Dimensionsfesseln
+40: Drachentöter
+41: Elfenrüstung
+42: Flammenzunge
+43: Edelstein des Sehens
+44: Riesentöter
+45: Verzaubertes beschlagenes Leder
+46: Helm der Teleportation
+47: Horn der Sprengung
+48: Horn von Valhalla (Silber oder Messing)
+49: Bardeninstrument (Canaith Mandoline)
+50: Bardeninstrument (Cli Leier)
+51: Ionenstein (Wahrnehmung)
+52: Ionenstein (Schutz)
+53: Ionenstein (Reserve)
+54: Ionenstein (Ernährung)
+55: Eisenbänder von Bilarro
+56: Rüstung, +1 Leder
+57: Rüstung des Widerstands (Leder)
+58: Streitkolben des Zusammenbruchs
+59: Streitkolben des Niederstreckens
+60: Streitkolben des Terrors
+61: Mantel des Zauberwiderstands
+62: Halskette der Gebetsperlen
+63: Anhänger des Giftschutzes
+64: Ring des Tierumgangs
+65: Ring des Ausweichens
+66: Ring des Federfalls
+67: Ring der Bewegungsfreiheit
+68: Ring des Schutzes
+69: Ring des Widerstands
+70: Ring des Zauberspeichers
+71: Ring des Widders
+72: Ring des Röntgenblicks
+73: Robe der Augen
+74: Zepter der Herrschaft
+75: Zepter des Paktbewahrers, +2
+76: Fesselseil
+77: Rüstung, +1 Schuppenpanzer
+78: Rüstung des Widerstands (Schuppenpanzer)
+79: Schild, +2
+80: Schild der Geschossanziehung
+81: Zauberstecken der Bezauberung
+82: Zauberstecken der Heilung
+83: Zauberstecken der Insektenschwärme
+84: Zauberstecken der Waldlande
+85: Zauberstecken der Verkümmerung
+86: Stein der Erdelementar Herrschaft
+87: Sonnenklinge
+88: Schwert des Lebensentzugs
+89: Schwert der Verwundung
+90: Tentakelzepter
+91: Bösartige Waffe
+92: Zauberstab der Bindung
+93: Zauberstab der Feindeslokalisierung
+94: Zauberstab der Angst
+95: Zauberstab der Feuerbälle
+96: Zauberstab der Blitzschläge
+97: Zauberstab der Paralyse
+98: Zauberstab des Kriegsmagiers, +2
+99: Zauberstab des Wunders
+00: Zauberflügel
+
+Magische Gegenstände Tabelle H
+
+W100, Magischer Gegenstand
+01 bis 10: Waffe, +3
+11 bis 12: Amulett der Ebenen
+13 bis 14: Fliegender Teppich
+15 bis 16: Kristallkugel (sehr seltene Version)
+17 bis 18: Ring der Regeneration
+19 bis 20: Ring der Sternschnuppen
+21 bis 22: Ring der Telekinese
+23 bis 24: Robe der schillernden Farben
+25 bis 26: Robe der Sterne
+27 bis 28: Zepter der Absorption
+29 bis 30: Zepter der Wachsamkeit
+31 bis 32: Zepter der Sicherheit
+33 bis 34: Zepter des Paktbewahrers, +3
+35 bis 36: Krummsäbel der Geschwindigkeit
+37 bis 38: Schild, +3
+39 bis 40: Zauberstecken des Feuers
+41 bis 42: Zauberstecken des Frostes
+43 bis 44: Zauberstecken der Macht
+45 bis 46: Zauberstecken des Schlagens
+47 bis 48: Zauberstecken des Donners und Blitzes
+49 bis 50: Schwert der Schärfe
+51 bis 52: Zauberstab der Verwandlung
+53 bis 54: Zauberstab des Kriegsmagiers, +3
+55: Adamantrüstung (Plattenpanzer)
+56: Adamantrüstung (Ritterrüstung)
+57: Belebter Schild
+58: Gürtel der Feuerriesenstärke
+59: Gürtel der Frost oder Steinriesenstärke
+60: Rüstung, +1 Brustplatte
+61: Rüstung des Widerstands (Brustplatte)
+62: Kerze der Anrufung
+63: Rüstung, +2 Kettenpanzer
+64: Rüstung, +2 Kettenhemd
+65: Umhang der Spinnentiere
+66: Tanzendes Schwert
+67: Dämonenrüstung
+68: Drachenschuppen Panzer
+69: Zwergische Ritterrüstung
+70: Zwergischer Wurfhammer
+71: Irit Flasche
+72: Figur der wundersamen Kraft (Obsidianpferd)
+73: Frostbrand
+74: Helm der Pracht
+75: Horn von Valhalla (Bronze)
+76: Bardeninstrument (Anstruth Harfe)
+77: Ionenstein (Absorption)
+78: Ionenstein (Agilität)
+79: Ionenstein (Standhaftigkeit)
+80: Ionenstein (Erkenntnis)
+81: Ionenstein (Verstand)
+82: Ionenstein (Führungskraft)
+83: Ionenstein (Stärke)
+84: Rüstung, +2 Leder
+85: Handbuch der körperlichen Gesundheit
+86: Handbuch der körperlichen Ertüchtigung
+87: Handbuch der Golems
+88: Handbuch des schnellen Handelns
+89: Seelenspiegel
+90: Dieb der neun Leben
+91: Schwurbogen
+92: Rüstung, +2 Schuppenpanzer
+93: Zauberabwehrschild
+94: Rüstung, +2 Schienenpanzer
+95: Rüstung des Widerstands (Schienenpanzer)
+96: Rüstung, +1 beschlagenes Leder
+97: Rüstung des Widerstands (beschlagenes Leder)
+98: Leitfaden des klaren Denkens
+99: Leitfaden der Führungskraft und der Einflussnahme
+00: Leitfaden des Verständnisses
+
+Magische Gegenstände Tabelle I
+
+W100, Magischer Gegenstand
+01 bis 05: Verteidiger
+06 bis 10: Hammer des Blitzschlags
+11 bis 15: Glücksklinge
+16 bis 20: Schwert der Antwort
+21 bis 23: Heiliger Rächer
+24 bis 26: Ring der Djinni Beschwörung
+27 bis 29: Ring der Unsichtbarkeit
+30 bis 32: Ring des Zauberwendens
+33 bis 35: Zepter der herrschaftlichen Macht
+36 bis 38: Zauberstecken der Magi
+39 bis 41: Herrscherschwert
+42 bis 43: Gürtel der Wolkenriesenstärke
+44 bis 45: Rüstung, +2 Brustplatte
+46 bis 47: Rüstung, +3 Kettenpanzer
+48 bis 49: Rüstung, +3 Kettenhemd
+50 bis 51: Umhang der Unsichtbarkeit
+52 bis 53: Kristallkugel (legendär)
+54 bis 55: Rüstung, +1 Plattenpanzer
+56 bis 57: Eiserne Flasche
+58 bis 59: Rüstung, +3 Leder
+60 bis 61: Rüstung, +1 Ritterrüstung
+62 bis 63: Robe der Erzmagier
+64 bis 65: Zepter der Auferstehung
+66 bis 67: Rüstung, +1 Schuppenpanzer
+68 bis 69: Skarabäus des Schutzes
+70 bis 71: Rüstung, +2 Schienenpanzer
+72 bis 73: Rüstung, +2 beschlagenes Leder
+74 bis 75: Brunnen der vielen Welten
+76: Magische Rüstung (wirf 1W12)
+1 bis 2: Rüstung +2 Plattenpanzer
+3 bis 4: Rüstung +2 Ritterrüstung
+5 bis 6: Rüstung +3 beschlagenes Leder
+7 bis 8: Rüstung +3 Brustplatte
+9 bis 10: Rüstung +3 Schienenpanzer
+11: Rüstung +3 Plattenpanzer
+12: Rüstung +3 Ritterrüstung
+77: Der Apparat von Kwalish
+78: Rüstung der Unverwundbarkeit
+79: Gürtel der Sturmriesenstärke
+80: Würfel der Ebenen
+81: Schicksalskarten
+82: Irit Rüstung
+83: Rüstung des Widerstands (Plattenpanzer)
+84: Horn von Valhalla (Eisen)
+85: Bardeninstrument (Ollamh Harfe)
+86: Ionenstein (Höhere Absorption)
+87: Ionenstein (Meisterschaft)
+88: Ionenstein (Regeneration)
+89: Ritterrüstung der Körperlosigkeit
+90: Ritterrüstung des Widerstands
+91: Ring der Luftelementar Herrschaft
+92: Ring der Erdelementar Herrschaft
+93: Ring der Feuerelementar Herrschaft
+94: Ring der drei Wünsche
+95: Ring der Wasserelementar Herrschaft
+96: Sphäre des Nichts
+97: Talisman des reinen Guten
+98: Talisman des Nichts
+99: Talisman des absolut Bösen
+00: Leitfaden der verstummten Sprache 🙂
