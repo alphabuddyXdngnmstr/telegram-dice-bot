@@ -3,12 +3,8 @@ import random
 import re
 import math
 import html
-import asyncio
 from pathlib import Path
 from typing import Optional, Tuple, List, Dict
-
-from fastapi import FastAPI, Request
-from fastapi.responses import PlainTextResponse, JSONResponse
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
@@ -21,9 +17,9 @@ from telegram.ext import (
     filters,
 )
 
-# ============================================================
+# -----------------------
 # DICE ROLL SYSTEM
-# ============================================================
+# -----------------------
 
 _ROLL_ALLOWED = re.compile(r"^[0-9dDwW+\-\s]+$")
 _ROLL_TERM = re.compile(r"([+\-]?)(\d+[dw]\d+|\d+)", re.IGNORECASE)
@@ -124,9 +120,9 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     await update.message.reply_text(msg)
 
-# ============================================================
+# -----------------------
 # ORACLE SYSTEM
-# ============================================================
+# -----------------------
 
 ORACLE_QUESTION, ORACLE_ODDS, ORACLE_CHAOS = range(3)
 
@@ -310,9 +306,9 @@ async def rolloracle_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Orakel abgebrochen 🙂")
     return ConversationHandler.END
 
-# ============================================================
+# -----------------------
 # BIOM SYSTEM
-# ============================================================
+# -----------------------
 
 SURFACE_BIOMES = ["Arktis", "Küste", "Wüste", "Wald", "Grasland", "Hügel", "Berg", "Sumpf"]
 SPECIAL_BIOMES = ["Unterreich", "Wasser", "Stadt/Dorf"]
@@ -448,9 +444,9 @@ async def rollbiom(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(msg)
 
-# ============================================================
+# -----------------------
 # ENCOUNTER SYSTEM (liest encounters_de.txt)
-# ============================================================
+# -----------------------
 
 ENC_CONFIRM, ENC_PICK_BIOM, ENC_PICK_LEVEL = range(3)
 ENCOUNTERS: Dict[str, Dict[str, List[Tuple[int, int, str]]]] = {}
@@ -710,8 +706,8 @@ async def rollencounter_confirm(update: Update, context: ContextTypes.DEFAULT_TY
 
     choice = query.data.split(":", 1)[1]
     if choice == "yes":
-        biom_ = context.user_data.get("enc_biome", "Unbekannt")
-        await query.edit_message_text(f"⚔️ Biom: {biom_}\nWelche Stufe?", reply_markup=build_encounter_level_keyboard())
+        biom = context.user_data.get("enc_biome", "Unbekannt")
+        await query.edit_message_text(f"⚔️ Biom: {biom}\nWelche Stufe?", reply_markup=build_encounter_level_keyboard())
         return ENC_PICK_LEVEL
 
     await query.edit_message_text("⚔️ Welches Biom?", reply_markup=build_encounter_biom_keyboard())
@@ -779,9 +775,9 @@ async def encdebug(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Geladene Tabellen:\n" + "\n".join(lines)
     )
 
-# ============================================================
+# -----------------------
 # ROLLCHANCE SYSTEM
-# ============================================================
+# -----------------------
 
 ATTR_TABLE = {
     1: ("STÄ", "💪"),
@@ -867,9 +863,9 @@ async def rollchance(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(msg)
 
-# ============================================================
+# -----------------------
 # ROLLHUNT SYSTEM
-# ============================================================
+# -----------------------
 
 HUNT_MOD_CHOICES = list(range(-4, 7))
 
@@ -980,9 +976,9 @@ async def rollhunt_cancel_cb(update: Update, context: ContextTypes.DEFAULT_TYPE)
     await query.answer()
     await query.edit_message_text("Rollhunt abgebrochen 🙂")
 
-# ============================================================
+# -----------------------
 # WALDKARTE SYSTEM
-# ============================================================
+# -----------------------
 
 WALDKARTE_LEVELS = ["1-4", "5-10", "11-16", "17-20"]
 
@@ -1109,9 +1105,9 @@ async def rollwaldkarte_pick_level(update: Update, context: ContextTypes.DEFAULT
     except KeyError as e:
         await query.edit_message_text(str(e))
 
-# ============================================================
+# -----------------------
 # ROLLPLAYERBEHAVIOUR SYSTEM
-# ============================================================
+# -----------------------
 
 PLAYER_BEHAVIOUR_TABLE = {
     1: ("Chaotisch Dumm", "Du stehst vor einer Tür, was tust du? Schlüssel gegen Tür werfen!"),
@@ -1134,9 +1130,9 @@ async def rollplayerbehaviour(update: Update, context: ContextTypes.DEFAULT_TYPE
     )
     await update.message.reply_text(msg)
 
-# ============================================================
-# ROLLSCHATZ SYSTEM (inkl Magic Tables A-I, Hoard Loot)
-# ============================================================
+# -----------------------
+# ROLLSCHATZ SYSTEM
+# -----------------------
 
 TREASURE_KIND_STATE = 200
 TREASURE_CR_STATE = 201
@@ -1208,6 +1204,10 @@ INDIVIDUAL_TREASURE: Dict[str, List[Tuple[int, int, List[Tuple[str, int, int, in
     ],
 }
 
+# -----------------------
+# MAGIC TABLES A BIS I (aus Datei)
+# -----------------------
+
 MAGIC_TABLES: Dict[str, List[Tuple[int, int, str]]] = {}
 
 def _load_magic_raw_text() -> str:
@@ -1262,6 +1262,7 @@ def _load_magic_tables_from_text(text: str) -> Dict[str, List[Tuple[int, int, st
             continue
 
         low = ln.lower()
+
         if low.startswith("w100"):
             continue
         if "w8 ergebnisse" in low or "w12 ergebnisse" in low:
@@ -1579,9 +1580,9 @@ async def rollschatz_cancel_cb(update: Update, context: ContextTypes.DEFAULT_TYP
     await query.edit_message_text("Schatz abgebrochen 🙂")
     return ConversationHandler.END
 
-# ============================================================
+# -----------------------
 # ROLLDUNGEON SYSTEM
-# ============================================================
+# -----------------------
 
 DUNGEON_PICK_LEVEL = 300
 DUNGEON_PICK_PLAYERS = 301
@@ -1794,6 +1795,25 @@ def build_dungeon_players_keyboard() -> InlineKeyboardMarkup:
     rows.append([InlineKeyboardButton("Abbrechen", callback_data="dungeon_cancel")])
     return InlineKeyboardMarkup(rows)
 
+async def rolldungeon_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data.pop("dungeon_level", None)
+    context.user_data.pop("dungeon_players", None)
+
+    if len(context.args) >= 2:
+        try:
+            lvl = int(context.args[0])
+            ply = int(context.args[1])
+            if not (1 <= lvl <= 20 and 1 <= ply <= 6):
+                raise ValueError
+            text = _build_dungeon_output(lvl, ply)
+            await update.message.reply_text(text, parse_mode="HTML", disable_web_page_preview=True)
+            return ConversationHandler.END
+        except Exception:
+            pass
+
+    await update.message.reply_text("🏰 Rolldungeon\nWähle das Spielerlevel:", reply_markup=build_dungeon_level_keyboard())
+    return DUNGEON_PICK_LEVEL
+
 def _build_dungeon_output(level: int, players: int) -> str:
     theme = random.choice(DUNGEON_THEMES)
     goal = random.choice(DUNGEON_GOALS)
@@ -1814,25 +1834,6 @@ def _build_dungeon_output(level: int, players: int) -> str:
         rooms.append(_tg_spoiler(room_txt))
 
     return header + "\n\n".join(rooms) + "\n\nViel Spaß 😊"
-
-async def rolldungeon_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    context.user_data.pop("dungeon_level", None)
-    context.user_data.pop("dungeon_players", None)
-
-    if len(context.args) >= 2:
-        try:
-            lvl = int(context.args[0])
-            ply = int(context.args[1])
-            if not (1 <= lvl <= 20 and 1 <= ply <= 6):
-                raise ValueError
-            text = _build_dungeon_output(lvl, ply)
-            await update.message.reply_text(text, parse_mode="HTML", disable_web_page_preview=True)
-            return ConversationHandler.END
-        except Exception:
-            pass
-
-    await update.message.reply_text("🏰 Rolldungeon\nWähle das Spielerlevel:", reply_markup=build_dungeon_level_keyboard())
-    return DUNGEON_PICK_LEVEL
 
 async def rolldungeon_pick_level(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -1865,9 +1866,9 @@ async def rolldungeon_cancel_cmd(update: Update, context: ContextTypes.DEFAULT_T
     await update.message.reply_text("Rolldungeon abgebrochen 🙂")
     return ConversationHandler.END
 
-# ============================================================
+# -----------------------
 # HELP
-# ============================================================
+# -----------------------
 
 async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = (
@@ -1893,11 +1894,15 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     await update.message.reply_text(msg)
 
-# ============================================================
-# PTB Application erstellen
-# ============================================================
+def main():
+    token = os.environ.get("TELEGRAM_BOT_TOKEN")
+    base_url = os.environ.get("BASE_URL")
+    port = int(os.environ.get("PORT", "10000"))
 
-def build_application(token: str) -> Application:
+    if not token or not base_url:
+        raise RuntimeError("TELEGRAM_BOT_TOKEN oder BASE_URL fehlt")
+
+    base_url = base_url.rstrip("/")
     app = Application.builder().token(token).build()
 
     init_encounters()
@@ -1983,110 +1988,13 @@ def build_application(token: str) -> Application:
     )
     app.add_handler(dungeon_conv)
 
-    return app
-
-# -----------------------
-# PTB Application erstellen
-# -----------------------
-
-def build_application(token: str) -> Application:
-    app = Application.builder().token(token).build()
-
-    app.add_handler(CommandHandler("help", help_cmd))
-    app.add_handler(CommandHandler("start", help_cmd))
-
-    app.add_handler(CommandHandler("roll", roll))
-
-    app.add_handler(CommandHandler("setbiom", setbiom))
-    app.add_handler(CommandHandler("biom", biom))
-    app.add_handler(CommandHandler("rollbiom", rollbiom))
-    app.add_handler(CallbackQueryHandler(setbiom_pick, pattern=r"^biom_set:"))
-
-    oracle_conv = ConversationHandler(
-        entry_points=[CommandHandler("rolloracle", rolloracle_start)],
-        states={
-            ORACLE_QUESTION: [MessageHandler(filters.TEXT & ~filters.COMMAND, rolloracle_question)],
-            ORACLE_ODDS: [CallbackQueryHandler(rolloracle_pick_odds, pattern=r"^oracle_odds:")],
-            ORACLE_CHAOS: [CallbackQueryHandler(rolloracle_pick_chaos, pattern=r"^oracle_chaos:")],
-        },
-        fallbacks=[CommandHandler("cancel", rolloracle_cancel)],
-        allow_reentry=True,
+    app.run_webhook(
+        listen="0.0.0.0",
+        port=port,
+        url_path="webhook",
+        webhook_url=f"{base_url}/webhook",
+        drop_pending_updates=True,
     )
-    app.add_handler(oracle_conv)
 
-    return app
-
-
-# -----------------------
-# FASTAPI Server
-# -----------------------
-
-api = FastAPI()
-
-@api.get("/", response_class=PlainTextResponse)
-async def root():
-    return "ok"
-
-@api.get("/health", response_class=PlainTextResponse)
-async def health():
-    return "ok"
-
-
-# ENV erst hier lesen (nicht beim Import crashen lassen)
-TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
-BASE_URL = os.environ.get("BASE_URL", "").strip().rstrip("/")
-
-ptb_app: Optional[Application] = None
-WEBHOOK_PATH: Optional[str] = None
-WEBHOOK_URL: Optional[str] = None
-
-if TOKEN and BASE_URL:
-    WEBHOOK_PATH = f"/webhook/{TOKEN}"
-    WEBHOOK_URL = f"{BASE_URL}{WEBHOOK_PATH}"
-    ptb_app = build_application(TOKEN)
-
-
-@api.on_event("startup")
-async def on_startup():
-    # App soll selbst dann hochkommen, wenn Telegram ENV fehlt
-    if not ptb_app or not WEBHOOK_URL:
-        return
-
-    try:
-        await ptb_app.initialize()
-        await ptb_app.start()
-
-        # webhook setzen (robust)
-        await ptb_app.bot.set_webhook(url=WEBHOOK_URL, drop_pending_updates=True)
-    except Exception as e:
-        # Wichtig: NICHT crashen lassen, sonst "failed"
-        print(f"[startup] Telegram init/webhook failed: {e}")
-
-
-@api.on_event("shutdown")
-async def on_shutdown():
-    if not ptb_app:
-        return
-    try:
-        await ptb_app.stop()
-        await ptb_app.shutdown()
-    except Exception as e:
-        print(f"[shutdown] Telegram shutdown failed: {e}")
-
-
-# Webhook Route nur registrieren, wenn wir Token/BaseURL haben
-if WEBHOOK_PATH:
-    @api.post(WEBHOOK_PATH)
-    async def telegram_webhook(request: Request):
-        if not ptb_app:
-            return {"status": "ok"}
-
-        try:
-            data = await request.json()
-            update = Update.de_json(data, ptb_app.bot)
-            await ptb_app.update_queue.put(update)
-        except Exception as e:
-            # Telegram soll trotzdem 200 bekommen, sonst spammt Telegram retries
-            print(f"[webhook] failed to process update: {e}")
-
-        return {"status": "ok"}
+if __name__ == "__main__":
+    main()
