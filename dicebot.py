@@ -2016,20 +2016,11 @@ def build_application(token: str) -> Application:
 
     return app
 
+
 # -----------------------
 # FASTAPI Server
 # -----------------------
 
-TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-BASE_URL = os.environ.get("BASE_URL", "").rstrip("/")
-
-if not TOKEN or not BASE_URL:
-    raise RuntimeError("TELEGRAM_BOT_TOKEN oder BASE_URL fehlt")
-
-WEBHOOK_PATH = f"/webhook/{TOKEN}"
-WEBHOOK_URL = f"{BASE_URL}{WEBHOOK_PATH}"
-
-ptb_app = build_application(TOKEN)
 api = FastAPI()
 
 @api.get("/", response_class=PlainTextResponse)
@@ -2040,21 +2031,62 @@ async def root():
 async def health():
     return "ok"
 
+
+# ENV erst hier lesen (nicht beim Import crashen lassen)
+TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+BASE_URL = os.environ.get("BASE_URL", "").strip().rstrip("/")
+
+ptb_app: Optional[Application] = None
+WEBHOOK_PATH: Optional[str] = None
+WEBHOOK_URL: Optional[str] = None
+
+if TOKEN and BASE_URL:
+    WEBHOOK_PATH = f"/webhook/{TOKEN}"
+    WEBHOOK_URL = f"{BASE_URL}{WEBHOOK_PATH}"
+    ptb_app = build_application(TOKEN)
+
+
 @api.on_event("startup")
 async def on_startup():
-    await ptb_app.initialize()
-    await ptb_app.start()
-    await ptb_app.bot.set_webhook(url=WEBHOOK_URL, drop_pending_updates=True)
+    # App soll selbst dann hochkommen, wenn Telegram ENV fehlt
+    if not ptb_app or not WEBHOOK_URL:
+        return
+
+    try:
+        await ptb_app.initialize()
+        await ptb_app.start()
+
+        # webhook setzen (robust)
+        await ptb_app.bot.set_webhook(url=WEBHOOK_URL, drop_pending_updates=True)
+    except Exception as e:
+        # Wichtig: NICHT crashen lassen, sonst "failed"
+        print(f"[startup] Telegram init/webhook failed: {e}")
+
 
 @api.on_event("shutdown")
 async def on_shutdown():
-    await ptb_app.stop()
-    await ptb_app.shutdown()
+    if not ptb_app:
+        return
+    try:
+        await ptb_app.stop()
+        await ptb_app.shutdown()
+    except Exception as e:
+        print(f"[shutdown] Telegram shutdown failed: {e}")
 
-@api.post(WEBHOOK_PATH)
-async def telegram_webhook(request: Request):
-    data = await request.json()
-    update = Update.de_json(data, ptb_app.bot)
-    await ptb_app.update_queue.put(update)
-    return {"status": "ok"}
 
+# Webhook Route nur registrieren, wenn wir Token/BaseURL haben
+if WEBHOOK_PATH:
+    @api.post(WEBHOOK_PATH)
+    async def telegram_webhook(request: Request):
+        if not ptb_app:
+            return {"status": "ok"}
+
+        try:
+            data = await request.json()
+            update = Update.de_json(data, ptb_app.bot)
+            await ptb_app.update_queue.put(update)
+        except Exception as e:
+            # Telegram soll trotzdem 200 bekommen, sonst spammt Telegram retries
+            print(f"[webhook] failed to process update: {e}")
+
+        return {"status": "ok"}
