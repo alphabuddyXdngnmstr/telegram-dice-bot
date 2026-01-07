@@ -6,6 +6,7 @@ import html
 from pathlib import Path
 from typing import Optional, Tuple, List, Dict
 
+from aiohttp import web
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application,
@@ -1867,6 +1868,13 @@ async def rolldungeon_cancel_cmd(update: Update, context: ContextTypes.DEFAULT_T
     return ConversationHandler.END
 
 # -----------------------
+# HEALTH / PING (für FastCron)
+# -----------------------
+
+async def ping(request):
+    return web.Response(text="ok")
+
+# -----------------------
 # HELP
 # -----------------------
 
@@ -1988,12 +1996,17 @@ def main():
     )
     app.add_handler(dungeon_conv)
 
+    web_app = web.Application()
+    web_app.router.add_get("/", ping)
+    web_app.router.add_get("/webhook", ping)
+
     app.run_webhook(
         listen="0.0.0.0",
         port=port,
         url_path="webhook",
         webhook_url=f"{base_url}/webhook",
         drop_pending_updates=True,
+        web_app=web_app,
     )
 
 if __name__ == "__main__":
