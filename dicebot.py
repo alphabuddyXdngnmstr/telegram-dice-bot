@@ -189,84 +189,6 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg)
 
 # -----------------------
-# DAY BLOCK SYSTEM
-# -----------------------
-
-_DAY_TAG_RE = re.compile(r"\bT(\d{1,4})\b", re.IGNORECASE)
-
-
-def _normalize_day_block_text(text: str) -> str:
-    return (text or "").strip()
-
-
-def _extract_day_number(text: str) -> Optional[int]:
-    m = _DAY_TAG_RE.search(text or "")
-    if not m:
-        return None
-    try:
-        return int(m.group(1))
-    except ValueError:
-        return None
-
-
-def _replace_first_day_number(text: str, new_day: int) -> str:
-    return _DAY_TAG_RE.sub(f"T{new_day}", text, count=1)
-
-
-async def settagesblock(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not update.message:
-        return
-
-    raw = update.message.text or ""
-    parts = raw.split(maxsplit=1)
-    block_text = parts[1].strip() if len(parts) > 1 else ""
-
-    if not block_text and update.message.reply_to_message:
-        block_text = (update.message.reply_to_message.text or "").strip()
-
-    block_text = _normalize_day_block_text(block_text)
-    if not block_text:
-        await update.message.reply_text(
-            "Nutze /settagesblock <dein Tagesblock> oder antworte mit /settagesblock auf deinen Tagesblock 🙂"
-        )
-        return
-
-    day_num = _extract_day_number(block_text)
-    if day_num is None:
-        await update.message.reply_text("Ich brauche im Block ein T mit Zahl, z.B. T1 oder T24 🙂")
-        return
-
-    context.user_data["day_block_text"] = block_text
-    context.user_data["day_block_num"] = day_num
-    await update.message.reply_text(f"Tagesblock gespeichert 🙂 Aktueller Tag: T{day_num}")
-
-
-async def neuertag(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not update.message:
-        return
-
-    block_text = context.user_data.get("day_block_text")
-    day_num = context.user_data.get("day_block_num")
-
-    if not block_text or not isinstance(day_num, int):
-        await update.message.reply_text(
-            "Ich habe noch keinen Tagesblock gespeichert. Nutze erst /settagesblock 🙂"
-        )
-        return
-
-    new_day = day_num + 1
-    new_block = _replace_first_day_number(block_text, new_day)
-
-    context.user_data["day_block_text"] = new_block
-    context.user_data["day_block_num"] = new_day
-
-    msg = (
-        "Ein neuer Tag beginnt! Viel Spaß bei deinen 3 Tagesaktionen - /rollwaldkarte wenn du magst\n\n"
-        f"{new_block}"
-    )
-    await update.message.reply_text(msg)
-
-# -----------------------
 # ORACLE SYSTEM
 # -----------------------
 
@@ -2028,8 +1950,6 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🧰 Befehle\n\n"
         "/help  diese Hilfe\n"
         "/roll <Ausdruck>  Würfeln, z.B. /roll 1d6 oder /roll 2d20+3 oder /roll 1d20+2d6+3 (auch 1w6). Optional mit #Notiz: und auch mehrfach in einer Nachricht\n"
-        "/settagesblock  speichert deinen aktuellen Tagesblock. Direkt hinter dem Befehl oder als Antwort auf deinen Tagesblock\n"
-        "/neuertag  erhöht den gespeicherten Tagesblock von T1 auf T2 usw. und postet den neuen Tag\n"
         "/rollchance  Skillwurf plus SG und Belohnung\n"
         "/rollhunt  Jagdwurf mit Mod Auswahl\n"
         "/rollwaldkarte  zieht eine Waldkarte (Skillchance, Ruhe, Entdeckung, Encounter, Hort, NPC)\n"
@@ -2068,8 +1988,6 @@ def main():
     ptb_app.add_handler(CommandHandler("start", help_cmd))
 
     ptb_app.add_handler(CommandHandler("roll", roll))
-    ptb_app.add_handler(CommandHandler("settagesblock", settagesblock))
-    ptb_app.add_handler(CommandHandler("neuertag", neuertag))
     ptb_app.add_handler(CommandHandler("rollchance", rollchance))
 
     ptb_app.add_handler(CommandHandler("rollhunt", rollhunt))
