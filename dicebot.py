@@ -1923,6 +1923,102 @@ async def rolldungeon_cancel_cmd(update: Update, context: ContextTypes.DEFAULT_T
     await update.message.reply_text("Rolldungeon abgebrochen 🙂")
     return ConversationHandler.END
 
+
+# -----------------------
+# MONSTERREAKTION
+# -----------------------
+
+def _roll_2d6() -> Tuple[int, List[int]]:
+    dice = [random.randint(1, 6), random.randint(1, 6)]
+    return sum(dice), dice
+
+def _fmt_2d6(total: int, dice: List[int]) -> str:
+    return f"{total} ({dice[0]}+{dice[1]})"
+
+def generate_reaction_result() -> str:
+    lines: List[str] = ["👁️ Monsterreaktion", ""]
+
+    first_total, first_dice = _roll_2d6()
+    lines.append(f"Erster Wurf: {_fmt_2d6(first_total, first_dice)}")
+
+    if first_total == 2:
+        lines.append("Ergebnis: Sofortiger Angriff")
+        return "\n".join(lines)
+
+    if 3 <= first_total <= 5:
+        lines.append("Ergebnis: Möglicher Angriff")
+        second_total, second_dice = _roll_2d6()
+        lines.append(f"Folgewurf: {_fmt_2d6(second_total, second_dice)}")
+
+        if 2 <= second_total <= 8:
+            lines.append("Endergebnis: Angriff")
+            return "\n".join(lines)
+
+        lines.append("Zwischenergebnis: Unsicher")
+        third_total, third_dice = _roll_2d6()
+        lines.append(f"Folgewurf: {_fmt_2d6(third_total, third_dice)}")
+
+        if 2 <= third_total <= 5:
+            lines.append("Endergebnis: Angriff")
+        elif 6 <= third_total <= 8:
+            lines.append("Endergebnis: Geht weiter")
+        else:
+            lines.append("Endergebnis: Freundlich")
+        return "\n".join(lines)
+
+    if 6 <= first_total <= 8:
+        lines.append("Ergebnis: Unsicher")
+        second_total, second_dice = _roll_2d6()
+        lines.append(f"Folgewurf: {_fmt_2d6(second_total, second_dice)}")
+
+        if 2 <= second_total <= 5:
+            lines.append("Endergebnis: Angriff")
+            return "\n".join(lines)
+
+        if 6 <= second_total <= 8:
+            lines.append("Zwischenergebnis: Verhandeln")
+            third_total, third_dice = _roll_2d6()
+            lines.append(f"Folgewurf: {_fmt_2d6(third_total, third_dice)}")
+
+            if 2 <= third_total <= 5:
+                lines.append("Endergebnis: Angriff")
+            elif 6 <= third_total <= 8:
+                lines.append("Endergebnis: Geht weiter")
+            else:
+                lines.append("Endergebnis: Freundlich")
+            return "\n".join(lines)
+
+        lines.append("Endergebnis: Freundlich")
+        return "\n".join(lines)
+
+    if 9 <= first_total <= 11:
+        lines.append("Ergebnis: Möglicherweise freundlich")
+        second_total, second_dice = _roll_2d6()
+        lines.append(f"Folgewurf: {_fmt_2d6(second_total, second_dice)}")
+
+        if 2 <= second_total <= 5:
+            lines.append("Zwischenergebnis: Unsicher")
+            third_total, third_dice = _roll_2d6()
+            lines.append(f"Folgewurf: {_fmt_2d6(third_total, third_dice)}")
+
+            if 2 <= third_total <= 5:
+                lines.append("Endergebnis: Angriff")
+            elif 6 <= third_total <= 8:
+                lines.append("Endergebnis: Geht weiter")
+            else:
+                lines.append("Endergebnis: Freundlich")
+            return "\n".join(lines)
+
+        lines.append("Endergebnis: Freundlich")
+        return "\n".join(lines)
+
+    lines.append("Ergebnis: Sofort freundlich")
+    return "\n".join(lines)
+
+async def reaktion(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(generate_reaction_result())
+
+
 # -----------------------
 # HEALTH / PING (für FastCron)
 # -----------------------
@@ -1940,6 +2036,7 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/help  diese Hilfe\n"
         "/roll <Ausdruck>  Würfeln, z.B. /roll 1d6 oder /roll 2d20+3 oder /roll 1d20+2d6+3 (auch 1w6)\n"
         "/rollchance  Skillwurf plus SG und Belohnung\n"
+        "/reaktion  würfelt eine Monsterreaktion nach 2W6\n"
         "/rollhunt  Jagdwurf mit Mod Auswahl\n"
         "/rollwaldkarte  zieht eine Waldkarte (Skillchance, Ruhe, Entdeckung, Encounter, Hort, NPC)\n"
         "/rolldungeon  Dungeon Generator mit Spoiler Räumen\n"
@@ -1978,6 +2075,7 @@ def main():
 
     ptb_app.add_handler(CommandHandler("roll", roll))
     ptb_app.add_handler(CommandHandler("rollchance", rollchance))
+    ptb_app.add_handler(CommandHandler("reaktion", reaktion))
 
     ptb_app.add_handler(CommandHandler("rollhunt", rollhunt))
     ptb_app.add_handler(CallbackQueryHandler(rollhunt_pick_mod, pattern=r"^hunt_mod:"))
