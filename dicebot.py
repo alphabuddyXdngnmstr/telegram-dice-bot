@@ -1930,12 +1930,74 @@ async def rolldungeon_cancel_cmd(update: Update, context: ContextTypes.DEFAULT_T
 
 REAK_NATUR, REAK_DISZIPLIN, REAK_ZIEL, REAK_HP, REAK_LAGE, REAK_AUSLOESER = range(6)
 
-REACTION_NATURE_OPTIONS = ["friedlich", "kompromissbereit", "neutral", "territorial", "räuberisch", "boshaft", "fanatisch"]
-REACTION_DISCIPLINE_OPTIONS = ["feige", "normal", "brutal", "fanatisch", "geistlos"]
-REACTION_GOAL_OPTIONS = ["warnen", "vertreiben", "beute machen", "töten", "bewachen"]
-REACTION_HP_OPTIONS = ["76-100%", "51-75%", "26-50%", "11-25%", "1-10%"]
-REACTION_SITUATION_OPTIONS = ["überlegen", "ausgeglichen", "unterlegen", "eingekesselt"]
-REACTION_TRIGGER_OPTIONS = ["gruppe freundlich", "gruppe vorsichtig", "gruppe provoziert", "gruppe hat schon angegriffen", "anführer tot / halbe gruppe gefallen"]
+REACTION_NATURE_CHOICES = [
+    ("Friedlich", "friedlich"),
+    ("Kompromissbereit", "kompromissbereit"),
+    ("Neutral", "neutral"),
+    ("Territorial", "territorial"),
+    ("Räuberisch", "räuberisch"),
+    ("Boshaft", "boshaft"),
+    ("Fanatisch", "fanatisch"),
+]
+REACTION_DISCIPLINE_CHOICES = [
+    ("Feige", "feige"),
+    ("Normal", "normal"),
+    ("Brutal", "brutal"),
+    ("Fanatisch", "fanatisch"),
+    ("Geistlos", "geistlos"),
+]
+REACTION_GOAL_CHOICES = [
+    ("Warnen", "warnen"),
+    ("Vertreiben", "vertreiben"),
+    ("Beute machen", "beute machen"),
+    ("Töten", "töten"),
+    ("Bewachen / Nest / Schatz", "bewachen"),
+]
+REACTION_HP_CHOICES = [
+    ("76–100%", "76-100%"),
+    ("51–75%", "51-75%"),
+    ("26–50%", "26-50%"),
+    ("11–25%", "11-25%"),
+    ("1–10%", "1-10%"),
+]
+REACTION_SITUATION_CHOICES = [
+    ("Überlegen", "überlegen"),
+    ("Ausgeglichen", "ausgeglichen"),
+    ("Unterlegen", "unterlegen"),
+    ("Eingekesselt", "eingekesselt"),
+]
+REACTION_TRIGGER_CHOICES = [
+    ("Gruppe freundlich", "gruppe freundlich"),
+    ("Gruppe vorsichtig", "gruppe vorsichtig"),
+    ("Gruppe provoziert", "gruppe provoziert"),
+    ("Gruppe hat angegriffen", "gruppe hat schon angegriffen"),
+    ("Anführer tot / halbe Gruppe gefallen", "anführer tot / halbe gruppe gefallen"),
+]
+
+REACTION_CHOICES_BY_STATE = {
+    REAK_NATUR: REACTION_NATURE_CHOICES,
+    REAK_DISZIPLIN: REACTION_DISCIPLINE_CHOICES,
+    REAK_ZIEL: REACTION_GOAL_CHOICES,
+    REAK_HP: REACTION_HP_CHOICES,
+    REAK_LAGE: REACTION_SITUATION_CHOICES,
+    REAK_AUSLOESER: REACTION_TRIGGER_CHOICES,
+}
+REACTION_KEY_BY_STATE = {
+    REAK_NATUR: "nature",
+    REAK_DISZIPLIN: "discipline",
+    REAK_ZIEL: "goal",
+    REAK_HP: "hp",
+    REAK_LAGE: "situation",
+    REAK_AUSLOESER: "trigger",
+}
+REACTION_TITLE_BY_STATE = {
+    REAK_NATUR: "1. Grundnatur?",
+    REAK_DISZIPLIN: "2. Disziplin?",
+    REAK_ZIEL: "3. Aktuelles Ziel?",
+    REAK_HP: "4. HP-Status?",
+    REAK_LAGE: "5. Lage?",
+    REAK_AUSLOESER: "6. Auslöser?",
+}
 
 NATURE_MOD = {
     "friedlich": 4,
@@ -2022,17 +2084,65 @@ def _canon_choice(value: str) -> str:
     return mapping.get(raw, raw)
 
 
-def _parse_choice(text_value: str, options: List[str]) -> Optional[str]:
+def _display_choice(value: str) -> str:
+    canonical = _canon_choice(value)
+    for choices in REACTION_CHOICES_BY_STATE.values():
+        for label, stored in choices:
+            if stored == canonical:
+                return label
+    return canonical.capitalize()
+
+
+def _parse_choice_from_pairs(text_value: str, choices: List[Tuple[str, str]]) -> Optional[str]:
     raw = (text_value or "").strip().lower()
-    if raw in options:
+    values = [value for _, value in choices]
+    if raw in values:
         return raw
     nr = re.match(r"^(\d+)", raw)
     if nr:
         idx = int(nr.group(1)) - 1
-        if 0 <= idx < len(options):
-            return options[idx]
-    normalized_options = {_normalize_choice(opt): opt for opt in options}
-    return normalized_options.get(_normalize_choice(raw))
+        if 0 <= idx < len(choices):
+            return choices[idx][1]
+    normalized_map: Dict[str, str] = {}
+    for label, value in choices:
+        normalized_map[_normalize_choice(label)] = value
+        normalized_map[_normalize_choice(value)] = value
+    return normalized_map.get(_normalize_choice(raw))
+
+
+def _build_reaction_keyboard(step: int) -> InlineKeyboardMarkup:
+    choices = REACTION_CHOICES_BY_STATE[step]
+    rows: List[List[InlineKeyboardButton]] = []
+    row: List[InlineKeyboardButton] = []
+    for idx, (label, _value) in enumerate(choices):
+        row.append(InlineKeyboardButton(label, callback_data=f"reaktion:{step}:{idx}"))
+        if len(row) == 2:
+            rows.append(row)
+            row = []
+    if row:
+        rows.append(row)
+    rows.append([InlineKeyboardButton("Abbrechen", callback_data="reaktion_cancel")])
+    return InlineKeyboardMarkup(rows)
+
+
+def _reaction_prompt(step: int) -> str:
+    return (
+        f"👁️ /reaktion\n\n{REACTION_TITLE_BY_STATE[step]}\n"
+        "Wähle per Button oder antworte mit Zahl oder Wort.\n"
+        "/cancel bricht ab."
+    )
+
+
+async def _send_reaction_prompt(update: Update, step: int, prefix: Optional[str] = None) -> None:
+    text = _reaction_prompt(step)
+    if prefix:
+        text = f"{prefix}\n\n{text}"
+    reply_markup = _build_reaction_keyboard(step)
+
+    if update.callback_query:
+        await update.callback_query.edit_message_text(text, reply_markup=reply_markup)
+    elif update.message:
+        await update.message.reply_text(text, reply_markup=reply_markup)
 
 
 def _special_low_hp_result(nature: str, discipline: str) -> Tuple[str, int]:
@@ -2051,7 +2161,6 @@ def _special_low_hp_result(nature: str, discipline: str) -> Tuple[str, int]:
         if roll <= 8:
             return (f"Aufgabe / Verhandlung (W10={roll})", roll)
         return (f"Kämpft weiter (W10={roll})", roll)
-    # boshafte Monster
     if roll <= 4:
         return (f"Flucht (W10={roll})", roll)
     if roll <= 6:
@@ -2095,10 +2204,6 @@ def generate_reaction_report(data: Dict[str, str]) -> str:
     )
     if trigger == "anführer tot / halbe gruppe gefallen":
         will_mod -= 4
-    elif trigger == "gruppe hat schon angegriffen":
-        will_mod += 0
-    elif trigger == "gruppe provoziert":
-        will_mod += 0
 
     will_score = will_base + will_mod
     special_low_hp_line = None
@@ -2120,12 +2225,12 @@ def generate_reaction_report(data: Dict[str, str]) -> str:
         "👁️ Reaktions- und Moralwurf",
         "",
         "Eingaben:",
-        f"• Grundnatur: {nature}",
-        f"• Disziplin: {discipline}",
-        f"• Ziel: {goal}",
-        f"• HP-Status: {hp}",
-        f"• Lage: {situation}",
-        f"• Auslöser: {trigger}",
+        f"• Grundnatur: {_display_choice(nature)}",
+        f"• Disziplin: {_display_choice(discipline)}",
+        f"• Ziel: {_display_choice(goal)}",
+        f"• HP-Status: {_display_choice(hp)}",
+        f"• Lage: {_display_choice(situation)}",
+        f"• Auslöser: {_display_choice(trigger)}",
         "",
         "Erstkontakt:",
         f"• 2W6: {_fmt_2d6(contact_total, contact_dice)}",
@@ -2143,89 +2248,120 @@ def generate_reaction_report(data: Dict[str, str]) -> str:
     return "\n".join(lines)
 
 
-def _reaction_prompt(step: int) -> str:
-    prompts = {
-        REAK_NATUR: "👁️ /reaktion\n\n1. Grundnatur?\n1 friedlich\n2 kompromissbereit\n3 neutral\n4 territorial\n5 räuberisch\n6 boshaft\n7 fanatisch",
-        REAK_DISZIPLIN: "2. Disziplin?\n1 feige\n2 normal\n3 brutal\n4 fanatisch\n5 geistlos",
-        REAK_ZIEL: "3. Aktuelles Ziel?\n1 warnen\n2 vertreiben\n3 Beute machen\n4 töten\n5 bewachen",
-        REAK_HP: "4. HP-Status?\n1 76-100%\n2 51-75%\n3 26-50%\n4 11-25%\n5 1-10%",
-        REAK_LAGE: "5. Lage?\n1 überlegen\n2 ausgeglichen\n3 unterlegen\n4 eingekesselt",
-        REAK_AUSLOESER: "6. Auslöser?\n1 Gruppe freundlich\n2 Gruppe vorsichtig\n3 Gruppe provoziert\n4 Gruppe hat schon angegriffen\n5 Anführer tot / halbe Gruppe gefallen",
-    }
-    return prompts[step] + "\n\nAntworte einfach mit Zahl oder Wort. /cancel bricht ab."
+async def _apply_reaction_choice(update: Update, context: ContextTypes.DEFAULT_TYPE, step: int, choice: str):
+    context.user_data.setdefault("reaktion", {})
+    context.user_data["reaktion"][REACTION_KEY_BY_STATE[step]] = choice
+
+    if step == REAK_AUSLOESER:
+        report = generate_reaction_report(context.user_data["reaktion"])
+        context.user_data.pop("reaktion", None)
+        context.user_data.pop("reaktion_step", None)
+        if update.callback_query:
+            await update.callback_query.edit_message_text(report)
+        elif update.message:
+            await update.message.reply_text(report)
+        return ConversationHandler.END
+
+    next_step = step + 1
+    context.user_data["reaktion_step"] = next_step
+    await _send_reaction_prompt(update, next_step)
+    return next_step
+
 
 async def reaktion_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["reaktion"] = {}
-    await update.message.reply_text(_reaction_prompt(REAK_NATUR))
+    context.user_data["reaktion_step"] = REAK_NATUR
+    await _send_reaction_prompt(update, REAK_NATUR)
     return REAK_NATUR
 
 
+async def reaktion_pick(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+
+    try:
+        _prefix, step_txt, idx_txt = (query.data or "").split(":", 2)
+        step = int(step_txt)
+        idx = int(idx_txt)
+    except (ValueError, AttributeError):
+        return context.user_data.get("reaktion_step", REAK_NATUR)
+
+    current_step = context.user_data.get("reaktion_step", REAK_NATUR)
+    if step != current_step:
+        await query.answer("Diese Auswahl ist nicht mehr aktuell.", show_alert=False)
+        await _send_reaction_prompt(update, current_step)
+        return current_step
+
+    choices = REACTION_CHOICES_BY_STATE.get(step, [])
+    if idx < 0 or idx >= len(choices):
+        await query.answer("Ungültige Auswahl.", show_alert=False)
+        await _send_reaction_prompt(update, current_step, "Bitte wähle eine gültige Option.")
+        return current_step
+
+    return await _apply_reaction_choice(update, context, step, choices[idx][1])
+
+
 async def reaktion_step_natur(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    choice = _parse_choice(update.message.text, REACTION_NATURE_OPTIONS)
+    choice = _parse_choice_from_pairs(update.message.text, REACTION_NATURE_CHOICES)
     if not choice:
-        await update.message.reply_text("Bitte wähle eine gültige Grundnatur.\n\n" + _reaction_prompt(REAK_NATUR))
+        await _send_reaction_prompt(update, REAK_NATUR, "Bitte wähle eine gültige Grundnatur.")
         return REAK_NATUR
-    context.user_data["reaktion"]["nature"] = choice
-    await update.message.reply_text(_reaction_prompt(REAK_DISZIPLIN))
-    return REAK_DISZIPLIN
+    return await _apply_reaction_choice(update, context, REAK_NATUR, choice)
 
 
 async def reaktion_step_disziplin(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    choice = _parse_choice(update.message.text, REACTION_DISCIPLINE_OPTIONS)
+    choice = _parse_choice_from_pairs(update.message.text, REACTION_DISCIPLINE_CHOICES)
     if not choice:
-        await update.message.reply_text("Bitte wähle eine gültige Disziplin.\n\n" + _reaction_prompt(REAK_DISZIPLIN))
+        await _send_reaction_prompt(update, REAK_DISZIPLIN, "Bitte wähle eine gültige Disziplin.")
         return REAK_DISZIPLIN
-    context.user_data["reaktion"]["discipline"] = choice
-    await update.message.reply_text(_reaction_prompt(REAK_ZIEL))
-    return REAK_ZIEL
+    return await _apply_reaction_choice(update, context, REAK_DISZIPLIN, choice)
 
 
 async def reaktion_step_ziel(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    choice = _parse_choice(update.message.text, REACTION_GOAL_OPTIONS)
+    choice = _parse_choice_from_pairs(update.message.text, REACTION_GOAL_CHOICES)
     if not choice:
-        await update.message.reply_text("Bitte wähle ein gültiges Ziel.\n\n" + _reaction_prompt(REAK_ZIEL))
+        await _send_reaction_prompt(update, REAK_ZIEL, "Bitte wähle ein gültiges Ziel.")
         return REAK_ZIEL
-    context.user_data["reaktion"]["goal"] = choice
-    await update.message.reply_text(_reaction_prompt(REAK_HP))
-    return REAK_HP
+    return await _apply_reaction_choice(update, context, REAK_ZIEL, choice)
 
 
 async def reaktion_step_hp(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    choice = _parse_choice(update.message.text, REACTION_HP_OPTIONS)
+    choice = _parse_choice_from_pairs(update.message.text, REACTION_HP_CHOICES)
     if not choice:
-        await update.message.reply_text("Bitte wähle einen gültigen HP-Status.\n\n" + _reaction_prompt(REAK_HP))
+        await _send_reaction_prompt(update, REAK_HP, "Bitte wähle einen gültigen HP-Status.")
         return REAK_HP
-    context.user_data["reaktion"]["hp"] = choice
-    await update.message.reply_text(_reaction_prompt(REAK_LAGE))
-    return REAK_LAGE
+    return await _apply_reaction_choice(update, context, REAK_HP, choice)
 
 
 async def reaktion_step_lage(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    choice = _parse_choice(update.message.text, REACTION_SITUATION_OPTIONS)
+    choice = _parse_choice_from_pairs(update.message.text, REACTION_SITUATION_CHOICES)
     if not choice:
-        await update.message.reply_text("Bitte wähle eine gültige Lage.\n\n" + _reaction_prompt(REAK_LAGE))
+        await _send_reaction_prompt(update, REAK_LAGE, "Bitte wähle eine gültige Lage.")
         return REAK_LAGE
-    context.user_data["reaktion"]["situation"] = choice
-    await update.message.reply_text(_reaction_prompt(REAK_AUSLOESER))
-    return REAK_AUSLOESER
+    return await _apply_reaction_choice(update, context, REAK_LAGE, choice)
 
 
 async def reaktion_step_ausloeser(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    choice = _parse_choice(update.message.text, REACTION_TRIGGER_OPTIONS)
+    choice = _parse_choice_from_pairs(update.message.text, REACTION_TRIGGER_CHOICES)
     if not choice:
-        await update.message.reply_text("Bitte wähle einen gültigen Auslöser.\n\n" + _reaction_prompt(REAK_AUSLOESER))
+        await _send_reaction_prompt(update, REAK_AUSLOESER, "Bitte wähle einen gültigen Auslöser.")
         return REAK_AUSLOESER
-    context.user_data["reaktion"]["trigger"] = choice
-    report = generate_reaction_report(context.user_data["reaktion"])
-    context.user_data.pop("reaktion", None)
-    await update.message.reply_text(report)
-    return ConversationHandler.END
+    return await _apply_reaction_choice(update, context, REAK_AUSLOESER, choice)
 
 
 async def reaktion_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data.pop("reaktion", None)
-    await update.message.reply_text("/reaktion abgebrochen 🙂")
+    context.user_data.pop("reaktion_step", None)
+    if update.callback_query:
+        await update.callback_query.answer()
+        await update.callback_query.edit_message_text("/reaktion abgebrochen 🙂")
+    elif update.message:
+        await update.message.reply_text("/reaktion abgebrochen 🙂")
     return ConversationHandler.END
+
+
+async def reaktion_cancel_cb(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    return await reaktion_cancel(update, context)
 
 # -----------------------
 # HEALTH / PING (für FastCron)
@@ -2286,12 +2422,30 @@ def main():
     reaction_conv = ConversationHandler(
         entry_points=[CommandHandler("reaktion", reaktion_start)],
         states={
-            REAK_NATUR: [MessageHandler(filters.TEXT & ~filters.COMMAND, reaktion_step_natur)],
-            REAK_DISZIPLIN: [MessageHandler(filters.TEXT & ~filters.COMMAND, reaktion_step_disziplin)],
-            REAK_ZIEL: [MessageHandler(filters.TEXT & ~filters.COMMAND, reaktion_step_ziel)],
-            REAK_HP: [MessageHandler(filters.TEXT & ~filters.COMMAND, reaktion_step_hp)],
-            REAK_LAGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, reaktion_step_lage)],
-            REAK_AUSLOESER: [MessageHandler(filters.TEXT & ~filters.COMMAND, reaktion_step_ausloeser)],
+            REAK_NATUR: [
+                CallbackQueryHandler(reaktion_cancel_cb, pattern=r"^reaktion_cancel$"),
+                CallbackQueryHandler(reaktion_pick, pattern=r"^reaktion:\d+:\d+$"),
+            ],
+            REAK_DISZIPLIN: [
+                CallbackQueryHandler(reaktion_cancel_cb, pattern=r"^reaktion_cancel$"),
+                CallbackQueryHandler(reaktion_pick, pattern=r"^reaktion:\d+:\d+$"),
+            ],
+            REAK_ZIEL: [
+                CallbackQueryHandler(reaktion_cancel_cb, pattern=r"^reaktion_cancel$"),
+                CallbackQueryHandler(reaktion_pick, pattern=r"^reaktion:\d+:\d+$"),
+            ],
+            REAK_HP: [
+                CallbackQueryHandler(reaktion_cancel_cb, pattern=r"^reaktion_cancel$"),
+                CallbackQueryHandler(reaktion_pick, pattern=r"^reaktion:\d+:\d+$"),
+            ],
+            REAK_LAGE: [
+                CallbackQueryHandler(reaktion_cancel_cb, pattern=r"^reaktion_cancel$"),
+                CallbackQueryHandler(reaktion_pick, pattern=r"^reaktion:\d+:\d+$"),
+            ],
+            REAK_AUSLOESER: [
+                CallbackQueryHandler(reaktion_cancel_cb, pattern=r"^reaktion_cancel$"),
+                CallbackQueryHandler(reaktion_pick, pattern=r"^reaktion:\d+:\d+$"),
+            ],
         },
         fallbacks=[CommandHandler("cancel", reaktion_cancel)],
         allow_reentry=True,
