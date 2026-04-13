@@ -4,7 +4,6 @@ import re
 import math
 import html
 import asyncio
-import logging
 from pathlib import Path
 from typing import Optional, Tuple, List, Dict
 
@@ -20,13 +19,6 @@ from telegram.ext import (
     filters,
 )
 
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    level=logging.INFO,
-)
-logging.getLogger("httpx").setLevel(logging.WARNING)
-logger = logging.getLogger(__name__)
-
 # -----------------------
 # DICE ROLL SYSTEM
 # -----------------------
@@ -34,6 +26,8 @@ logger = logging.getLogger(__name__)
 _ROLL_ALLOWED = re.compile(r"^[0-9dDwW+\-\s]+$")
 _ROLL_TERM = re.compile(r"([+\-]?)(\d+[dw]\d+|\d+)", re.IGNORECASE)
 _ROLL_DICE = re.compile(r"^(\d+)[dw](\d+)$", re.IGNORECASE)
+_ROLL_CMD_PREFIX = re.compile(r"^/roll(?:@\w+)?\s*", re.IGNORECASE)
+_ROLL_NOTE_SPLIT = re.compile(r"^(.*?)(?:\s+#notiz:\s*(.+))?$", re.IGNORECASE)
 
 def parse_roll_expression(expr: str) -> Tuple[str, int, List[str]]:
     raw = (expr or "").strip()
@@ -98,36 +92,89 @@ def parse_roll_expression(expr: str) -> Tuple[str, int, List[str]]:
 
     return normalized_expr, total, details
 
-async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not context.args:
-        await update.message.reply_text(
-            "Beispiele:\n"
-            "/roll 1d6\n"
-            "/roll 2d20+3\n"
-            "/roll 1d20+2d6+3\n"
-            "/roll 2w6-1"
-        )
-        return
 
-    expr = " ".join(context.args).strip()
+def _extract_roll_jobs(message_text: str) -> List[Tuple[str, Optional[str]]]:
+    jobs: List[Tuple[str, Optional[str]]] = []
+
+    for raw_line in (message_text or "").splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+
+        line = _ROLL_CMD_PREFIX.sub("", line, count=1).strip()
+        if not line:
+            continue
+
+        note_match = _ROLL_NOTE_SPLIT.match(line)
+        if not note_match:
+            raise ValueError("Ungültiges Format")
+
+        expr = (note_match.group(1) or "").strip()
+        note = (note_match.group(2) or "").strip() or None
+
+        if not expr:
+            raise ValueError("Bitte gib vor der #Notiz einen Würfelausdruck an")
+
+        jobs.append((expr, note))
+
+    if not jobs:
+        raise ValueError("Bitte gib mindestens einen Würfelausdruck an")
+
+    if len(jobs) > 20:
+        raise ValueError("Maximal 20 Würfe pro Nachricht")
+
+    return jobs
+
+
+async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    raw_text = (update.message.text or "").strip() if update.message else ""
 
     try:
-        normalized, total, details = parse_roll_expression(expr)
+        jobs = _extract_roll_jobs(raw_text)
     except ValueError as e:
         await update.message.reply_text(
             f"Ungültiges Format.\n{e}\n\n"
             "Beispiele:\n"
             "/roll 1d6\n"
             "/roll 2d20+3\n"
-            "/roll 1d20+2d6+3"
+            "/roll 1d20+2d6+3\n"
+            "/roll 1d20+6 #Notiz: Flammenklinge\n\n"
+            "Mehrere Würfe in einer Nachricht:\n"
+            "/roll 1d20+6 #Notiz: Flammenklinge\n"
+            "/roll 1d20+6 #Notiz: Heilige Flamme"
         )
         return
 
-    msg = (
-        f"🎲 {normalized}\n"
-        f"Details:\n" + "\n".join(details) + "\n\n"
-        f"Summe: {total}"
-    )
+    results: List[str] = []
+
+    for idx, (expr, note) in enumerate(jobs, start=1):
+        try:
+            normalized, total, details = parse_roll_expression(expr)
+        except ValueError as e:
+            prefix = f"Wurf {idx}: " if len(jobs) > 1 else ""
+            await update.message.reply_text(
+                f"Ungültiges Format.\n{prefix}{e}\n\n"
+                "Beispiele:\n"
+                "/roll 1d6\n"
+                "/roll 2d20+3\n"
+                "/roll 1d20+2d6+3\n"
+                "/roll 1d20+6 #Notiz: Flammenklinge"
+            )
+            return
+
+        block_lines = []
+        if len(jobs) > 1:
+            block_lines.append(f"{idx}.")
+        if note:
+            block_lines.append(f"Notiz: {note}")
+        block_lines.append(f"🎲 {normalized}")
+        block_lines.append("Details:")
+        block_lines.extend(details)
+        block_lines.append("")
+        block_lines.append(f"Summe: {total}")
+        results.append("\n".join(block_lines))
+
+    msg = "\n\n".join(results)
     await update.message.reply_text(msg)
 
 # -----------------------
@@ -1911,10 +1958,6 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     await update.message.reply_text(msg)
 
-async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
-    logger.exception("PTB handler error. Update=%r", update, exc_info=context.error)
-
-
 def main():
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     base_url = os.environ.get("BASE_URL")
@@ -1929,8 +1972,6 @@ def main():
 
     init_encounters()
     init_magic_tables()
-
-    ptb_app.add_error_handler(error_handler)
 
     ptb_app.add_handler(CommandHandler("help", help_cmd))
     ptb_app.add_handler(CommandHandler("start", help_cmd))
@@ -2016,40 +2057,16 @@ def main():
         return web.Response(text="ok", content_type="text/plain")
 
     async def telegram_webhook(request: web.Request) -> web.Response:
-        try:
-            data = await request.json()
-            update = Update.de_json(data=data, bot=ptb_app.bot)
-            logger.info("Webhook update received: update_id=%s", getattr(update, "update_id", None))
-            await ptb_app.process_update(update)
-            logger.info("Webhook update processed: update_id=%s", getattr(update, "update_id", None))
-            return web.Response(text="ok", content_type="text/plain")
-        except Exception:
-            logger.exception("Webhook processing failed")
-            return web.Response(status=500, text="error", content_type="text/plain")
+        data = await request.json()
+        await ptb_app.update_queue.put(Update.de_json(data=data, bot=ptb_app.bot))
+        return web.Response(text="ok", content_type="text/plain")
 
     aio_app = web.Application()
     aio_app.router.add_get("/", health)
     aio_app.router.add_get("/health", health)
     aio_app.router.add_post("/webhook", telegram_webhook)
 
-    async def log_webhook_info() -> None:
-        while True:
-            try:
-                info = await ptb_app.bot.get_webhook_info()
-                logger.info(
-                    "Webhook info: url=%s pending=%s last_error_date=%s last_error_message=%r max_connections=%s",
-                    getattr(info, "url", None),
-                    getattr(info, "pending_update_count", None),
-                    getattr(info, "last_error_date", None),
-                    getattr(info, "last_error_message", None),
-                    getattr(info, "max_connections", None),
-                )
-            except Exception:
-                logger.exception("Failed to fetch webhook info")
-            await asyncio.sleep(30)
-
     async def on_startup(_app: web.Application) -> None:
-        logger.info("Starting bot on port %s with base URL %s", port, base_url)
         await ptb_app.initialize()
         await ptb_app.start()
         await ptb_app.bot.set_webhook(
@@ -2057,24 +2074,8 @@ def main():
             drop_pending_updates=True,
             allowed_updates=Update.ALL_TYPES,
         )
-        info = await ptb_app.bot.get_webhook_info()
-        logger.info(
-            "Webhook registered: url=%s pending=%s ip_address=%s",
-            getattr(info, "url", None),
-            getattr(info, "pending_update_count", None),
-            getattr(info, "ip_address", None),
-        )
-        aio_app["webhook_watchdog"] = asyncio.create_task(log_webhook_info())
 
     async def on_cleanup(_app: web.Application) -> None:
-        watchdog = aio_app.get("webhook_watchdog")
-        if watchdog:
-            watchdog.cancel()
-            try:
-                await watchdog
-            except asyncio.CancelledError:
-                pass
-
         # Wichtig für Render-Deploys:
         # Den Webhook hier NICHT löschen.
         # Sonst kann die alte Instanz beim Shutdown den frisch gesetzten
