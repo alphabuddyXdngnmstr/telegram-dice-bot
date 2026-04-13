@@ -2021,7 +2021,9 @@ def main():
         )
 
     async def on_cleanup(_app: web.Application) -> None:
-        await ptb_app.bot.delete_webhook(drop_pending_updates=True)
+        # WICHTIG:
+        # Nicht den Webhook löschen. Bei Render-Deploys würde die alte Instanz
+        # sonst den frisch gesetzten Webhook der neuen Instanz wieder entfernen.
         await ptb_app.stop()
         await ptb_app.shutdown()
 
