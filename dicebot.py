@@ -188,86 +188,6 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(msg)
 
-
-# -----------------------
-# TAG TRACKING / NEUERTAG
-# -----------------------
-
-DAY_MARKER_RE = re.compile(r"(^|\n)(T(\d{1,4}))\b", re.IGNORECASE)
-
-def _extract_day_marker_block(text: str) -> Optional[Tuple[int, str]]:
-    raw = (text or "").strip()
-    if not raw:
-        return None
-
-    matches = list(DAY_MARKER_RE.finditer(raw))
-    if not matches:
-        return None
-
-    last = matches[-1]
-    day_num = int(last.group(3))
-    start = last.start(2)
-    block = raw[start:].strip()
-    return day_num, block
-
-def _store_day_block_from_text(context: ContextTypes.DEFAULT_TYPE, text: str) -> bool:
-    extracted = _extract_day_marker_block(text)
-    if not extracted:
-        return False
-
-    day_num, block = extracted
-    prev_num = context.chat_data.get("latest_day_number")
-
-    if prev_num is None or day_num >= int(prev_num):
-        context.chat_data["latest_day_number"] = day_num
-        context.chat_data["latest_day_block"] = block
-        return True
-
-    if context.chat_data.get("latest_day_block") is None:
-        context.chat_data["latest_day_block"] = block
-
-    return False
-
-async def capture_day_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    msg = update.effective_message
-    if not msg or not msg.text:
-        return
-    _store_day_block_from_text(context, msg.text)
-
-def _increment_day_block(block: str, current_day: int) -> str:
-    next_day = current_day + 1
-    return re.sub(
-        rf"\bT{current_day}\b",
-        f"T{next_day}",
-        block,
-        count=1,
-        flags=re.IGNORECASE,
-    )
-
-async def neuertag(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    latest_day = context.chat_data.get("latest_day_number")
-    latest_block = context.chat_data.get("latest_day_block")
-
-    if latest_day is None or not latest_block:
-        await update.message.reply_text(
-            "Ich habe noch keinen Tagesblock mit T1, T2 usw. gespeichert. "
-            "Schick zuerst einmal eine Nachricht mit z.B. T1 am Anfang 🙂"
-        )
-        return
-
-    new_block = _increment_day_block(str(latest_block), int(latest_day))
-    new_day = int(latest_day) + 1
-
-    context.chat_data["latest_day_number"] = new_day
-    context.chat_data["latest_day_block"] = new_block
-
-    msg = (
-        "Ein neuer Tag beginnt! Viel Spaß bei deinen 3 Tagesaktionen - /rollwaldkarte wenn du magst\n\n"
-        f"{new_block}"
-    )
-    await update.message.reply_text(msg)
-
-
 # -----------------------
 # ORACLE SYSTEM
 # -----------------------
@@ -2067,7 +1987,6 @@ def main():
     ptb_app.add_handler(CommandHandler("help", help_cmd))
     ptb_app.add_handler(CommandHandler("start", help_cmd))
 
-    ptb_app.add_handler(CommandHandler("neuertag", neuertag))
     ptb_app.add_handler(CommandHandler("roll", roll))
     ptb_app.add_handler(CommandHandler("rollchance", rollchance))
 
@@ -2144,8 +2063,6 @@ def main():
         allow_reentry=True,
     )
     ptb_app.add_handler(dungeon_conv)
-
-    ptb_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, capture_day_message), group=10)
 
     async def health(_request: web.Request) -> web.Response:
         return web.Response(text="ok", content_type="text/plain")
