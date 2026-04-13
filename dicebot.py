@@ -26,6 +26,7 @@ from telegram.ext import (
 _ROLL_ALLOWED = re.compile(r"^[0-9dDwW+\-\s]+$")
 _ROLL_TERM = re.compile(r"([+\-]?)(\d+[dw]\d+|\d+)", re.IGNORECASE)
 _ROLL_DICE = re.compile(r"^(\d+)[dw](\d+)$", re.IGNORECASE)
+_ROLL_CMD_PREFIX = re.compile(r"^/roll(?:@\w+)?\b", re.IGNORECASE)
 
 def parse_roll_expression(expr: str) -> Tuple[str, int, List[str]]:
     raw = (expr or "").strip()
@@ -90,36 +91,101 @@ def parse_roll_expression(expr: str) -> Tuple[str, int, List[str]]:
 
     return normalized_expr, total, details
 
+
+def _split_roll_note(line: str) -> Tuple[str, Optional[str]]:
+    base, sep, note_part = line.partition("#")
+    expr = base.strip()
+    if not sep:
+        return expr, None
+
+    note = re.sub(r"^\s*notiz\s*:\s*", "", note_part.strip(), flags=re.IGNORECASE).strip()
+    return expr, note or None
+
+
+def _extract_roll_entries(message_text: str) -> List[Tuple[str, Optional[str]]]:
+    raw_text = (message_text or "").strip()
+    if not raw_text:
+        return []
+
+    entries: List[Tuple[str, Optional[str]]] = []
+    lines = [ln.strip() for ln in raw_text.splitlines() if ln.strip()]
+
+    for idx, line in enumerate(lines):
+        cleaned = _ROLL_CMD_PREFIX.sub("", line, count=1).strip()
+
+        if not cleaned and idx == 0:
+            continue
+        if not cleaned:
+            continue
+
+        expr, note = _split_roll_note(cleaned)
+        if expr:
+            entries.append((expr, note))
+
+    if entries:
+        return entries
+
+    single_line = _ROLL_CMD_PREFIX.sub("", raw_text, count=1).strip()
+    if not single_line:
+        return []
+
+    expr, note = _split_roll_note(single_line)
+    return [(expr, note)] if expr else []
+
+
+def _format_roll_block(note: Optional[str], normalized: str, total: int, details: List[str]) -> str:
+    title = note.strip() if note else "Wurf"
+    return (
+        f"{title}\n"
+        f"🎲 {normalized}\n"
+        f"Details:\n" + "\n".join(details) + "\n"
+        f"Summe {total}"
+    )
+
+
 async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if not context.args:
+    message_text = update.message.text if update.message else ""
+    entries = _extract_roll_entries(message_text)
+
+    if not entries:
         await update.message.reply_text(
             "Beispiele:\n"
             "/roll 1d6\n"
             "/roll 2d20+3\n"
             "/roll 1d20+2d6+3\n"
-            "/roll 2w6-1"
+            "/roll 1d20+6 #Notiz: Flammenklinge\n\n"
+            "Mehrere Würfe in einer Nachricht:\n"
+            "/roll 1d20+6 #Notiz: Flammenklinge\n"
+            "/roll 1d20+6 #Notiz: Heilige Flamme"
         )
         return
 
-    expr = " ".join(context.args).strip()
+    blocks: List[str] = []
+    errors: List[str] = []
 
-    try:
-        normalized, total, details = parse_roll_expression(expr)
-    except ValueError as e:
+    for idx, (expr, note) in enumerate(entries, start=1):
+        try:
+            normalized, total, details = parse_roll_expression(expr)
+            blocks.append(_format_roll_block(note, normalized, total, details))
+        except ValueError as e:
+            label = note or expr or f"Wurf {idx}"
+            errors.append(f"{label}: {e}")
+
+    if not blocks and errors:
         await update.message.reply_text(
-            f"Ungültiges Format.\n{e}\n\n"
+            "Ungültiges Format.\n" + "\n".join(errors) + "\n\n"
             "Beispiele:\n"
             "/roll 1d6\n"
             "/roll 2d20+3\n"
-            "/roll 1d20+2d6+3"
+            "/roll 1d20+2d6+3\n"
+            "/roll 1d20+6 #Notiz: Flammenklinge"
         )
         return
 
-    msg = (
-        f"🎲 {normalized}\n"
-        f"Details:\n" + "\n".join(details) + "\n\n"
-        f"Summe: {total}"
-    )
+    msg = "\n\n".join(blocks)
+    if errors:
+        msg += "\n\nFehler:\n" + "\n".join(errors)
+
     await update.message.reply_text(msg)
 
 # -----------------------
@@ -1883,7 +1949,7 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = (
         "🧰 Befehle\n\n"
         "/help  diese Hilfe\n"
-        "/roll <Ausdruck>  Würfeln, z.B. /roll 1d6 oder /roll 2d20+3 oder /roll 1d20+2d6+3 (auch 1w6)\n"
+        "/roll <Ausdruck>  Würfeln, z.B. /roll 1d6 oder /roll 2d20+3 oder /roll 1d20+2d6+3 (auch 1w6). Optional mit #Notiz: und auch mehrfach in einer Nachricht\n"
         "/rollchance  Skillwurf plus SG und Belohnung\n"
         "/rollhunt  Jagdwurf mit Mod Auswahl\n"
         "/rollwaldkarte  zieht eine Waldkarte (Skillchance, Ruhe, Entdeckung, Encounter, Hort, NPC)\n"
