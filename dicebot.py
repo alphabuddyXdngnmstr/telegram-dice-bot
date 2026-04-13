@@ -4,6 +4,7 @@ import re
 import math
 import html
 import asyncio
+import logging
 from pathlib import Path
 from typing import Optional, Tuple, List, Dict
 
@@ -18,6 +19,13 @@ from telegram.ext import (
     CallbackQueryHandler,
     filters,
 )
+
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+)
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logger = logging.getLogger(__name__)
 
 # -----------------------
 # DICE ROLL SYSTEM
@@ -1903,6 +1911,10 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     await update.message.reply_text(msg)
 
+async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
+    logger.exception("PTB handler error. Update=%r", update, exc_info=context.error)
+
+
 def main():
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     base_url = os.environ.get("BASE_URL")
@@ -1917,6 +1929,8 @@ def main():
 
     init_encounters()
     init_magic_tables()
+
+    ptb_app.add_error_handler(error_handler)
 
     ptb_app.add_handler(CommandHandler("help", help_cmd))
     ptb_app.add_handler(CommandHandler("start", help_cmd))
@@ -2002,16 +2016,40 @@ def main():
         return web.Response(text="ok", content_type="text/plain")
 
     async def telegram_webhook(request: web.Request) -> web.Response:
-        data = await request.json()
-        await ptb_app.update_queue.put(Update.de_json(data=data, bot=ptb_app.bot))
-        return web.Response(text="ok", content_type="text/plain")
+        try:
+            data = await request.json()
+            update = Update.de_json(data=data, bot=ptb_app.bot)
+            logger.info("Webhook update received: update_id=%s", getattr(update, "update_id", None))
+            await ptb_app.process_update(update)
+            logger.info("Webhook update processed: update_id=%s", getattr(update, "update_id", None))
+            return web.Response(text="ok", content_type="text/plain")
+        except Exception:
+            logger.exception("Webhook processing failed")
+            return web.Response(status=500, text="error", content_type="text/plain")
 
     aio_app = web.Application()
     aio_app.router.add_get("/", health)
     aio_app.router.add_get("/health", health)
     aio_app.router.add_post("/webhook", telegram_webhook)
 
+    async def log_webhook_info() -> None:
+        while True:
+            try:
+                info = await ptb_app.bot.get_webhook_info()
+                logger.info(
+                    "Webhook info: url=%s pending=%s last_error_date=%s last_error_message=%r max_connections=%s",
+                    getattr(info, "url", None),
+                    getattr(info, "pending_update_count", None),
+                    getattr(info, "last_error_date", None),
+                    getattr(info, "last_error_message", None),
+                    getattr(info, "max_connections", None),
+                )
+            except Exception:
+                logger.exception("Failed to fetch webhook info")
+            await asyncio.sleep(30)
+
     async def on_startup(_app: web.Application) -> None:
+        logger.info("Starting bot on port %s with base URL %s", port, base_url)
         await ptb_app.initialize()
         await ptb_app.start()
         await ptb_app.bot.set_webhook(
@@ -2019,11 +2057,28 @@ def main():
             drop_pending_updates=True,
             allowed_updates=Update.ALL_TYPES,
         )
+        info = await ptb_app.bot.get_webhook_info()
+        logger.info(
+            "Webhook registered: url=%s pending=%s ip_address=%s",
+            getattr(info, "url", None),
+            getattr(info, "pending_update_count", None),
+            getattr(info, "ip_address", None),
+        )
+        aio_app["webhook_watchdog"] = asyncio.create_task(log_webhook_info())
 
     async def on_cleanup(_app: web.Application) -> None:
-        # WICHTIG:
-        # Nicht den Webhook löschen. Bei Render-Deploys würde die alte Instanz
-        # sonst den frisch gesetzten Webhook der neuen Instanz wieder entfernen.
+        watchdog = aio_app.get("webhook_watchdog")
+        if watchdog:
+            watchdog.cancel()
+            try:
+                await watchdog
+            except asyncio.CancelledError:
+                pass
+
+        # Wichtig für Render-Deploys:
+        # Den Webhook hier NICHT löschen.
+        # Sonst kann die alte Instanz beim Shutdown den frisch gesetzten
+        # Webhook der neuen Instanz wieder entfernen.
         await ptb_app.stop()
         await ptb_app.shutdown()
 
