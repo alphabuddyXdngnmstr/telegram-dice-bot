@@ -1925,99 +1925,307 @@ async def rolldungeon_cancel_cmd(update: Update, context: ContextTypes.DEFAULT_T
 
 
 # -----------------------
-# MONSTERREAKTION
+# MONSTERREAKTION / MORAL
 # -----------------------
+
+REAK_NATUR, REAK_DISZIPLIN, REAK_ZIEL, REAK_HP, REAK_LAGE, REAK_AUSLOESER = range(6)
+
+REACTION_NATURE_OPTIONS = ["friedlich", "kompromissbereit", "neutral", "territorial", "räuberisch", "boshaft", "fanatisch"]
+REACTION_DISCIPLINE_OPTIONS = ["feige", "normal", "brutal", "fanatisch", "geistlos"]
+REACTION_GOAL_OPTIONS = ["warnen", "vertreiben", "beute machen", "töten", "bewachen"]
+REACTION_HP_OPTIONS = ["76-100%", "51-75%", "26-50%", "11-25%", "1-10%"]
+REACTION_SITUATION_OPTIONS = ["überlegen", "ausgeglichen", "unterlegen", "eingekesselt"]
+REACTION_TRIGGER_OPTIONS = ["gruppe freundlich", "gruppe vorsichtig", "gruppe provoziert", "gruppe hat schon angegriffen", "anführer tot / halbe gruppe gefallen"]
+
+NATURE_MOD = {
+    "friedlich": 4,
+    "kompromissbereit": 2,
+    "neutral": 0,
+    "territorial": -1,
+    "räuberisch": -2,
+    "raeuberisch": -2,
+    "boshaft": -4,
+    "fanatisch": -6,
+}
+HP_CONTACT_MOD = {
+    "76-100%": 0,
+    "51-75%": 0,
+    "26-50%": 1,
+    "11-25%": 3,
+    "1-10%": 5,
+}
+SITUATION_CONTACT_MOD = {
+    "überlegen": -2,
+    "ueberlegen": -2,
+    "ausgeglichen": 0,
+    "unterlegen": 2,
+    "eingekesselt": -1,
+}
+TRIGGER_CONTACT_MOD = {
+    "gruppe freundlich": 2,
+    "gruppe vorsichtig": 1,
+    "gruppe provoziert": -2,
+    "gruppe hat schon angegriffen": -4,
+    "anführer tot / halbe gruppe gefallen": 0,
+    "anfuhrer tot / halbe gruppe gefallen": 0,
+}
+DISCIPLINE_WILL = {
+    "feige": 2,
+    "normal": 4,
+    "brutal": 6,
+    "fanatisch": 8,
+    "geistlos": 10,
+}
+SITUATION_WILL_MOD = {
+    "überlegen": 2,
+    "ueberlegen": 2,
+    "ausgeglichen": 0,
+    "unterlegen": -2,
+    "eingekesselt": -2,
+}
+GOAL_WILL_MOD = {
+    "warnen": 0,
+    "vertreiben": 1,
+    "beute machen": 0,
+    "töten": 1,
+    "bewachen": 2,
+}
+HP_WILL_MOD = {
+    "76-100%": 0,
+    "51-75%": 0,
+    "26-50%": -1,
+    "11-25%": -3,
+    "1-10%": -5,
+}
+
 
 def _roll_2d6() -> Tuple[int, List[int]]:
     dice = [random.randint(1, 6), random.randint(1, 6)]
     return sum(dice), dice
 
+
 def _fmt_2d6(total: int, dice: List[int]) -> str:
     return f"{total} ({dice[0]}+{dice[1]})"
 
-def generate_reaction_result() -> str:
-    lines: List[str] = ["👁️ Monsterreaktion", ""]
 
-    first_total, first_dice = _roll_2d6()
-    lines.append(f"Erster Wurf: {_fmt_2d6(first_total, first_dice)}")
+def _normalize_choice(value: str) -> str:
+    return (value or "").strip().lower().replace("ö", "o").replace("ü", "u").replace("ä", "a")
 
-    if first_total == 2:
-        lines.append("Ergebnis: Sofortiger Angriff")
-        return "\n".join(lines)
 
-    if 3 <= first_total <= 5:
-        lines.append("Ergebnis: Möglicher Angriff")
-        second_total, second_dice = _roll_2d6()
-        lines.append(f"Folgewurf: {_fmt_2d6(second_total, second_dice)}")
+def _canon_choice(value: str) -> str:
+    raw = (value or "").strip().lower()
+    mapping = {
+        "raeuberisch": "räuberisch",
+        "ueberlegen": "überlegen",
+        "anfuhrer tot / halbe gruppe gefallen": "anführer tot / halbe gruppe gefallen",
+    }
+    return mapping.get(raw, raw)
 
-        if 2 <= second_total <= 8:
-            lines.append("Endergebnis: Angriff")
-            return "\n".join(lines)
 
-        lines.append("Zwischenergebnis: Unsicher")
-        third_total, third_dice = _roll_2d6()
-        lines.append(f"Folgewurf: {_fmt_2d6(third_total, third_dice)}")
+def _parse_choice(text_value: str, options: List[str]) -> Optional[str]:
+    raw = (text_value or "").strip().lower()
+    if raw in options:
+        return raw
+    nr = re.match(r"^(\d+)", raw)
+    if nr:
+        idx = int(nr.group(1)) - 1
+        if 0 <= idx < len(options):
+            return options[idx]
+    normalized_options = {_normalize_choice(opt): opt for opt in options}
+    return normalized_options.get(_normalize_choice(raw))
 
-        if 2 <= third_total <= 5:
-            lines.append("Endergebnis: Angriff")
-        elif 6 <= third_total <= 8:
-            lines.append("Endergebnis: Geht weiter")
-        else:
-            lines.append("Endergebnis: Freundlich")
-        return "\n".join(lines)
 
-    if 6 <= first_total <= 8:
-        lines.append("Ergebnis: Unsicher")
-        second_total, second_dice = _roll_2d6()
-        lines.append(f"Folgewurf: {_fmt_2d6(second_total, second_dice)}")
+def _special_low_hp_result(nature: str, discipline: str) -> Tuple[str, int]:
+    if discipline in ("fanatisch", "geistlos"):
+        return ("Kämpft weiter (Sonderregel für Fanatiker/Untote/Konstrukte)", 10)
+    roll = random.randint(1, 10)
+    if nature in ("friedlich", "neutral", "territorial", "räuberisch"):
+        if roll <= 8:
+            return (f"Flucht (W10={roll})", roll)
+        if roll == 9:
+            return (f"Defensive Gegenwehr (W10={roll})", roll)
+        return (f"Bleibt im Kampf (W10={roll})", roll)
+    if nature in ("kompromissbereit",):
+        if roll <= 5:
+            return (f"Flucht (W10={roll})", roll)
+        if roll <= 8:
+            return (f"Aufgabe / Verhandlung (W10={roll})", roll)
+        return (f"Kämpft weiter (W10={roll})", roll)
+    # boshafte Monster
+    if roll <= 4:
+        return (f"Flucht (W10={roll})", roll)
+    if roll <= 6:
+        return (f"Rückzug mit Gegenwehr (W10={roll})", roll)
+    return (f"Kämpft weiter (W10={roll})", roll)
 
-        if 2 <= second_total <= 5:
-            lines.append("Endergebnis: Angriff")
-            return "\n".join(lines)
 
-        if 6 <= second_total <= 8:
-            lines.append("Zwischenergebnis: Verhandeln")
-            third_total, third_dice = _roll_2d6()
-            lines.append(f"Folgewurf: {_fmt_2d6(third_total, third_dice)}")
+def generate_reaction_report(data: Dict[str, str]) -> str:
+    nature = _canon_choice(data["nature"])
+    discipline = _canon_choice(data["discipline"])
+    goal = _canon_choice(data["goal"])
+    hp = data["hp"]
+    situation = _canon_choice(data["situation"])
+    trigger = _canon_choice(data["trigger"])
 
-            if 2 <= third_total <= 5:
-                lines.append("Endergebnis: Angriff")
-            elif 6 <= third_total <= 8:
-                lines.append("Endergebnis: Geht weiter")
-            else:
-                lines.append("Endergebnis: Freundlich")
-            return "\n".join(lines)
+    contact_total, contact_dice = _roll_2d6()
+    contact_mod = (
+        NATURE_MOD.get(nature, 0)
+        + HP_CONTACT_MOD.get(hp, 0)
+        + SITUATION_CONTACT_MOD.get(situation, 0)
+        + TRIGGER_CONTACT_MOD.get(trigger, 0)
+    )
+    contact_score = contact_total + contact_mod
 
-        lines.append("Endergebnis: Freundlich")
-        return "\n".join(lines)
+    if contact_score <= 4:
+        contact_result = "Angriff"
+    elif contact_score <= 7:
+        contact_result = "Drohen / Vertreiben"
+    elif contact_score <= 10:
+        contact_result = "Beobachten / Abwarten"
+    elif contact_score <= 13:
+        contact_result = "Reden / Deal möglich"
+    else:
+        contact_result = "Freundlich / lässt passieren / zieht ab"
 
-    if 9 <= first_total <= 11:
-        lines.append("Ergebnis: Möglicherweise freundlich")
-        second_total, second_dice = _roll_2d6()
-        lines.append(f"Folgewurf: {_fmt_2d6(second_total, second_dice)}")
+    will_base = DISCIPLINE_WILL.get(discipline, 4)
+    will_mod = (
+        SITUATION_WILL_MOD.get(situation, 0)
+        + GOAL_WILL_MOD.get(goal, 0)
+        + HP_WILL_MOD.get(hp, 0)
+    )
+    if trigger == "anführer tot / halbe gruppe gefallen":
+        will_mod -= 4
+    elif trigger == "gruppe hat schon angegriffen":
+        will_mod += 0
+    elif trigger == "gruppe provoziert":
+        will_mod += 0
 
-        if 2 <= second_total <= 5:
-            lines.append("Zwischenergebnis: Unsicher")
-            third_total, third_dice = _roll_2d6()
-            lines.append(f"Folgewurf: {_fmt_2d6(third_total, third_dice)}")
+    will_score = will_base + will_mod
+    special_low_hp_line = None
+    if hp == "1-10%":
+        special_low_hp_line, _ = _special_low_hp_result(nature, discipline)
 
-            if 2 <= third_total <= 5:
-                lines.append("Endergebnis: Angriff")
-            elif 6 <= third_total <= 8:
-                lines.append("Endergebnis: Geht weiter")
-            else:
-                lines.append("Endergebnis: Freundlich")
-            return "\n".join(lines)
+    if special_low_hp_line:
+        morale_result = special_low_hp_line
+    elif will_score <= 2:
+        morale_result = "Panik, Flucht oder Aufgabe"
+    elif will_score <= 5:
+        morale_result = "Rückzug / Verhandlung"
+    elif will_score <= 8:
+        morale_result = "Kämpft defensiv weiter"
+    else:
+        morale_result = "Kämpft voll weiter"
 
-        lines.append("Endergebnis: Freundlich")
-        return "\n".join(lines)
-
-    lines.append("Ergebnis: Sofort freundlich")
+    lines = [
+        "👁️ Reaktions- und Moralwurf",
+        "",
+        "Eingaben:",
+        f"• Grundnatur: {nature}",
+        f"• Disziplin: {discipline}",
+        f"• Ziel: {goal}",
+        f"• HP-Status: {hp}",
+        f"• Lage: {situation}",
+        f"• Auslöser: {trigger}",
+        "",
+        "Erstkontakt:",
+        f"• 2W6: {_fmt_2d6(contact_total, contact_dice)}",
+        f"• Modifikator: {contact_mod:+d}",
+        f"• Reaktionswert: {contact_score}",
+        f"• Ergebnis: {contact_result}",
+        "",
+        "Kampf-Moral:",
+        f"• Kampfwille: {will_base} {will_mod:+d} = {will_score}",
+        f"• Ergebnis: {morale_result}",
+    ]
+    if hp == "1-10%":
+        lines.append("")
+        lines.append("Sonderregel 1–10% HP aktiv.")
     return "\n".join(lines)
 
-async def reaktion(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(generate_reaction_result())
 
+def _reaction_prompt(step: int) -> str:
+    prompts = {
+        REAK_NATUR: "👁️ /reaktion\n\n1. Grundnatur?\n1 friedlich\n2 kompromissbereit\n3 neutral\n4 territorial\n5 räuberisch\n6 boshaft\n7 fanatisch",
+        REAK_DISZIPLIN: "2. Disziplin?\n1 feige\n2 normal\n3 brutal\n4 fanatisch\n5 geistlos",
+        REAK_ZIEL: "3. Aktuelles Ziel?\n1 warnen\n2 vertreiben\n3 Beute machen\n4 töten\n5 bewachen",
+        REAK_HP: "4. HP-Status?\n1 76-100%\n2 51-75%\n3 26-50%\n4 11-25%\n5 1-10%",
+        REAK_LAGE: "5. Lage?\n1 überlegen\n2 ausgeglichen\n3 unterlegen\n4 eingekesselt",
+        REAK_AUSLOESER: "6. Auslöser?\n1 Gruppe freundlich\n2 Gruppe vorsichtig\n3 Gruppe provoziert\n4 Gruppe hat schon angegriffen\n5 Anführer tot / halbe Gruppe gefallen",
+    }
+    return prompts[step] + "\n\nAntworte einfach mit Zahl oder Wort. /cancel bricht ab."
+
+async def reaktion_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data["reaktion"] = {}
+    await update.message.reply_text(_reaction_prompt(REAK_NATUR))
+    return REAK_NATUR
+
+
+async def reaktion_step_natur(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    choice = _parse_choice(update.message.text, REACTION_NATURE_OPTIONS)
+    if not choice:
+        await update.message.reply_text("Bitte wähle eine gültige Grundnatur.\n\n" + _reaction_prompt(REAK_NATUR))
+        return REAK_NATUR
+    context.user_data["reaktion"]["nature"] = choice
+    await update.message.reply_text(_reaction_prompt(REAK_DISZIPLIN))
+    return REAK_DISZIPLIN
+
+
+async def reaktion_step_disziplin(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    choice = _parse_choice(update.message.text, REACTION_DISCIPLINE_OPTIONS)
+    if not choice:
+        await update.message.reply_text("Bitte wähle eine gültige Disziplin.\n\n" + _reaction_prompt(REAK_DISZIPLIN))
+        return REAK_DISZIPLIN
+    context.user_data["reaktion"]["discipline"] = choice
+    await update.message.reply_text(_reaction_prompt(REAK_ZIEL))
+    return REAK_ZIEL
+
+
+async def reaktion_step_ziel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    choice = _parse_choice(update.message.text, REACTION_GOAL_OPTIONS)
+    if not choice:
+        await update.message.reply_text("Bitte wähle ein gültiges Ziel.\n\n" + _reaction_prompt(REAK_ZIEL))
+        return REAK_ZIEL
+    context.user_data["reaktion"]["goal"] = choice
+    await update.message.reply_text(_reaction_prompt(REAK_HP))
+    return REAK_HP
+
+
+async def reaktion_step_hp(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    choice = _parse_choice(update.message.text, REACTION_HP_OPTIONS)
+    if not choice:
+        await update.message.reply_text("Bitte wähle einen gültigen HP-Status.\n\n" + _reaction_prompt(REAK_HP))
+        return REAK_HP
+    context.user_data["reaktion"]["hp"] = choice
+    await update.message.reply_text(_reaction_prompt(REAK_LAGE))
+    return REAK_LAGE
+
+
+async def reaktion_step_lage(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    choice = _parse_choice(update.message.text, REACTION_SITUATION_OPTIONS)
+    if not choice:
+        await update.message.reply_text("Bitte wähle eine gültige Lage.\n\n" + _reaction_prompt(REAK_LAGE))
+        return REAK_LAGE
+    context.user_data["reaktion"]["situation"] = choice
+    await update.message.reply_text(_reaction_prompt(REAK_AUSLOESER))
+    return REAK_AUSLOESER
+
+
+async def reaktion_step_ausloeser(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    choice = _parse_choice(update.message.text, REACTION_TRIGGER_OPTIONS)
+    if not choice:
+        await update.message.reply_text("Bitte wähle einen gültigen Auslöser.\n\n" + _reaction_prompt(REAK_AUSLOESER))
+        return REAK_AUSLOESER
+    context.user_data["reaktion"]["trigger"] = choice
+    report = generate_reaction_report(context.user_data["reaktion"])
+    context.user_data.pop("reaktion", None)
+    await update.message.reply_text(report)
+    return ConversationHandler.END
+
+
+async def reaktion_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data.pop("reaktion", None)
+    await update.message.reply_text("/reaktion abgebrochen 🙂")
+    return ConversationHandler.END
 
 # -----------------------
 # HEALTH / PING (für FastCron)
@@ -2036,7 +2244,7 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/help  diese Hilfe\n"
         "/roll <Ausdruck>  Würfeln, z.B. /roll 1d6 oder /roll 2d20+3 oder /roll 1d20+2d6+3 (auch 1w6)\n"
         "/rollchance  Skillwurf plus SG und Belohnung\n"
-        "/reaktion  würfelt eine Monsterreaktion nach 2W6\n"
+        "/reaktion  fragt 6 Punkte ab und gibt Erstkontakt + Kampf-Moral aus\n"
         "/rollhunt  Jagdwurf mit Mod Auswahl\n"
         "/rollwaldkarte  zieht eine Waldkarte (Skillchance, Ruhe, Entdeckung, Encounter, Hort, NPC)\n"
         "/rolldungeon  Dungeon Generator mit Spoiler Räumen\n"
@@ -2075,7 +2283,20 @@ def main():
 
     ptb_app.add_handler(CommandHandler("roll", roll))
     ptb_app.add_handler(CommandHandler("rollchance", rollchance))
-    ptb_app.add_handler(CommandHandler("reaktion", reaktion))
+    reaction_conv = ConversationHandler(
+        entry_points=[CommandHandler("reaktion", reaktion_start)],
+        states={
+            REAK_NATUR: [MessageHandler(filters.TEXT & ~filters.COMMAND, reaktion_step_natur)],
+            REAK_DISZIPLIN: [MessageHandler(filters.TEXT & ~filters.COMMAND, reaktion_step_disziplin)],
+            REAK_ZIEL: [MessageHandler(filters.TEXT & ~filters.COMMAND, reaktion_step_ziel)],
+            REAK_HP: [MessageHandler(filters.TEXT & ~filters.COMMAND, reaktion_step_hp)],
+            REAK_LAGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, reaktion_step_lage)],
+            REAK_AUSLOESER: [MessageHandler(filters.TEXT & ~filters.COMMAND, reaktion_step_ausloeser)],
+        },
+        fallbacks=[CommandHandler("cancel", reaktion_cancel)],
+        allow_reentry=True,
+    )
+    ptb_app.add_handler(reaction_conv)
 
     ptb_app.add_handler(CommandHandler("rollhunt", rollhunt))
     ptb_app.add_handler(CallbackQueryHandler(rollhunt_pick_mod, pattern=r"^hunt_mod:"))
