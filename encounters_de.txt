@@ -147,8 +147,6 @@ Eine Halbork-Druidin, die sich um einen verwundeten Eisbären kümmert. Wenn die
 2W4 Eis-Mephiten
 
 
-Arktisbegegnungen (Stufe 11–16)
-W100 – Begegnung
 
 36–40
 2W6 + 1 Zombies an Bord einer Galeone, die im Eis feststeckt. Genug Rationen für 2W20 Tage können aus dem Schiff geborgen werden, wenn es durchsucht wird.
@@ -786,7 +784,7 @@ Ein Kreis aus stehenden Steinen. Zwischen den Steinen ist es windstill, egal wie
 94
 1W3 Gnoll-Reißzähne von Yeenoghu oder 1 Ork-Auge des Grumsh mit 2W4 + 1 Orks
 
-98–96
+95–96
 1 Triceratops
 
 97
@@ -1210,7 +1208,7 @@ Eine Ansammlung Guano von einem sehr großen Vogel
 90
 1W3 Perytone oder 1W4 Pegasi
 
-97–96
+91–96
 1W3 Trolle
 
 97–99
@@ -1914,7 +1912,7 @@ W100 Begegnung
 11
 1 Spion
 
-11 bis 13
+12 bis 13
 1W8 + 1 Tempeldiener
 
 14
@@ -2752,188 +2750,6 @@ Der Klang von Trommeln, die einige Kilometer entfernt geschlagen werden.
 
 97 bis 00
 1 uralter schwarzer Drache
-
-
-
-1W12 Kuo-toa
-
-33
-1 Rostmonster
-
-34 bis 35
-Eine mit Geröll übersäte Passage, die anscheinend erst kürzlich freigeräumt wurde.
-
-36 bis 37
-1W8 + 1 Riesenfledermäuse
-
-38 bis 39
-3W6 Kobolde
-
-40 bis 41
-2W4 Grimlocks
-
-42 bis 43
-1W4 + 3 Schwärme von Fledermäusen
-
-44
-Zwergen-Goldgräber (Kundschafter) auf der Suche nach Gold.
-
-45
-1 Aaskriecher oder 1 Gallertwürfel
-
-46
-1W6 Düstermental oder 2W4 Falldorne
-
-47
-1 Höhlenhund
-
-48
-1W3 Schreckgespenster
-
-49
-1W4 Grottenschrate
-
-50
-1W10 + 5 Geflügelte Kobolde
-
-51
-1W4 Feuerschlangen
-
-52
-2W8 + 1 Troglodyten
-
-53
-1W6 Riesenspinnen
-
-54
-3W6 Kuo-toa
-
-55
-2W4 Goblin-Boss mit 2W4 Goblins
-
-56
-2W4 Grimlocks
-
-57
-1 Ockergallerte
-
-58
-2W10 Riesentausendfüßler
-
-59
-1 Nothic oder 1 Riesenkröte
-
-60
-1W4 Myconid-Erwachsene mit 5W4 Myconid-Sprossen
-
-61
-1 Minotaurus-Skelett oder 1 Minotaurus
-
-62
-3W6 Drow
-
-63
-1 Mimike oder 1 Doppelgänger
-
-64
-1W6 + 3 Hobgoblins
-
-65
-1 Intellektverschlinger oder 1 Beobachter
-
-66
-1W8 + 1 Orks
-
-67 bis 68
-Ein leises Klopfen, das aus dem Inneren einer nahen Wand kommt.
-
-69
-1 Plapperndes Hundertmaul oder 1 Wassergeist
-
-70
-1W12 Gassporen
-
-71
-1 Riesenwürgeschlange
-
-72
-1W10 Schatten
-
-73
-1W3 Grells
-
-74
-1W4 Gruftschrecken
-
-75
-1W8 + 1 Quaggoth-Sporendiener
-
-76
-1W2 Gargylen
-1W4 Oger oder 1W3 Ettins
-
-77
-1W4 Oger oder 1W3 Ettins
-
-78
-1W4 Zwergen-Forscher (Veteranen)
-
-79 bis 80
-Ein Bergarbeiterin verlassenes Lager, in welchem Blut und die Inhalte von 1W3 Gewölbeforscher-Ausrüstungen verstreut sind.
-
-81
-1 Chuul oder 1 Salamander
-
-82
-1W4 Phasenspinnen oder 1W3 Hakenschrecken
-
-83
-5W4 Duergar
-
-84
-1 Geist oder 1 Flammenschädel oder 1 Todesalb
-
-85
-1 Druide mit 1 Eisbar (Höhlenbär)
-
-86
-1 Hobgoblin-Hauptmann mit 1W4 Halbogern und 2W10 Hobgoblins
-
-87
-1 Erdelementar oder 1 Schwarzer Blob
-
-88
-1 Kuo-toa-Monitor mit 1W8 + 1 Kuo-toa-Geißeln
-
-89
-1 Quaggoth-Thonot mit 1W3 Quaggoths
-
-90
-1 Betrachter-Zombie oder 1 Knochenraga
-
-91
-1 Ork – Auge des Gruumsh mit 1W4 Orgs und 2W8 Orks
-
-92
-1W4 Grule mit 1W10 Ghulen
-
-93 bis 95
-Eine übelriechende Pfütze, wo schleimiges Wasser von der Decke tropft.
-
-96
-1 Otyugh oder 1 Seiler
-
-97
-1 Vampirbrut
-
-98
-1 Chimäre
-
-99
-1 Gedankenschinder
-
-00
-1 Geisternaga
 
 
 Unterreichbegegnungen (Stufe 1–4)
@@ -5056,7 +4872,3 @@ Ein alter Wegweiser, der nur auf einen Ort deutet, genannt Pazar
 
 00
 1W4 ausgewachsene Messingdrachen
-
-
-
-Hier musst du schauen, manchmal steht zb 86 bis 90 oder 86-90 damit ist das selbe gemeint. Es geht ja um die würfelwürfe und damit ist dann der wert von 86-90 dann gemeint.
