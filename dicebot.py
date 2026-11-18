@@ -9,7 +9,7 @@ from typing import Optional, Tuple, List, Dict
 
 from aiohttp import web
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.error import RetryAfter, TelegramError
+from telegram.error import BadRequest, RetryAfter, TelegramError
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -28,6 +28,8 @@ from kreaturen import (
     split_message,
     lookup_spell,
     MONSTERS as SRD_MONSTERS,
+    PARSE_MODE,
+    strip_html,
 )
 from gegenstaende import (
     init_gegenstaende,
@@ -747,15 +749,32 @@ def roll_inline_w_dice(text: str) -> Tuple[str, List[str]]:
 # -----------------------
 
 async def _send_text_safe(context: ContextTypes.DEFAULT_TYPE, chat_id: int, text: str) -> None:
-    for attempt in range(3):
+    """Schickt formatierten Text (HTML). Lehnt Telegram die Formatierung ab, geht er ohne raus."""
+    html_mode = True
+    for attempt in range(4):
         try:
-            await context.bot.send_message(chat_id=chat_id, text=text)
+            if html_mode:
+                await context.bot.send_message(chat_id=chat_id, text=text, parse_mode=PARSE_MODE)
+            else:
+                await context.bot.send_message(chat_id=chat_id, text=strip_html(text))
             return
         except RetryAfter as e:
             await asyncio.sleep(float(getattr(e, "retry_after", 3)) + 0.5)
-        except TelegramError as e:
-            print(f"Kreaturen-Nachricht fehlgeschlagen: {e}")
+        except BadRequest as e:
+            if html_mode and "parse" in str(e).lower():
+                html_mode = False
+                continue
+            print(f"Nachricht fehlgeschlagen: {e}")
             return
+        except TelegramError as e:
+            print(f"Nachricht fehlgeschlagen: {e}")
+            return
+
+async def _reply_html(update: Update, text: str) -> None:
+    try:
+        await update.message.reply_text(text, parse_mode=PARSE_MODE)
+    except BadRequest:
+        await update.message.reply_text(strip_html(text))
 
 async def send_treasure_items(context: ContextTypes.DEFAULT_TYPE, chat_id: int, picked_items: List[dict]) -> None:
     """Schickt nach dem Schatz die Beschreibungen der magischen Gegenstände und Schriftrollen."""
@@ -926,15 +945,15 @@ async def kreatur_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(f"Keine SRD-Kreatur gefunden für: {name}")
         return
     for part in split_message(format_monster(m)):
-        await update.message.reply_text(part)
+        await _reply_html(update, part)
         await asyncio.sleep(0.3)
-    from kreaturen import pack_messages
+    from kreaturen import pack_messages, esc
     blocks = [format_spell(s) for s in (lookup_spell(sp) for sp in (m.get("spells") or [])) if s]
     if blocks:
         packed = pack_messages(blocks)
-        packed[0] = f"📜 Zauber: {m['name']}\n\n{packed[0]}"
+        packed[0] = f"📚 <b>Zauber von {esc(m['name'])}</b>\n\n{packed[0]}"
         for part in packed:
-            await update.message.reply_text(part)
+            await _reply_html(update, part)
             await asyncio.sleep(0.3)
 
 async def gegenstand_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -955,7 +974,7 @@ async def gegenstand_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(f"Kein SRD-Gegenstand gefunden für: {name}")
             return
     for part in split_message(format_item(item, 1, [item["name"]])):
-        await update.message.reply_text(part)
+        await _reply_html(update, part)
         await asyncio.sleep(0.3)
 
 async def zauber_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -977,7 +996,7 @@ async def zauber_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(f"Kein SRD-Zauber gefunden für: {name}")
             return
     for part in split_message(format_spell(s)):
-        await update.message.reply_text(part)
+        await _reply_html(update, part)
 
 
 # -----------------------

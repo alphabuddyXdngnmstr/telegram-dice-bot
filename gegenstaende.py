@@ -146,48 +146,56 @@ _FIGUR_KEYS = {
 }
 
 
-def _item_paragraphs(item: dict, table_name: str) -> List[str]:
-    paras = K.text_paragraphs(item.get("text") or "")
-    if item["name"] == "Figur der wundersamen Kraft":
-        # nur die erwürfelte Figur zeigen (plus allgemeine Regeln am Anfang)
-        low = table_name.lower()
-        key = next((v for k, v in _FIGUR_KEYS.items() if k in low), None)
-        named = re.compile(r"^[A-ZÄÖÜ][\wäöüß-]+(?: [\wäöüß-]+)? \((?:selten|sehr selten|ungewöhnlich)\):")
-        first_named = next((i for i, p in enumerate(paras) if named.match(p)), None)
-        if key and first_named is not None:
-            picked, on = [], False
-            for p in paras[first_named:]:
-                if named.match(p):
-                    on = p.startswith(key)
-                if on:
-                    picked.append(p)
-            if picked:
-                return paras[:first_named] + picked
-    return paras
+def _figur_filter(item: dict, table_name: str) -> Optional[str]:
+    """Bei der Figur der wundersamen Kraft nur die erwürfelte Figur behalten (Text ohne HTML)."""
+    if item["name"] != "Figur der wundersamen Kraft":
+        return None
+    low = table_name.lower()
+    key = next((v for k, v in _FIGUR_KEYS.items() if k in low), None)
+    if not key:
+        return None
+    lines = [l for l in (item.get("text") or "").split("\n") if l.strip()]
+    named = re.compile(r"^[A-ZÄÖÜ][\wäöüß-]+(?: [\wäöüß-]+)? \((?:selten|sehr selten|ungewöhnlich)\):")
+    first = next((i for i, l in enumerate(lines) if named.match(l)), None)
+    if first is None:
+        return None
+    picked, on = [], False
+    for l in lines[first:]:
+        if named.match(l):
+            on = l.startswith(key)
+        if on:
+            picked.append(l)
+    return "\n".join(lines[:first] + picked) if picked else None
 
 
 def format_item(item: dict, count: int, labels: List[str]) -> str:
-    title = item["name"] if count <= 1 else f"{item['name']} ({count}×)"
-    paras = [title]
+    title = f"✨ <b>{K.esc(item['name'].upper())}</b>"
+    if count > 1:
+        title += f" ({count}×)"
+    head = [title]
+    if item.get("type"):
+        head.append(f"<i>{K.esc(item['type'])}</i>")
     differs = [l for l in labels if _norm(re.sub(r"\s*\(.*\)$", "", l)) != _norm(item["name"])]
     if differs:
         counts: Dict[str, int] = {}
         for l in labels:
             counts[l] = counts.get(l, 0) + 1
         if len(counts) == 1 and count <= 1:
-            paras.append("Im Schatz: " + labels[0])
+            note = labels[0]
         else:
-            paras.append("Im Schatz: " + ", ".join(f"{l} ({c}×)" for l, c in counts.items()))
-    if item.get("type"):
-        paras.append(item["type"])
-    paras.extend(_item_paragraphs(item, labels[0] if labels else ""))
+            note = ", ".join(f"{l} ({c}×)" for l, c in counts.items())
+        head.append(f"ℹ️ <i>Im Schatz: {K.esc(note)}</i>")
+    paras = ["\n".join(head)]
+    text = _figur_filter(item, labels[0] if labels else "") or item.get("text") or ""
+    paras.extend(K.html_paragraphs(text))
     return "\n\n".join(paras)
 
 
 def format_scroll(spell: dict, level: int) -> str:
     dc, atk = SCROLL_DC.get(level, (13, 5))
     grad = "Zaubertrick" if level == 0 else f"Zaubergrad {level}"
-    head = f"📜 Zauberschriftrolle: {spell['name']}\n\n{grad} · Rettungswurf-SG {dc} · Angriffsbonus +{atk}"
+    head = (f"📜 <b>ZAUBERSCHRIFTROLLE: {K.esc(spell['name'].upper())}</b>\n"
+            f"<b>{grad}</b> · Rettungswurf-SG <b>{dc}</b> · Angriffsbonus <b>+{atk}</b>")
     return head + "\n\n" + K.format_spell(spell, with_name=False)
 
 
@@ -221,15 +229,15 @@ def build_treasure_messages(picked: List[dict]) -> List[str]:
         blocks = [format_scroll(s, lv) for s, lv in scrolls]
         if rules:
             # Regeltext ohne die Tabelle, SG und Angriffsbonus stehen schon bei jeder Rolle
-            rule_paras = [p for p in K.text_paragraphs(rules["text"]) if "\n" not in p]
-            blocks.append("So funktionieren Zauberschriftrollen\n\n" + "\n\n".join(rule_paras))
+            rule_paras = [p for p in K.html_paragraphs(rules["text"]) if "\n" not in p]
+            blocks.append("ℹ️ <b>So funktionieren Zauberschriftrollen</b>\n\n" + "\n\n".join(rule_paras))
         messages.extend(K.pack_messages(blocks))
 
     if missing:
         uniq = list(dict.fromkeys(missing))
         messages.append(
-            "Nicht im SRD enthalten, bitte im Spielleiterhandbuch nachschlagen:\n"
-            + "\n".join(f"• {m}" for m in uniq)
+            "📕 <b>Nicht im SRD enthalten</b>\n<i>Bitte im Spielleiterhandbuch nachschlagen:</i>\n"
+            + "\n".join(f"• {K.esc(m)}" for m in uniq)
         )
 
     return messages

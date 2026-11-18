@@ -13,6 +13,7 @@ Die Erkennung läuft auf dem bereits ausgewürfelten Encountertext:
 werden absichtlich nicht gezählt, Texte ohne Kreatur bleiben reiner Text.
 """
 
+import html
 import json
 import re
 from pathlib import Path
@@ -183,19 +184,84 @@ def find_creatures(raw_text: str, rolled_text: str) -> List[dict]:
 
 
 # -----------------------------------------------------------------
-# Formatierung (Absatzlogik wie in Kreaturen.txt)
+# Formatierung (Absatzlogik wie in Kreaturen.txt, als Telegram-HTML)
 # -----------------------------------------------------------------
+
+PARSE_MODE = "HTML"
+
+TYPE_EMOJI = [
+    ("Schwarm", "🐾"), ("Tier", "🐾"), ("Drache", "🐉"), ("Humanoide", "🧑"), ("Monstrosität", "👾"),
+    ("Unhold", "👹"), ("Untoter", "💀"), ("Elementar", "🔥"), ("Riese", "🗿"), ("Konstrukt", "⚙️"),
+    ("Pflanze", "🌿"), ("celestisches Wesen", "😇"), ("Feenwesen", "🧚"), ("Aberration", "🐙"),
+    ("Schlick", "🦠"),
+]
 
 _LABEL_BLOCKS = [
     "Rettungswürfe", "Fertigkeiten", "Schadensanfälligkeiten", "Schadensresistenzen",
     "Schadensimmunitäten", "Zustandsimmunitäten",
 ]
 
+_ATTACK_WORDS = re.compile(
+    r"(Nah- oder Fernkampfwaffenangriff:|Nahkampfwaffenangriff:|Fernkampfwaffenangriff:|"
+    r"Nah- oder Fernkampfzauberangriff:|Nahkampfzauberangriff:|Fernkampfzauberangriff:|"
+    r"Treffer:|Fehlschlag:|Erfolg:)"
+)
+_TO_HIT = re.compile(r"([+−-]\d+)( auf Treffer)")
+_DAMAGE = re.compile(r"(\b\d+ \(\d+W\d+(?:\s*[+−-]\s*\d+)?\))")
+_DC = re.compile(r"\b(SG[- ]\d+)")
+_SPELL_LINE = re.compile(
+    r"^(Zaubertricks \(beliebig oft\)|\d\. Grad \(\d+ Pl[aä]tze?\)|\d\. Grad|Beliebig oft|"
+    r"Je \d+-mal täglich|\d+-mal täglich)(\s*:)"
+)
 
-def _entry_text(e: dict) -> str:
+
+def esc(s: str) -> str:
+    return html.escape(s or "", quote=False)
+
+
+def strip_html(s: str) -> str:
+    """Notfall: Text ohne Formatierung (falls Telegram das HTML ablehnt)."""
+    return html.unescape(re.sub(r"</?[a-z][^>]*>", "", s or ""))
+
+
+def type_emoji(mtype: str) -> str:
+    head = (mtype or "").split(",")[0]
+    for word, emo in TYPE_EMOJI:
+        if word in head:
+            return emo
+    return "🐲"
+
+
+_BARE_DICE = re.compile(r"(?<![(\w])(\d+W\d+(?:\s*[+−]\s*\d+)?)(?![\w)])")
+
+
+def _rich(text: str, dice: bool = False) -> str:
+    """Hebt Angriffsart, Bonus, Schaden und SG hervor. Erwartet unformatierten Text.
+    dice=True: zusätzlich freie Würfelangaben wie 8W6 (für Zauber und Gegenstände)."""
+    t = esc(text)
+    t = _ATTACK_WORDS.sub(r"<i>\1</i>", t)
+    t = _TO_HIT.sub(r"<b>\1</b>\2", t)
+    t = _DAMAGE.sub(r"<b>\1</b>", t)
+    t = _DC.sub(r"<b>\1</b>", t)
+    if dice:
+        t = _BARE_DICE.sub(r"<b>\1</b>", t)
+    return t
+
+
+def _entry_html(e: dict) -> str:
+    lines = (e.get("text") or "").split("\n")
+    out = []
+    for i, line in enumerate(lines):
+        m = _SPELL_LINE.match(line)
+        if m:
+            rest = line[m.end():].strip()
+            out.append(f"<i>{esc(m.group(1))}:</i> {esc(rest)}")
+        else:
+            out.append(_rich(line))
+    body = "\n".join(out).rstrip()
     if e.get("name"):
-        return f"{e['name']}: {e['text']}".rstrip()
-    return e["text"].rstrip()
+        return f"<b><i>{esc(e['name'])}.</i></b> {body}".rstrip()
+    return body
 
 
 def _labels_note(item: dict) -> List[str]:
@@ -206,10 +272,10 @@ def _labels_note(item: dict) -> List[str]:
     multi = len(item["labels"]) > 1
     if ersatz:
         names = ", ".join(_fmt_label(l, multi) for l in ersatz)
-        lines.append(f"Ersatz für: {names} – nicht im SRD")
+        lines.append(f"⚠️ <i>Ersatz für: {esc(names)} – nicht im SRD</i>")
     if other:
         names = ", ".join(_fmt_label(l, multi) for l in other)
-        lines.append(f"Im Encounter: {names}")
+        lines.append(f"ℹ️ <i>Im Encounter: {esc(names)}</i>")
     return lines
 
 
@@ -224,56 +290,62 @@ def _same_forms(srd: str) -> set:
 def format_monster(m: dict, count: Optional[int] = None, notes: Optional[List[str]] = None) -> str:
     paras: List[str] = []
 
-    title = m["name"] if count is None else f"{m['name']} ({count}×)"
-    paras.append(title)
+    title = f"{type_emoji(m['type'])} <b>{esc(m['name'].upper())}</b>"
+    if count is not None:
+        title += f" ({count}×)"
+    head = [title, f"<i>{esc(m['type'])}</i>"]
     if notes:
-        paras.append("\n".join(notes))
-
-    paras.append(m["type"])
+        head.extend(notes)
+    paras.append("\n".join(head))
 
     props = dict(m.get("props") or [])
 
     block = []
-    for lab in ("Rüstungsklasse", "Trefferpunkte", "Bewegungsrate"):
+    for lab, emo in (("Rüstungsklasse", "🛡️"), ("Trefferpunkte", "❤️"), ("Bewegungsrate", "👣")):
         if lab in props:
-            block.append(f"{lab} {props[lab]}".strip())
+            block.append(f"{emo} <b>{lab}</b> {esc(props[lab])}".rstrip())
     if block:
         paras.append("\n".join(block))
 
     if m.get("abilities"):
-        paras.append("\n".join(f"{k} {v}" for k, v in m["abilities"]))
+        rows = []
+        for k_, v in m["abilities"]:
+            score, _, mod = v.partition(" ")
+            rows.append(f"<code>{k_} {score:>2} {esc(mod)}</code>")
+        paras.append("\n".join(rows))
 
     for lab in _LABEL_BLOCKS:
         if lab in props and props[lab]:
-            paras.append(f"{lab}\n{props[lab]}")
+            paras.append(f"<b>{lab}</b>\n{esc(props[lab])}")
 
     if "Sinne" in props:
         sinne = props["Sinne"]
-        mm = re.search(r",?\s*(Passive Wahrnehmung \d+)\s*$", sinne)
+        mm = re.search(r",?\s*Passive Wahrnehmung (\d+)\s*$", sinne)
         if mm:
             rest = sinne[: mm.start()].strip().rstrip(",")
-            first = f"Sinne {rest}" if rest else "Sinne"
-            paras.append(f"{first}\n{mm.group(1)}")
+            first = f"👁️ <b>Sinne</b> {esc(rest)}".rstrip()
+            paras.append(f"{first}\n<b>Passive Wahrnehmung</b> {mm.group(1)}")
         else:
-            paras.append(f"Sinne {sinne}")
+            paras.append(f"👁️ <b>Sinne</b> {esc(sinne)}")
 
     if "Sprachen" in props:
-        paras.append(f"Sprachen\n{props['Sprachen'] or '–'}")
+        paras.append(f"🗣️ <b>Sprachen</b>\n{esc(props['Sprachen'] or '–')}")
 
     if "Herausforderungsgrad" in props:
-        paras.append(f"Herausforderungsgrad {props['Herausforderungsgrad']}")
+        paras.append(f"⭐ <b>Herausforderungsgrad</b> {esc(props['Herausforderungsgrad'])}")
 
     for e in m.get("traits") or []:
-        paras.append(_entry_text(e))
+        paras.append(_entry_html(e))
 
-    for key, title_ in (("actions", "Aktionen"), ("reactions", "Reaktionen"), ("legendary", "Legendäre Aktionen")):
+    for key, title_, emo in (("actions", "AKTIONEN", "⚔️"), ("reactions", "REAKTIONEN", "↩️"),
+                             ("legendary", "LEGENDÄRE AKTIONEN", "👑")):
         entries = m.get(key) or []
         if not entries:
             continue
         first, *rest = entries
-        paras.append(f"{title_}\n{_entry_text(first)}")
+        paras.append(f"{emo} <b>{title_}</b>\n{_entry_html(first)}")
         for e in rest:
-            paras.append(_entry_text(e))
+            paras.append(_entry_html(e))
 
     return "\n\n".join(p for p in paras if p)
 
@@ -282,7 +354,7 @@ TABLE_MARK = "\u0001"
 
 
 def text_paragraphs(text: str) -> List[str]:
-    """Absätze aus dem SRD-Text. Aufeinanderfolgende Tabellenzeilen werden zu einem Block."""
+    """Absätze aus dem SRD-Text (unformatiert). Tabellenzeilen und Aufzählungen werden je zu einem Block."""
     out: List[str] = []
     block: List[str] = []
     kind = None  # "table" oder "list"
@@ -310,13 +382,45 @@ def text_paragraphs(text: str) -> List[str]:
     return out
 
 
+_NAMED_SUB = re.compile(r"^([A-ZÄÖÜ][^:]{1,60}?):\s")
+
+
+def html_paragraphs(text: str) -> List[str]:
+    """Wie text_paragraphs, aber als HTML: benannte Abschnitte fett-kursiv, Werte hervorgehoben."""
+    out = []
+    for p in text_paragraphs(text):
+        if "\n" in p:  # Tabelle oder Liste
+            lines = p.split("\n")
+            if lines[0].startswith("• "):
+                out.append("\n".join(_rich(l, dice=True) for l in lines))
+            else:
+                out.append("\n".join([f"<b>{esc(lines[0])}</b>"] + [esc(l) for l in lines[1:]]))
+            continue
+        if p.startswith("Auf höheren Graden:"):
+            out.append("<b><i>Auf höheren Graden:</i></b> " + _rich(p[len("Auf höheren Graden:"):].strip(), dice=True))
+            continue
+        m = _NAMED_SUB.match(p)
+        if m and len(m.group(1).split()) <= 6:
+            out.append(f"<b><i>{esc(m.group(1))}:</i></b> " + _rich(p[m.end():], dice=True))
+            continue
+        out.append(_rich(p, dice=True))
+    return out
+
+
+SPELL_PROP_EMOJI = {"Zeitaufwand": "⏱️", "Reichweite": "🎯", "Komponenten": "🧪", "Wirkungsdauer": "⏳"}
+
+
 def format_spell(s: dict, with_name: bool = True) -> str:
-    paras = [s["name"], s["school"]] if with_name else [s["school"]]
-    props = "\n".join(f"{k}: {v}" for k, v in s.get("props") or [])
+    head = []
+    if with_name:
+        head.append(f"📜 <b>{esc(s['name'].upper())}</b>")
+    head.append(f"<i>{esc(s['school'])}</i>")
+    paras = ["\n".join(head)]
+    props = "\n".join(f"{SPELL_PROP_EMOJI.get(k_, '•')} <b>{esc(k_)}:</b> {esc(v)}" for k_, v in s.get("props") or [])
     if props:
         paras.append(props)
     # Jeder Absatz aus dem SRD wird ein eigener Absatz in Telegram
-    paras.extend(text_paragraphs(s.get("text") or ""))
+    paras.extend(html_paragraphs(s.get("text") or ""))
     return "\n\n".join(paras)
 
 
@@ -327,8 +431,11 @@ def split_message(text: str, limit: int = TG_LIMIT) -> List[str]:
     chunks: List[str] = []
     cur = ""
     for para in text.split("\n\n"):
+        if len(para) > limit:
+            # Notfall: sehr langer Absatz -> ohne Formatierung teilen, damit keine Tags zerbrechen
+            para = esc(strip_html(para))
         while len(para) > limit:
-            # Notfall: sehr langer Absatz, an Satzgrenze teilen
+            # an Satzgrenze teilen
             cut = para.rfind(". ", 0, limit)
             cut = cut + 1 if cut > 0 else limit
             piece, para = para[:cut].strip(), para[cut:].strip()
@@ -408,9 +515,9 @@ def build_creature_messages(raw_text: str, rolled_text: str) -> List[str]:
                     missing.append(sp)
             if not blocks and not missing:
                 continue
-            header = f"📜 Zauber: {owner}"
+            header = f"📚 <b>Zauber von {esc(owner)}</b>"
             if missing:
-                header += "\nNicht im SRD gefunden: " + ", ".join(missing)
+                header += "\n<i>Nicht im SRD gefunden: " + esc(", ".join(missing)) + "</i>"
             packed = pack_messages(blocks) if blocks else [""]
             packed[0] = f"{header}\n\n{packed[0]}".strip()
             messages.extend(packed)
