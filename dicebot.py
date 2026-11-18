@@ -29,6 +29,14 @@ from kreaturen import (
     lookup_spell,
     MONSTERS as SRD_MONSTERS,
 )
+from gegenstaende import (
+    init_gegenstaende,
+    roll_scroll,
+    build_treasure_messages,
+    resolve_item,
+    format_item,
+    ITEMS as SRD_ITEMS,
+)
 
 # -----------------------
 # DICE ROLL SYSTEM
@@ -749,6 +757,17 @@ async def _send_text_safe(context: ContextTypes.DEFAULT_TYPE, chat_id: int, text
             print(f"Kreaturen-Nachricht fehlgeschlagen: {e}")
             return
 
+async def send_treasure_items(context: ContextTypes.DEFAULT_TYPE, chat_id: int, picked_items: List[dict]) -> None:
+    """Schickt nach dem Schatz die Beschreibungen der magischen Gegenstände und Schriftrollen."""
+    try:
+        messages = build_treasure_messages(picked_items)
+    except Exception as e:
+        print(f"Gegenstands-Beschreibung fehlgeschlagen: {e}")
+        return
+    for text in messages:
+        await _send_text_safe(context, chat_id, text)
+        await asyncio.sleep(0.4)
+
 async def send_encounter_creatures(context: ContextTypes.DEFAULT_TYPE, chat_id: int, encounter_raw: str, encounter_rolled: str) -> None:
     """Schickt nach dem Encounter je Kreatur einen Wertekasten und danach die Zauber."""
     try:
@@ -917,6 +936,27 @@ async def kreatur_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for part in packed:
             await update.message.reply_text(part)
             await asyncio.sleep(0.3)
+
+async def gegenstand_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    name = " ".join(context.args).strip() if context.args else ""
+    if not name:
+        await update.message.reply_text("Nutze z.B. /gegenstand Zauberstab der Feuerbälle")
+        return
+    item = resolve_item(name)
+    if not item:
+        q = name.lower()
+        hits = sorted(v["name"] for k, v in SRD_ITEMS.items() if q in k)
+        if len(hits) == 1:
+            item = resolve_item(hits[0])
+        elif hits:
+            await update.message.reply_text("Mehrere Treffer:\n" + "\n".join(hits[:20]))
+            return
+        else:
+            await update.message.reply_text(f"Kein SRD-Gegenstand gefunden für: {name}")
+            return
+    for part in split_message(format_item(item, 1, [item["name"]])):
+        await update.message.reply_text(part)
+        await asyncio.sleep(0.3)
 
 async def zauber_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     name = " ".join(context.args).strip() if context.args else ""
@@ -1492,7 +1532,7 @@ MAGIC_ARMOR_W12 = {
     12: "Rüstung +3 Ritterrüstung",
 }
 
-def _pick_magic_item(table_letter: str) -> Tuple[int, str, List[str]]:
+def _pick_magic_item(table_letter: str, collected: Optional[List[dict]] = None) -> Tuple[int, str, List[str]]:
     r = random.randint(1, 100)
     entries = MAGIC_TABLES.get(table_letter)
     if not entries:
@@ -1514,6 +1554,16 @@ def _pick_magic_item(table_letter: str) -> Tuple[int, str, List[str]]:
         r12 = random.randint(1, 12)
         item = f"Magische Rüstung ({MAGIC_ARMOR_W12[r12]})"
         extra_details.append(f"W12 Rüstung: {r12} -> {MAGIC_ARMOR_W12[r12]}")
+
+    info = {"name": item, "spell": None, "level": None}
+    scroll = roll_scroll(item)
+    if scroll:
+        item, spell, level = scroll
+        info = {"name": item, "spell": spell, "level": level}
+        extra_details.append(f"Zauber der Schriftrolle zufällig aus dem SRD: {spell['name']}")
+
+    if collected is not None:
+        collected.append(info)
 
     return r, item, extra_details
 
@@ -1623,7 +1673,7 @@ def _roll_gem_or_art(spec: Tuple[str, Tuple[int, int], int]) -> Tuple[str, List[
     line = f"{kind_label}: {count} Stück á {_fmt_int(value_each)} GM = {_fmt_int(total_value)} GM"
     return line, [detail]
 
-def _roll_hoard_treasure(cr_key: str) -> str:
+def _roll_hoard_treasure(cr_key: str, collected: Optional[List[dict]] = None) -> str:
     coin_specs = HOARD_COINS[cr_key]
     coin_totals: Dict[str, int] = {k: 0 for k in COIN_ORDER}
     coin_details: List[str] = []
@@ -1677,7 +1727,7 @@ def _roll_hoard_treasure(cr_key: str) -> str:
             n, n_detail = _roll_count_expr(count_expr)
             magic_details.append(f"Tabelle {table_letter}: {n_detail}")
             for _ in range(max(0, n)):
-                r_item, item, extra = _pick_magic_item(table_letter)
+                r_item, item, extra = _pick_magic_item(table_letter, collected)
                 magic_items.append(f"Tabelle {table_letter} W100 {_fmt_w100(r_item)}: {item}")
                 magic_details.extend(extra)
 
@@ -1731,12 +1781,17 @@ async def rollschatz_pick_cr(update: Update, context: ContextTypes.DEFAULT_TYPE)
     kind = context.user_data.get("treasure_kind", "individual")
     context.user_data["treasure_cr"] = cr_key
 
+    picked_items: List[dict] = []
     if kind == "hoard":
-        msg = _roll_hoard_treasure(cr_key)
+        msg = _roll_hoard_treasure(cr_key, picked_items)
     else:
         msg = _roll_individual_treasure(cr_key)
 
     await query.edit_message_text(msg)
+
+    if picked_items and query.message:
+        await send_treasure_items(context, query.message.chat_id, picked_items)
+
     return ConversationHandler.END
 
 async def rollschatz_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -2505,10 +2560,12 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "⚔️ Encounters\n"
         "/rollencounter [Biom]  würfelt einen Encounter (nutzt sonst dein aktuelles Biom)\n"
         "/encdebug  zeigt welche Encounter Tabellen wirklich geladen wurden\n"
-        "Nach jedem Encounter schickt der Bot die Wertekästen der Kreaturen (SRD 5.1) und ihre Zauber hinterher.\n\n"
+        "Nach jedem Encounter schickt der Bot die Wertekästen der Kreaturen (SRD 5.1) und ihre Zauber hinterher.\n"
+        "Nach jedem Schatzhort kommen die Beschreibungen der magischen Gegenstände, Zauberschriftrollen bekommen einen zufälligen Zauber.\n\n"
         "📖 Nachschlagen\n"
         "/kreatur <Name>  zeigt den Wertekasten einer SRD-Kreatur, z.B. /kreatur Skelett\n"
-        "/zauber <Name>  zeigt eine Zauberbeschreibung, z.B. /zauber Feuerball\n\n"
+        "/zauber <Name>  zeigt eine Zauberbeschreibung, z.B. /zauber Feuerball\n"
+        "/gegenstand <Name>  zeigt einen magischen Gegenstand, z.B. /gegenstand Nimmervoller Beutel\n\n"
         "🔮 Orakel\n"
         "/rolloracle [Frage]  Ja Nein Orakel\n"
         "/cancel  bricht Orakel, Encounter, Schatz oder Rolldungeon Auswahl ab"
@@ -2530,6 +2587,7 @@ def main():
     init_encounters()
     init_magic_tables()
     init_kreaturen()
+    init_gegenstaende()
 
     ptb_app.add_handler(CommandHandler("help", help_cmd))
     ptb_app.add_handler(CommandHandler("start", help_cmd))
@@ -2586,6 +2644,7 @@ def main():
     ptb_app.add_handler(CommandHandler("encdebug", encdebug))
     ptb_app.add_handler(CommandHandler("kreatur", kreatur_cmd))
     ptb_app.add_handler(CommandHandler("zauber", zauber_cmd))
+    ptb_app.add_handler(CommandHandler("gegenstand", gegenstand_cmd))
 
     encounter_conv = ConversationHandler(
         entry_points=[CommandHandler("rollencounter", rollencounter_start)],

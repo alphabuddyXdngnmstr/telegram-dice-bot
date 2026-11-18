@@ -278,15 +278,45 @@ def format_monster(m: dict, count: Optional[int] = None, notes: Optional[List[st
     return "\n\n".join(p for p in paras if p)
 
 
-def format_spell(s: dict) -> str:
-    paras = [s["name"], s["school"]]
+TABLE_MARK = "\u0001"
+
+
+def text_paragraphs(text: str) -> List[str]:
+    """Absätze aus dem SRD-Text. Aufeinanderfolgende Tabellenzeilen werden zu einem Block."""
+    out: List[str] = []
+    block: List[str] = []
+    kind = None  # "table" oder "list"
+    for line in (text or "").split("\n"):
+        line = line.strip()
+        if not line:
+            continue
+        if line.startswith(TABLE_MARK):
+            this, line = "table", line[len(TABLE_MARK):].strip()
+        elif line.startswith("• "):
+            this = "list"
+        else:
+            this = None
+        if block and this != kind:
+            out.append("\n".join(block))
+            block = []
+        if this:
+            block.append(line)
+            kind = this
+        else:
+            out.append(line)
+            kind = None
+    if block:
+        out.append("\n".join(block))
+    return out
+
+
+def format_spell(s: dict, with_name: bool = True) -> str:
+    paras = [s["name"], s["school"]] if with_name else [s["school"]]
     props = "\n".join(f"{k}: {v}" for k, v in s.get("props") or [])
     if props:
         paras.append(props)
-    text = (s.get("text") or "").strip()
-    if text:
-        # Jeder Absatz aus dem SRD wird ein eigener Absatz in Telegram
-        paras.extend(p.strip() for p in text.split("\n") if p.strip())
+    # Jeder Absatz aus dem SRD wird ein eigener Absatz in Telegram
+    paras.extend(text_paragraphs(s.get("text") or ""))
     return "\n\n".join(paras)
 
 
