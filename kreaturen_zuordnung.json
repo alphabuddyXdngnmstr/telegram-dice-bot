@@ -1,0 +1,4037 @@
+{
+ "_info": "Zuordnung von Encounter-Begriffen zu SRD-Kreaturen. 'formen' = Schreibweisen einer SRD-Kreatur, 'ersatz' = Kreaturen, die nicht im SRD stehen, und ihr nächstliegender SRD-Eintrag, 'eintraege' = Sonderfälle für einzelne Encounter-Texte, 'zauber_aliase' = abweichende Zaubernamen.",
+ "formen": {
+  "Aboleth": [
+   "Abolethe",
+   "Abolethen",
+   "Abolether",
+   "Abolethern",
+   "Abolethn",
+   "Abolethnen",
+   "Aboleths"
+  ],
+  "Adeliger": [
+   "Adelige",
+   "Adeligen",
+   "Adeligere",
+   "Adeligeren",
+   "Adeligerer",
+   "Adeligerern",
+   "Adeligern",
+   "Adeligernen",
+   "Adeligers",
+   "Adlige",
+   "Adliger"
+  ],
+  "Adler": [
+   "Adlere",
+   "Adleren",
+   "Adlerer",
+   "Adlerern",
+   "Adlern",
+   "Adlernen",
+   "Adlers"
+  ],
+  "Akolyth": [
+   "Akolythe",
+   "Akolythen",
+   "Akolyther",
+   "Akolythern",
+   "Akolythn",
+   "Akolythnen",
+   "Akolyths",
+   "Tempeldiener"
+  ],
+  "Androsphinx": [
+   "Androsphingen",
+   "Androsphinxe",
+   "Androsphinxen",
+   "Androsphinxer",
+   "Androsphinxern",
+   "Androsphinxn",
+   "Androsphinxnen",
+   "Androsphinxs"
+  ],
+  "Ankheg": [
+   "Ankhege",
+   "Ankhegen",
+   "Ankheger",
+   "Ankhegern",
+   "Ankhegn",
+   "Ankhegnen",
+   "Ankhegs"
+  ],
+  "Assassine": [
+   "Assassinee",
+   "Assassineen",
+   "Assassineer",
+   "Assassineern",
+   "Assassinen",
+   "Assassinenen",
+   "Assassines"
+  ],
+  "Atterkopp": [
+   "Atterkoppe",
+   "Atterkoppen",
+   "Atterkopper",
+   "Atterkoppern",
+   "Atterkoppn",
+   "Atterkoppnen",
+   "Atterkopps",
+   "Atterköppe"
+  ],
+  "Ausgewachsener Bronzedrache": [
+   "Ausgewachsene Bronzdrache",
+   "Ausgewachsene Bronzdrachen",
+   "Ausgewachsene Bronzedrache",
+   "Ausgewachsene Bronzedrachen",
+   "Ausgewachsenen Bronzdrache",
+   "Ausgewachsenen Bronzdrachen",
+   "Ausgewachsenen Bronzedrache",
+   "Ausgewachsenen Bronzedrachen",
+   "Ausgewachsener Bronzdrache",
+   "Ausgewachsener Bronzdrachen",
+   "Ausgewachsener Bronzedrache",
+   "Ausgewachsener Bronzedrachee",
+   "Ausgewachsener Bronzedracheen",
+   "Ausgewachsener Bronzedracheer",
+   "Ausgewachsener Bronzedracheern",
+   "Ausgewachsener Bronzedrachen",
+   "Ausgewachsener Bronzedrachenen",
+   "Ausgewachsener Bronzedraches",
+   "Erwachsene Bronzdrache",
+   "Erwachsene Bronzdrachen",
+   "Erwachsene Bronzedrache",
+   "Erwachsene Bronzedrachen",
+   "Erwachsenen Bronzdrache",
+   "Erwachsenen Bronzdrachen",
+   "Erwachsenen Bronzedrache",
+   "Erwachsenen Bronzedrachen",
+   "Erwachsener Bronzdrache",
+   "Erwachsener Bronzdrachen",
+   "Erwachsener Bronzedrache",
+   "Erwachsener Bronzedrachen"
+  ],
+  "Ausgewachsener Golddrache": [
+   "Ausgewachsene Golddrache",
+   "Ausgewachsene Golddrachen",
+   "Ausgewachsenen Golddrache",
+   "Ausgewachsenen Golddrachen",
+   "Ausgewachsener Golddrache",
+   "Ausgewachsener Golddrachee",
+   "Ausgewachsener Golddracheen",
+   "Ausgewachsener Golddracheer",
+   "Ausgewachsener Golddracheern",
+   "Ausgewachsener Golddrachen",
+   "Ausgewachsener Golddrachenen",
+   "Ausgewachsener Golddraches",
+   "Erwachsene Golddrache",
+   "Erwachsene Golddrachen",
+   "Erwachsenen Golddrache",
+   "Erwachsenen Golddrachen",
+   "Erwachsener Golddrache",
+   "Erwachsener Golddrachen"
+  ],
+  "Ausgewachsener Kupferdrache": [
+   "Ausgewachsene Kupferdrache",
+   "Ausgewachsene Kupferdrachen",
+   "Ausgewachsenen Kupferdrache",
+   "Ausgewachsenen Kupferdrachen",
+   "Ausgewachsener Kupferdrache",
+   "Ausgewachsener Kupferdrachee",
+   "Ausgewachsener Kupferdracheen",
+   "Ausgewachsener Kupferdracheer",
+   "Ausgewachsener Kupferdracheern",
+   "Ausgewachsener Kupferdrachen",
+   "Ausgewachsener Kupferdrachenen",
+   "Ausgewachsener Kupferdraches",
+   "Erwachsene Kupferdrache",
+   "Erwachsene Kupferdrachen",
+   "Erwachsenen Kupferdrache",
+   "Erwachsenen Kupferdrachen",
+   "Erwachsener Kupferdrache",
+   "Erwachsener Kupferdrachen"
+  ],
+  "Ausgewachsener Messingdrache": [
+   "Ausgewachsene Messingdrache",
+   "Ausgewachsene Messingdrachen",
+   "Ausgewachsenen Messingdrache",
+   "Ausgewachsenen Messingdrachen",
+   "Ausgewachsener Messingdrache",
+   "Ausgewachsener Messingdrachee",
+   "Ausgewachsener Messingdracheen",
+   "Ausgewachsener Messingdracheer",
+   "Ausgewachsener Messingdracheern",
+   "Ausgewachsener Messingdrachen",
+   "Ausgewachsener Messingdrachenen",
+   "Ausgewachsener Messingdraches",
+   "Erwachsene Messingdrache",
+   "Erwachsene Messingdrachen",
+   "Erwachsenen Messingdrache",
+   "Erwachsenen Messingdrachen",
+   "Erwachsener Messingdrache",
+   "Erwachsener Messingdrachen"
+  ],
+  "Ausgewachsener Silberdrache": [
+   "Ausgewachsene Silberdrache",
+   "Ausgewachsene Silberdrachen",
+   "Ausgewachsenen Silberdrache",
+   "Ausgewachsenen Silberdrachen",
+   "Ausgewachsener Silberdrache",
+   "Ausgewachsener Silberdrachee",
+   "Ausgewachsener Silberdracheen",
+   "Ausgewachsener Silberdracheer",
+   "Ausgewachsener Silberdracheern",
+   "Ausgewachsener Silberdrachen",
+   "Ausgewachsener Silberdrachenen",
+   "Ausgewachsener Silberdraches",
+   "Erwachsene Silberdrache",
+   "Erwachsene Silberdrachen",
+   "Erwachsenen Silberdrache",
+   "Erwachsenen Silberdrachen",
+   "Erwachsener Silberdrache",
+   "Erwachsener Silberdrachen"
+  ],
+  "Ausgewachsener blauer Drache": [
+   "Ausgewachsene blaue Drache",
+   "Ausgewachsene blaue Drachen",
+   "Ausgewachsene blauen Drache",
+   "Ausgewachsene blauen Drachen",
+   "Ausgewachsene blauer Drache",
+   "Ausgewachsene blauer Drachen",
+   "Ausgewachsenen blaue Drache",
+   "Ausgewachsenen blaue Drachen",
+   "Ausgewachsenen blauen Drache",
+   "Ausgewachsenen blauen Drachen",
+   "Ausgewachsenen blauer Drache",
+   "Ausgewachsenen blauer Drachen",
+   "Ausgewachsener blaue Drache",
+   "Ausgewachsener blaue Drachen",
+   "Ausgewachsener blauen Drache",
+   "Ausgewachsener blauen Drachen",
+   "Ausgewachsener blauer Drache",
+   "Ausgewachsener blauer Drachee",
+   "Ausgewachsener blauer Dracheen",
+   "Ausgewachsener blauer Dracheer",
+   "Ausgewachsener blauer Dracheern",
+   "Ausgewachsener blauer Drachen",
+   "Ausgewachsener blauer Drachenen",
+   "Ausgewachsener blauer Draches",
+   "Erwachsene blaue Drache",
+   "Erwachsene blaue Drachen",
+   "Erwachsene blauen Drache",
+   "Erwachsene blauen Drachen",
+   "Erwachsene blauer Drache",
+   "Erwachsene blauer Drachen",
+   "Erwachsenen blaue Drache",
+   "Erwachsenen blaue Drachen",
+   "Erwachsenen blauen Drache",
+   "Erwachsenen blauen Drachen",
+   "Erwachsenen blauer Drache",
+   "Erwachsenen blauer Drachen",
+   "Erwachsener blaue Drache",
+   "Erwachsener blaue Drachen",
+   "Erwachsener blauen Drache",
+   "Erwachsener blauen Drachen",
+   "Erwachsener blauer Drache",
+   "Erwachsener blauer Drachen"
+  ],
+  "Ausgewachsener grüner Drache": [
+   "Ausgewachsene grüne Drache",
+   "Ausgewachsene grüne Drachen",
+   "Ausgewachsene grünen Drache",
+   "Ausgewachsene grünen Drachen",
+   "Ausgewachsene grüner Drache",
+   "Ausgewachsene grüner Drachen",
+   "Ausgewachsenen grüne Drache",
+   "Ausgewachsenen grüne Drachen",
+   "Ausgewachsenen grünen Drache",
+   "Ausgewachsenen grünen Drachen",
+   "Ausgewachsenen grüner Drache",
+   "Ausgewachsenen grüner Drachen",
+   "Ausgewachsener grüne Drache",
+   "Ausgewachsener grüne Drachen",
+   "Ausgewachsener grünen Drache",
+   "Ausgewachsener grünen Drachen",
+   "Ausgewachsener grüner Drache",
+   "Ausgewachsener grüner Drachee",
+   "Ausgewachsener grüner Dracheen",
+   "Ausgewachsener grüner Dracheer",
+   "Ausgewachsener grüner Dracheern",
+   "Ausgewachsener grüner Drachen",
+   "Ausgewachsener grüner Drachenen",
+   "Ausgewachsener grüner Draches",
+   "Erwachsene grüne Drache",
+   "Erwachsene grüne Drachen",
+   "Erwachsene grünen Drache",
+   "Erwachsene grünen Drachen",
+   "Erwachsene grüner Drache",
+   "Erwachsene grüner Drachen",
+   "Erwachsenen grüne Drache",
+   "Erwachsenen grüne Drachen",
+   "Erwachsenen grünen Drache",
+   "Erwachsenen grünen Drachen",
+   "Erwachsenen grüner Drache",
+   "Erwachsenen grüner Drachen",
+   "Erwachsener grüne Drache",
+   "Erwachsener grüne Drachen",
+   "Erwachsener grünen Drache",
+   "Erwachsener grünen Drachen",
+   "Erwachsener grüner Drache",
+   "Erwachsener grüner Drachen"
+  ],
+  "Ausgewachsener roter Drache": [
+   "Ausgewachsene rote Drache",
+   "Ausgewachsene rote Drachen",
+   "Ausgewachsene roten Drache",
+   "Ausgewachsene roten Drachen",
+   "Ausgewachsene roter Drache",
+   "Ausgewachsene roter Drachen",
+   "Ausgewachsenen rote Drache",
+   "Ausgewachsenen rote Drachen",
+   "Ausgewachsenen roten Drache",
+   "Ausgewachsenen roten Drachen",
+   "Ausgewachsenen roter Drache",
+   "Ausgewachsenen roter Drachen",
+   "Ausgewachsener rote Drache",
+   "Ausgewachsener rote Drachen",
+   "Ausgewachsener roten Drache",
+   "Ausgewachsener roten Drachen",
+   "Ausgewachsener roter Drache",
+   "Ausgewachsener roter Drachee",
+   "Ausgewachsener roter Dracheen",
+   "Ausgewachsener roter Dracheer",
+   "Ausgewachsener roter Dracheern",
+   "Ausgewachsener roter Drachen",
+   "Ausgewachsener roter Drachenen",
+   "Ausgewachsener roter Draches",
+   "Erwachsene rote Drache",
+   "Erwachsene rote Drachen",
+   "Erwachsene roten Drache",
+   "Erwachsene roten Drachen",
+   "Erwachsene roter Drache",
+   "Erwachsene roter Drachen",
+   "Erwachsenen rote Drache",
+   "Erwachsenen rote Drachen",
+   "Erwachsenen roten Drache",
+   "Erwachsenen roten Drachen",
+   "Erwachsenen roter Drache",
+   "Erwachsenen roter Drachen",
+   "Erwachsener rote Drache",
+   "Erwachsener rote Drachen",
+   "Erwachsener roten Drache",
+   "Erwachsener roten Drachen",
+   "Erwachsener roter Drache",
+   "Erwachsener roter Drachen",
+   "Roter Drache"
+  ],
+  "Ausgewachsener schwarzer Drache": [
+   "Ausgewachsene schwarze Drache",
+   "Ausgewachsene schwarze Drachen",
+   "Ausgewachsene schwarzen Drache",
+   "Ausgewachsene schwarzen Drachen",
+   "Ausgewachsene schwarzer Drache",
+   "Ausgewachsene schwarzer Drachen",
+   "Ausgewachsenen schwarze Drache",
+   "Ausgewachsenen schwarze Drachen",
+   "Ausgewachsenen schwarzen Drache",
+   "Ausgewachsenen schwarzen Drachen",
+   "Ausgewachsenen schwarzer Drache",
+   "Ausgewachsenen schwarzer Drachen",
+   "Ausgewachsener schwarze Drache",
+   "Ausgewachsener schwarze Drachen",
+   "Ausgewachsener schwarzen Drache",
+   "Ausgewachsener schwarzen Drachen",
+   "Ausgewachsener schwarzer Drache",
+   "Ausgewachsener schwarzer Drachee",
+   "Ausgewachsener schwarzer Dracheen",
+   "Ausgewachsener schwarzer Dracheer",
+   "Ausgewachsener schwarzer Dracheern",
+   "Ausgewachsener schwarzer Drachen",
+   "Ausgewachsener schwarzer Drachenen",
+   "Ausgewachsener schwarzer Draches",
+   "Erwachsene schwarze Drache",
+   "Erwachsene schwarze Drachen",
+   "Erwachsene schwarzen Drache",
+   "Erwachsene schwarzen Drachen",
+   "Erwachsene schwarzer Drache",
+   "Erwachsene schwarzer Drachen",
+   "Erwachsenen schwarze Drache",
+   "Erwachsenen schwarze Drachen",
+   "Erwachsenen schwarzen Drache",
+   "Erwachsenen schwarzen Drachen",
+   "Erwachsenen schwarzer Drache",
+   "Erwachsenen schwarzer Drachen",
+   "Erwachsener schwarze Drache",
+   "Erwachsener schwarze Drachen",
+   "Erwachsener schwarzen Drache",
+   "Erwachsener schwarzen Drachen",
+   "Erwachsener schwarzer Drache",
+   "Erwachsener schwarzer Drachen"
+  ],
+  "Ausgewachsener weißer Drache": [
+   "Ausgewachsene weiße Drache",
+   "Ausgewachsene weiße Drachen",
+   "Ausgewachsene weißen Drache",
+   "Ausgewachsene weißen Drachen",
+   "Ausgewachsene weißer Drache",
+   "Ausgewachsene weißer Drachen",
+   "Ausgewachsenen weiße Drache",
+   "Ausgewachsenen weiße Drachen",
+   "Ausgewachsenen weißen Drache",
+   "Ausgewachsenen weißen Drachen",
+   "Ausgewachsenen weißer Drache",
+   "Ausgewachsenen weißer Drachen",
+   "Ausgewachsener weiße Drache",
+   "Ausgewachsener weiße Drachen",
+   "Ausgewachsener weißen Drache",
+   "Ausgewachsener weißen Drachen",
+   "Ausgewachsener weißer Drache",
+   "Ausgewachsener weißer Drachee",
+   "Ausgewachsener weißer Dracheen",
+   "Ausgewachsener weißer Dracheer",
+   "Ausgewachsener weißer Dracheern",
+   "Ausgewachsener weißer Drachen",
+   "Ausgewachsener weißer Drachenen",
+   "Ausgewachsener weißer Draches",
+   "Erwachsene weiße Drache",
+   "Erwachsene weiße Drachen",
+   "Erwachsene weißen Drache",
+   "Erwachsene weißen Drachen",
+   "Erwachsene weißer Drache",
+   "Erwachsene weißer Drachen",
+   "Erwachsenen weiße Drache",
+   "Erwachsenen weiße Drachen",
+   "Erwachsenen weißen Drache",
+   "Erwachsenen weißen Drachen",
+   "Erwachsenen weißer Drache",
+   "Erwachsenen weißer Drachen",
+   "Erwachsener weiße Drache",
+   "Erwachsener weiße Drachen",
+   "Erwachsener weißen Drache",
+   "Erwachsener weißen Drachen",
+   "Erwachsener weißer Drache",
+   "Erwachsener weißer Drachen"
+  ],
+  "Axtschnabel": [
+   "Axtschnabele",
+   "Axtschnabelen",
+   "Axtschnabeler",
+   "Axtschnabelern",
+   "Axtschnabeln",
+   "Axtschnabelnen",
+   "Axtschnabels",
+   "Axtschnäbel",
+   "Axtschnäbeln",
+   "Axtschädel"
+  ],
+  "Azer": [
+   "Azere",
+   "Azeren",
+   "Azerer",
+   "Azerern",
+   "Azern",
+   "Azernen",
+   "Azers"
+  ],
+  "Balor": [
+   "Balore",
+   "Baloren",
+   "Balorer",
+   "Balorern",
+   "Balorn",
+   "Balornen",
+   "Balors"
+  ],
+  "Bandit": [
+   "Bandite",
+   "Banditen",
+   "Banditer",
+   "Banditern",
+   "Banditn",
+   "Banditnen",
+   "Bandits"
+  ],
+  "Banditenhauptmann": [
+   "Banditenhauptmanne",
+   "Banditenhauptmannen",
+   "Banditenhauptmanner",
+   "Banditenhauptmannern",
+   "Banditenhauptmannn",
+   "Banditenhauptmannnen",
+   "Banditenhauptmanns"
+  ],
+  "Bartteufel": [
+   "Bartteufele",
+   "Bartteufelen",
+   "Bartteufeler",
+   "Bartteufelern",
+   "Bartteufeln",
+   "Bartteufelnen",
+   "Bartteufels"
+  ],
+  "Basilisk": [
+   "Basiliske",
+   "Basilisken",
+   "Basilisker",
+   "Basiliskern",
+   "Basiliskn",
+   "Basilisknen",
+   "Basilisks"
+  ],
+  "Baumhirte": [
+   "Baumhirtee",
+   "Baumhirteen",
+   "Baumhirteer",
+   "Baumhirteern",
+   "Baumhirten",
+   "Baumhirtenen",
+   "Baumhirtes"
+  ],
+  "Behir": [
+   "Behire",
+   "Behiren",
+   "Behirer",
+   "Behirern",
+   "Behirn",
+   "Behirnen",
+   "Behirs"
+  ],
+  "Belebte Rüstung": [
+   "Belebte Rüstunge",
+   "Belebte Rüstungen",
+   "Belebte Rüstunger",
+   "Belebte Rüstungern",
+   "Belebte Rüstungn",
+   "Belebte Rüstungnen",
+   "Belebte Rüstungs"
+  ],
+  "Berserker": [
+   "Berserkere",
+   "Berserkeren",
+   "Berserkerer",
+   "Berserkerern",
+   "Berserkern",
+   "Berserkernen",
+   "Berserkers"
+  ],
+  "Blauer Drachennestling": [
+   "Blauer Drachennestlinge",
+   "Blauer Drachennestlingen",
+   "Blauer Drachennestlinger",
+   "Blauer Drachennestlingern",
+   "Blauer Drachennestlingn",
+   "Blauer Drachennestlingnen",
+   "Blauer Drachennestlings"
+  ],
+  "Blutfalke": [
+   "Blutfalkee",
+   "Blutfalkeen",
+   "Blutfalkeer",
+   "Blutfalkeern",
+   "Blutfalken",
+   "Blutfalkenen",
+   "Blutfalkes"
+  ],
+  "Blutmücke": [
+   "Blutmückee",
+   "Blutmückeen",
+   "Blutmückeer",
+   "Blutmückeern",
+   "Blutmücken",
+   "Blutmückenen",
+   "Blutmückes"
+  ],
+  "Braunbär": [
+   "Braunbäre",
+   "Braunbären",
+   "Braunbärer",
+   "Braunbärern",
+   "Braunbärn",
+   "Braunbärnen",
+   "Braunbärs"
+  ],
+  "Bronzedrachennestling": [
+   "Bronzedrachennestlinge",
+   "Bronzedrachennestlingen",
+   "Bronzedrachennestlinger",
+   "Bronzedrachennestlingern",
+   "Bronzedrachennestlingn",
+   "Bronzedrachennestlingnen",
+   "Bronzedrachennestlings"
+  ],
+  "Chimäre": [
+   "Chimäree",
+   "Chimäreen",
+   "Chimäreer",
+   "Chimäreern",
+   "Chimären",
+   "Chimärenen",
+   "Chimäres"
+  ],
+  "Chuul": [
+   "Chuule",
+   "Chuulen",
+   "Chuuler",
+   "Chuulern",
+   "Chuuln",
+   "Chuulnen",
+   "Chuuls"
+  ],
+  "Couatl": [
+   "Couatle",
+   "Couatlen",
+   "Couatler",
+   "Couatlern",
+   "Couatln",
+   "Couatlnen",
+   "Couatls"
+  ],
+  "Dachs": [
+   "Dachse",
+   "Dachsen",
+   "Dachser",
+   "Dachsern",
+   "Dachsn",
+   "Dachsnen",
+   "Dachss"
+  ],
+  "Dampf-Mephit": [
+   "Dampf-Mephite",
+   "Dampf-Mephiten",
+   "Dampf-Mephiter",
+   "Dampf-Mephitern",
+   "Dampf-Mephitn",
+   "Dampf-Mephitnen",
+   "Dampf-Mephits"
+  ],
+  "Deva": [
+   "Devae",
+   "Devaen",
+   "Devaer",
+   "Devaern",
+   "Devan",
+   "Devanen",
+   "Devas"
+  ],
+  "Dogge": [
+   "Doggee",
+   "Doggeen",
+   "Doggeer",
+   "Doggeern",
+   "Doggen",
+   "Doggenen",
+   "Dogges"
+  ],
+  "Doppelgänger": [
+   "Doppelgängere",
+   "Doppelgängeren",
+   "Doppelgängerer",
+   "Doppelgängerern",
+   "Doppelgängern",
+   "Doppelgängernen",
+   "Doppelgängers"
+  ],
+  "Drachenschildkröte": [
+   "Drachenschildkrötee",
+   "Drachenschildkröteen",
+   "Drachenschildkröteer",
+   "Drachenschildkröteern",
+   "Drachenschildkröten",
+   "Drachenschildkrötenen",
+   "Drachenschildkrötes"
+  ],
+  "Dretch": [
+   "Dretche",
+   "Dretchen",
+   "Dretcher",
+   "Dretchern",
+   "Dretchn",
+   "Dretchnen",
+   "Dretchs"
+  ],
+  "Drinne": [
+   "Drinnee",
+   "Drinneen",
+   "Drinneer",
+   "Drinneern",
+   "Drinnen",
+   "Drinnenen",
+   "Drinnes"
+  ],
+  "Drow (Elf)": [
+   "Drow",
+   "Drows"
+  ],
+  "Druide": [
+   "Druidee",
+   "Druideen",
+   "Druideer",
+   "Druideern",
+   "Druiden",
+   "Druidenen",
+   "Druides",
+   "Druidin",
+   "Druidinnen"
+  ],
+  "Dryade": [
+   "Dryadee",
+   "Dryadeen",
+   "Dryadeer",
+   "Dryadeern",
+   "Dryaden",
+   "Dryadenen",
+   "Dryades"
+  ],
+  "Dschinni": [
+   "Dschinn",
+   "Dschinnie",
+   "Dschinnien",
+   "Dschinnier",
+   "Dschinniern",
+   "Dschinnin",
+   "Dschinninen",
+   "Dschinnis",
+   "Dschinns"
+  ],
+  "Duergar": [
+   "Duergare",
+   "Duergaren",
+   "Duergarer",
+   "Duergarern",
+   "Duergarn",
+   "Duergarnen",
+   "Duergars"
+  ],
+  "Düstermantel": [
+   "Düstermantele",
+   "Düstermantelen",
+   "Düstermanteler",
+   "Düstermantelern",
+   "Düstermanteln",
+   "Düstermantelnen",
+   "Düstermantels",
+   "Düstermental",
+   "Düstermäntel",
+   "Düstermänteln"
+  ],
+  "Eber": [
+   "Ebere",
+   "Eberen",
+   "Eberer",
+   "Eberern",
+   "Ebern",
+   "Ebernen",
+   "Ebers"
+  ],
+  "Echsenmensch": [
+   "Echsenmensche",
+   "Echsenmenschen",
+   "Echsenmenscher",
+   "Echsenmenschern",
+   "Echsenmenschn",
+   "Echsenmenschnen",
+   "Echsenmenschs"
+  ],
+  "Eidechse": [
+   "Eidechsee",
+   "Eidechseen",
+   "Eidechseer",
+   "Eidechseern",
+   "Eidechsen",
+   "Eidechsenen",
+   "Eidechses"
+  ],
+  "Einhorn": [
+   "Einhorne",
+   "Einhornen",
+   "Einhorner",
+   "Einhornern",
+   "Einhornn",
+   "Einhornnen",
+   "Einhorns",
+   "Einhörner"
+  ],
+  "Eis-Mephit": [
+   "Eis-Mephite",
+   "Eis-Mephiten",
+   "Eis-Mephiter",
+   "Eis-Mephitern",
+   "Eis-Mephitn",
+   "Eis-Mephitnen",
+   "Eis-Mephits"
+  ],
+  "Eisbär": [
+   "Eisbar",
+   "Eisbäre",
+   "Eisbären",
+   "Eisbärer",
+   "Eisbärern",
+   "Eisbärn",
+   "Eisbärnen",
+   "Eisbärs"
+  ],
+  "Eisengolem": [
+   "Eisengoleme",
+   "Eisengolemen",
+   "Eisengolemer",
+   "Eisengolemern",
+   "Eisengolemn",
+   "Eisengolemnen",
+   "Eisengolems"
+  ],
+  "Eisteufel": [
+   "Eisteufele",
+   "Eisteufelen",
+   "Eisteufeler",
+   "Eisteufelern",
+   "Eisteufeln",
+   "Eisteufelnen",
+   "Eisteufels"
+  ],
+  "Elch": [
+   "Elche",
+   "Elchen",
+   "Elcher",
+   "Elchern",
+   "Elchn",
+   "Elchnen",
+   "Elchs"
+  ],
+  "Elefant": [
+   "Elefante",
+   "Elefanten",
+   "Elefanter",
+   "Elefantern",
+   "Elefantn",
+   "Elefantnen",
+   "Elefants"
+  ],
+  "Erdelementar": [
+   "Erdelementare",
+   "Erdelementaren",
+   "Erdelementarer",
+   "Erdelementarern",
+   "Erdelementarn",
+   "Erdelementarnen",
+   "Erdelementars"
+  ],
+  "Erinnye": [
+   "Erinnyee",
+   "Erinnyeen",
+   "Erinnyeer",
+   "Erinnyeern",
+   "Erinnyen",
+   "Erinnyenen",
+   "Erinnyes"
+  ],
+  "Erwachter Baum": [
+   "Erwachte Bäume",
+   "Erwachten Bäumen",
+   "Erwachter Baum",
+   "Erwachter Baume",
+   "Erwachter Baumen",
+   "Erwachter Baumer",
+   "Erwachter Baumern",
+   "Erwachter Baumn",
+   "Erwachter Baumnen",
+   "Erwachter Baums"
+  ],
+  "Erwachter Busch": [
+   "Erwachte Büsche",
+   "Erwachten Büschen",
+   "Erwachter Busche",
+   "Erwachter Buschen",
+   "Erwachter Buscher",
+   "Erwachter Buschern",
+   "Erwachter Buschn",
+   "Erwachter Buschnen",
+   "Erwachter Buschs"
+  ],
+  "Erzmagier": [
+   "Erzmagi",
+   "Erzmagiere",
+   "Erzmagieren",
+   "Erzmagierer",
+   "Erzmagierern",
+   "Erzmagiern",
+   "Erzmagiernen",
+   "Erzmagiers",
+   "Erzmagus"
+  ],
+  "Ettin": [
+   "Ettine",
+   "Ettinen",
+   "Ettiner",
+   "Ettinern",
+   "Ettinn",
+   "Ettinnen",
+   "Ettins"
+  ],
+  "Eule": [
+   "Eulee",
+   "Euleen",
+   "Euleer",
+   "Euleern",
+   "Eulen",
+   "Eulenen",
+   "Eules"
+  ],
+  "Eulenbär": [
+   "Eulenbäre",
+   "Eulenbären",
+   "Eulenbärer",
+   "Eulenbärern",
+   "Eulenbärn",
+   "Eulenbärnen",
+   "Eulenbärs"
+  ],
+  "Falke": [
+   "Falkee",
+   "Falkeen",
+   "Falkeer",
+   "Falkeern",
+   "Falken",
+   "Falkenen",
+   "Falkes"
+  ],
+  "Feengeist": [
+   "Feengeiste",
+   "Feengeisten",
+   "Feengeister",
+   "Feengeistern",
+   "Feengeistn",
+   "Feengeistnen",
+   "Feengeists"
+  ],
+  "Feuerelementar": [
+   "Feuerelementare",
+   "Feuerelementaren",
+   "Feuerelementarer",
+   "Feuerelementarern",
+   "Feuerelementarn",
+   "Feuerelementarnen",
+   "Feuerelementars"
+  ],
+  "Feuerriese": [
+   "Feuerriesee",
+   "Feuerrieseen",
+   "Feuerrieseer",
+   "Feuerrieseern",
+   "Feuerriesen",
+   "Feuerriesenen",
+   "Feuerrieses"
+  ],
+  "Fledermaus": [
+   "Fledermause",
+   "Fledermausen",
+   "Fledermauser",
+   "Fledermausern",
+   "Fledermausn",
+   "Fledermausnen",
+   "Fledermauss"
+  ],
+  "Fledermausschwarm": [
+   "Fledermausschwarme",
+   "Fledermausschwarmen",
+   "Fledermausschwarmer",
+   "Fledermausschwarmern",
+   "Fledermausschwarmn",
+   "Fledermausschwarmnen",
+   "Fledermausschwarms",
+   "Schwarm von Fledermäusen",
+   "Schwärme von Fledermäusen",
+   "Schwärmen von Fledermäusen"
+  ],
+  "Fleischgolem": [
+   "Fleischgoleme",
+   "Fleischgolemen",
+   "Fleischgolemer",
+   "Fleischgolemern",
+   "Fleischgolemn",
+   "Fleischgolemnen",
+   "Fleischgolems"
+  ],
+  "Fliegende Schlange": [
+   "Fliegende Schlangee",
+   "Fliegende Schlangeen",
+   "Fliegende Schlangeer",
+   "Fliegende Schlangeern",
+   "Fliegende Schlangen",
+   "Fliegende Schlangenen",
+   "Fliegende Schlanges"
+  ],
+  "Fliegendes Schwert": [
+   "Fliegendes Schwerte",
+   "Fliegendes Schwerten",
+   "Fliegendes Schwerter",
+   "Fliegendes Schwertern",
+   "Fliegendes Schwertn",
+   "Fliegendes Schwertnen",
+   "Fliegendes Schwerts"
+  ],
+  "Flimmerhund": [
+   "Flimmerhunde",
+   "Flimmerhunden",
+   "Flimmerhunder",
+   "Flimmerhundern",
+   "Flimmerhundn",
+   "Flimmerhundnen",
+   "Flimmerhunds"
+  ],
+  "Frosch": [
+   "Frosche",
+   "Froschen",
+   "Froscher",
+   "Froschern",
+   "Froschn",
+   "Froschnen",
+   "Froschs"
+  ],
+  "Frostriese": [
+   "Frostriesee",
+   "Frostrieseen",
+   "Frostrieseer",
+   "Frostrieseern",
+   "Frostriesen",
+   "Frostriesenen",
+   "Frostrieses",
+   "Frost­riese"
+  ],
+  "Gallertwürfel": [
+   "Gallertwürfele",
+   "Gallertwürfelen",
+   "Gallertwürfeler",
+   "Gallertwürfelern",
+   "Gallertwürfeln",
+   "Gallertwürfelnen",
+   "Gallertwürfels"
+  ],
+  "Gargyl": [
+   "Gargyle",
+   "Gargylen",
+   "Gargyler",
+   "Gargylern",
+   "Gargyln",
+   "Gargylnen",
+   "Gargyls"
+  ],
+  "Geier": [
+   "Geiere",
+   "Geieren",
+   "Geierer",
+   "Geierern",
+   "Geiern",
+   "Geiernen",
+   "Geiers"
+  ],
+  "Geist": [
+   "Geiste",
+   "Geisten",
+   "Geister",
+   "Geistern",
+   "Geistn",
+   "Geistnen",
+   "Geists"
+  ],
+  "Geisternaga": [
+   "Geisternagae",
+   "Geisternagaen",
+   "Geisternagaer",
+   "Geisternagaern",
+   "Geisternagan",
+   "Geisternaganen",
+   "Geisternagas",
+   "Geisternagi"
+  ],
+  "Gemeiner": [
+   "Gemeine",
+   "Gemeinen",
+   "Gemeinere",
+   "Gemeineren",
+   "Gemeinerer",
+   "Gemeinerern",
+   "Gemeinern",
+   "Gemeinernen",
+   "Gemeiners"
+  ],
+  "Ghul": [
+   "Ghule",
+   "Ghulen",
+   "Ghuler",
+   "Ghulern",
+   "Ghuln",
+   "Ghulnen",
+   "Ghuls"
+  ],
+  "Giftschlange": [
+   "Giftschlangee",
+   "Giftschlangeen",
+   "Giftschlangeer",
+   "Giftschlangeern",
+   "Giftschlangen",
+   "Giftschlangenen",
+   "Giftschlanges"
+  ],
+  "Giftschlangenschwarm": [
+   "Giftschlangenschwarme",
+   "Giftschlangenschwarmen",
+   "Giftschlangenschwarmer",
+   "Giftschlangenschwarmern",
+   "Giftschlangenschwarmn",
+   "Giftschlangenschwarmnen",
+   "Giftschlangenschwarms",
+   "Schwarm von Giftschlangen",
+   "Schwärme von Giftschlangen",
+   "Schwärmen von Giftschlangen"
+  ],
+  "Glabrezu": [
+   "Glabrezue",
+   "Glabrezuen",
+   "Glabrezuer",
+   "Glabrezuern",
+   "Glabrezun",
+   "Glabrezunen",
+   "Glabrezus"
+  ],
+  "Gladiator": [
+   "Gladiatore",
+   "Gladiatoren",
+   "Gladiatorer",
+   "Gladiatorern",
+   "Gladiatorn",
+   "Gladiatornen",
+   "Gladiators"
+  ],
+  "Gnoll": [
+   "Gnolle",
+   "Gnollen",
+   "Gnoller",
+   "Gnollern",
+   "Gnolln",
+   "Gnollnen",
+   "Gnolls"
+  ],
+  "Gnom, Tiefengnom (Svirfneblin)": [
+   "Svirfneblin",
+   "Tiefengnom",
+   "Tiefengnome",
+   "Tiefengnomen"
+  ],
+  "Goblin": [
+   "Gobline",
+   "Goblinen",
+   "Gobliner",
+   "Goblinern",
+   "Goblinn",
+   "Goblinnen",
+   "Goblins"
+  ],
+  "Golddrachennestling": [
+   "Golddrachennestlinge",
+   "Golddrachennestlingen",
+   "Golddrachennestlinger",
+   "Golddrachennestlingern",
+   "Golddrachennestlingn",
+   "Golddrachennestlingnen",
+   "Golddrachennestlings"
+  ],
+  "Gorgone": [
+   "Gorgonee",
+   "Gorgoneen",
+   "Gorgoneer",
+   "Gorgoneern",
+   "Gorgonen",
+   "Gorgonenen",
+   "Gorgones"
+  ],
+  "Grauschlick": [
+   "Grauschlicke",
+   "Grauschlicken",
+   "Grauschlicker",
+   "Grauschlickern",
+   "Grauschlickn",
+   "Grauschlicknen",
+   "Grauschlicks"
+  ],
+  "Greif": [
+   "Greife",
+   "Greifen",
+   "Greifer",
+   "Greifern",
+   "Greifn",
+   "Greifnen",
+   "Greifs"
+  ],
+  "Grick": [
+   "Gricke",
+   "Gricken",
+   "Gricker",
+   "Grickern",
+   "Grickn",
+   "Gricknen",
+   "Gricks"
+  ],
+  "Grimlock": [
+   "Grimlocke",
+   "Grimlocken",
+   "Grimlocker",
+   "Grimlockern",
+   "Grimlockn",
+   "Grimlocknen",
+   "Grimlocks"
+  ],
+  "Grottenschrat": [
+   "Grottenschrate",
+   "Grottenschraten",
+   "Grottenschrater",
+   "Grottenschratern",
+   "Grottenschratn",
+   "Grottenschratnen",
+   "Grottenschrats"
+  ],
+  "Gruftschrecken": [
+   "Grufschrecken",
+   "Gruftschreckene",
+   "Gruftschreckenen",
+   "Gruftschreckener",
+   "Gruftschreckenern",
+   "Gruftschreckenn",
+   "Gruftschreckennen",
+   "Gruftschreckens"
+  ],
+  "Grul": [
+   "Grule",
+   "Grulen",
+   "Gruler",
+   "Grulern",
+   "Gruln",
+   "Grulnen",
+   "Gruls"
+  ],
+  "Grüne Vettel": [
+   "Grüne Vettele",
+   "Grüne Vettelen",
+   "Grüne Vetteler",
+   "Grüne Vettelern",
+   "Grüne Vetteln",
+   "Grüne Vettelnen",
+   "Grüne Vettels"
+  ],
+  "Grüner Drachennestling": [
+   "Grüner Drachennestlinge",
+   "Grüner Drachennestlingen",
+   "Grüner Drachennestlinger",
+   "Grüner Drachennestlingern",
+   "Grüner Drachennestlingn",
+   "Grüner Drachennestlingnen",
+   "Grüner Drachennestlings"
+  ],
+  "Gynosphinx": [
+   "Gynosphingen",
+   "Gynosphinxe",
+   "Gynosphinxen",
+   "Gynosphinxer",
+   "Gynosphinxern",
+   "Gynosphinxn",
+   "Gynosphinxnen",
+   "Gynosphinxs"
+  ],
+  "Halbroter Drachenveteran": [
+   "Halbroter Drachenveterane",
+   "Halbroter Drachenveteranen",
+   "Halbroter Drachenveteraner",
+   "Halbroter Drachenveteranern",
+   "Halbroter Drachenveterann",
+   "Halbroter Drachenveterannen",
+   "Halbroter Drachenveterans"
+  ],
+  "Harpyie": [
+   "Harpyiee",
+   "Harpyieen",
+   "Harpyieer",
+   "Harpyieern",
+   "Harpyien",
+   "Harpyienen",
+   "Harpyies"
+  ],
+  "Hezrou": [
+   "Hezroue",
+   "Hezrouen",
+   "Hezrouer",
+   "Hezrouern",
+   "Hezroun",
+   "Hezrounen",
+   "Hezrous"
+  ],
+  "Hobgoblin": [
+   "Hobgobline",
+   "Hobgoblinen",
+   "Hobgobliner",
+   "Hobgoblinern",
+   "Hobgoblinn",
+   "Hobgoblinnen",
+   "Hobgoblins"
+  ],
+  "Homunkulus": [
+   "Homunkuluse",
+   "Homunkulusen",
+   "Homunkuluser",
+   "Homunkulusern",
+   "Homunkulusn",
+   "Homunkulusnen",
+   "Homunkuluss"
+  ],
+  "Hornteufel": [
+   "Hornteufele",
+   "Hornteufelen",
+   "Hornteufeler",
+   "Hornteufelern",
+   "Hornteufeln",
+   "Hornteufelnen",
+   "Hornteufels"
+  ],
+  "Hydra": [
+   "Hydrae",
+   "Hydraen",
+   "Hydraer",
+   "Hydraern",
+   "Hydran",
+   "Hydranen",
+   "Hydras",
+   "Hydren"
+  ],
+  "Hyäne": [
+   "Hyänee",
+   "Hyäneen",
+   "Hyäneer",
+   "Hyäneern",
+   "Hyänen",
+   "Hyänenen",
+   "Hyänes"
+  ],
+  "Höllenhund": [
+   "Höllenhunde",
+   "Höllenhunden",
+   "Höllenhunder",
+   "Höllenhundern",
+   "Höllenhundn",
+   "Höllenhundnen",
+   "Höllenhunds"
+  ],
+  "Höllenschlundteufel": [
+   "Höllenschlundteufele",
+   "Höllenschlundteufelen",
+   "Höllenschlundteufeler",
+   "Höllenschlundteufelern",
+   "Höllenschlundteufeln",
+   "Höllenschlundteufelnen",
+   "Höllenschlundteufels"
+  ],
+  "Hügelriese": [
+   "Hügelriesee",
+   "Hügelrieseen",
+   "Hügelrieseer",
+   "Hügelrieseern",
+   "Hügelriesen",
+   "Hügelriesenen",
+   "Hügelrieses"
+  ],
+  "Ifriti": [
+   "Ifrit",
+   "Ifritie",
+   "Ifritien",
+   "Ifritier",
+   "Ifritiern",
+   "Ifritin",
+   "Ifritinen",
+   "Ifritis",
+   "Ifrits"
+  ],
+  "Insektenschwarm": [
+   "Insektenschwarme",
+   "Insektenschwarmen",
+   "Insektenschwarmer",
+   "Insektenschwarmern",
+   "Insektenschwarmn",
+   "Insektenschwarmnen",
+   "Insektenschwarms",
+   "Schwarm von Insekten",
+   "Schwärme von Insekten",
+   "Schwärmen von Insekten"
+  ],
+  "Irrlicht": [
+   "Irrlichte",
+   "Irrlichten",
+   "Irrlichter",
+   "Irrlichtern",
+   "Irrlichtn",
+   "Irrlichtnen",
+   "Irrlichts"
+  ],
+  "Jagdhai": [
+   "Jagdhaie",
+   "Jagdhaien",
+   "Jagdhaier",
+   "Jagdhaiern",
+   "Jagdhain",
+   "Jagdhainen",
+   "Jagdhais"
+  ],
+  "Junger Bronzedrache": [
+   "Junge Bronzdrache",
+   "Junge Bronzdrachen",
+   "Junge Bronzedrache",
+   "Junge Bronzedrachen",
+   "Jungen Bronzdrache",
+   "Jungen Bronzdrachen",
+   "Jungen Bronzedrache",
+   "Jungen Bronzedrachen",
+   "Junger Bronzdrache",
+   "Junger Bronzdrachen",
+   "Junger Bronzedrache",
+   "Junger Bronzedrachee",
+   "Junger Bronzedracheen",
+   "Junger Bronzedracheer",
+   "Junger Bronzedracheern",
+   "Junger Bronzedrachen",
+   "Junger Bronzedrachenen",
+   "Junger Bronzedraches"
+  ],
+  "Junger Golddrache": [
+   "Junge Golddrache",
+   "Junge Golddrachen",
+   "Jungen Golddrache",
+   "Jungen Golddrachen",
+   "Junger Golddrache",
+   "Junger Golddrachee",
+   "Junger Golddracheen",
+   "Junger Golddracheer",
+   "Junger Golddracheern",
+   "Junger Golddrachen",
+   "Junger Golddrachenen",
+   "Junger Golddraches"
+  ],
+  "Junger Kupferdrache": [
+   "Junge Kupferdrache",
+   "Junge Kupferdrachen",
+   "Jungen Kupferdrache",
+   "Jungen Kupferdrachen",
+   "Junger Kupferdrache",
+   "Junger Kupferdrachee",
+   "Junger Kupferdracheen",
+   "Junger Kupferdracheer",
+   "Junger Kupferdracheern",
+   "Junger Kupferdrachen",
+   "Junger Kupferdrachenen",
+   "Junger Kupferdraches"
+  ],
+  "Junger Messingdrache": [
+   "Junge Messingdrache",
+   "Junge Messingdrachen",
+   "Jungen Messingdrache",
+   "Jungen Messingdrachen",
+   "Junger Messingdrache",
+   "Junger Messingdrachee",
+   "Junger Messingdracheen",
+   "Junger Messingdracheer",
+   "Junger Messingdracheern",
+   "Junger Messingdrachen",
+   "Junger Messingdrachenen",
+   "Junger Messingdraches"
+  ],
+  "Junger Silberdrache": [
+   "Junge Silberdrache",
+   "Junge Silberdrachen",
+   "Jungen Silberdrache",
+   "Jungen Silberdrachen",
+   "Junger Silberdrache",
+   "Junger Silberdrachee",
+   "Junger Silberdracheen",
+   "Junger Silberdracheer",
+   "Junger Silberdracheern",
+   "Junger Silberdrachen",
+   "Junger Silberdrachenen",
+   "Junger Silberdraches"
+  ],
+  "Junger blauer Drache": [
+   "Junge blaue Drache",
+   "Junge blaue Drachen",
+   "Junge blauen Drache",
+   "Junge blauen Drachen",
+   "Junge blauer Drache",
+   "Junge blauer Drachen",
+   "Jungen blaue Drache",
+   "Jungen blaue Drachen",
+   "Jungen blauen Drache",
+   "Jungen blauen Drachen",
+   "Jungen blauer Drache",
+   "Jungen blauer Drachen",
+   "Junger blaue Drache",
+   "Junger blaue Drachen",
+   "Junger blauen Drache",
+   "Junger blauen Drachen",
+   "Junger blauer Drache",
+   "Junger blauer Drachee",
+   "Junger blauer Dracheen",
+   "Junger blauer Dracheer",
+   "Junger blauer Dracheern",
+   "Junger blauer Drachen",
+   "Junger blauer Drachenen",
+   "Junger blauer Draches"
+  ],
+  "Junger grüner Drache": [
+   "Junge grüne Drache",
+   "Junge grüne Drachen",
+   "Junge grünen Drache",
+   "Junge grünen Drachen",
+   "Junge grüner Drache",
+   "Junge grüner Drachen",
+   "Jungen grüne Drache",
+   "Jungen grüne Drachen",
+   "Jungen grünen Drache",
+   "Jungen grünen Drachen",
+   "Jungen grüner Drache",
+   "Jungen grüner Drachen",
+   "Junger grüne Drache",
+   "Junger grüne Drachen",
+   "Junger grünen Drache",
+   "Junger grünen Drachen",
+   "Junger grüner Drache",
+   "Junger grüner Drachee",
+   "Junger grüner Dracheen",
+   "Junger grüner Dracheer",
+   "Junger grüner Dracheern",
+   "Junger grüner Drachen",
+   "Junger grüner Drachenen",
+   "Junger grüner Draches"
+  ],
+  "Junger roter Drache": [
+   "Junge rote Drache",
+   "Junge rote Drachen",
+   "Junge roten Drache",
+   "Junge roten Drachen",
+   "Junge roter Drache",
+   "Junge roter Drachen",
+   "Jungen rote Drache",
+   "Jungen rote Drachen",
+   "Jungen roten Drache",
+   "Jungen roten Drachen",
+   "Jungen roter Drache",
+   "Jungen roter Drachen",
+   "Junger rote Drache",
+   "Junger rote Drachen",
+   "Junger roten Drache",
+   "Junger roten Drachen",
+   "Junger roter Drache",
+   "Junger roter Drachee",
+   "Junger roter Dracheen",
+   "Junger roter Dracheer",
+   "Junger roter Dracheern",
+   "Junger roter Drachen",
+   "Junger roter Drachenen",
+   "Junger roter Draches"
+  ],
+  "Junger schwarzer Drache": [
+   "Junge schwarze Drache",
+   "Junge schwarze Drachen",
+   "Junge schwarzen Drache",
+   "Junge schwarzen Drachen",
+   "Junge schwarzer Drache",
+   "Junge schwarzer Drachen",
+   "Jungen schwarze Drache",
+   "Jungen schwarze Drachen",
+   "Jungen schwarzen Drache",
+   "Jungen schwarzen Drachen",
+   "Jungen schwarzer Drache",
+   "Jungen schwarzer Drachen",
+   "Junger schwarze Drache",
+   "Junger schwarze Drachen",
+   "Junger schwarzen Drache",
+   "Junger schwarzen Drachen",
+   "Junger schwarzer Drache",
+   "Junger schwarzer Drachee",
+   "Junger schwarzer Dracheen",
+   "Junger schwarzer Dracheer",
+   "Junger schwarzer Dracheern",
+   "Junger schwarzer Drachen",
+   "Junger schwarzer Drachenen",
+   "Junger schwarzer Draches"
+  ],
+  "Junger weißer Drache": [
+   "Junge weiße Drache",
+   "Junge weiße Drachen",
+   "Junge weißen Drache",
+   "Junge weißen Drachen",
+   "Junge weißer Drache",
+   "Junge weißer Drachen",
+   "Jungen weiße Drache",
+   "Jungen weiße Drachen",
+   "Jungen weißen Drache",
+   "Jungen weißen Drachen",
+   "Jungen weißer Drache",
+   "Jungen weißer Drachen",
+   "Junger weiße Drache",
+   "Junger weiße Drachen",
+   "Junger weißen Drache",
+   "Junger weißen Drachen",
+   "Junger weißer Drache",
+   "Junger weißer Drachee",
+   "Junger weißer Dracheen",
+   "Junger weißer Dracheer",
+   "Junger weißer Dracheern",
+   "Junger weißer Drachen",
+   "Junger weißer Drachenen",
+   "Junger weißer Draches"
+  ],
+  "Kamel": [
+   "Kamele",
+   "Kamelen",
+   "Kameler",
+   "Kamelern",
+   "Kameln",
+   "Kamelnen",
+   "Kamels"
+  ],
+  "Katze": [
+   "Katzee",
+   "Katzeen",
+   "Katzeer",
+   "Katzeern",
+   "Katzen",
+   "Katzenen",
+   "Katzes"
+  ],
+  "Kettenteufel": [
+   "Kettenteufele",
+   "Kettenteufelen",
+   "Kettenteufeler",
+   "Kettenteufelern",
+   "Kettenteufeln",
+   "Kettenteufelnen",
+   "Kettenteufels"
+  ],
+  "Killerwal": [
+   "Killerwale",
+   "Killerwalen",
+   "Killerwaler",
+   "Killerwalern",
+   "Killerwaln",
+   "Killerwalnen",
+   "Killerwals"
+  ],
+  "Klingenteufel": [
+   "Klingenteufele",
+   "Klingenteufelen",
+   "Klingenteufeler",
+   "Klingenteufelern",
+   "Klingenteufeln",
+   "Klingenteufelnen",
+   "Klingenteufels"
+  ],
+  "Knochenteufel": [
+   "Knochenteufele",
+   "Knochenteufelen",
+   "Knochenteufeler",
+   "Knochenteufelern",
+   "Knochenteufeln",
+   "Knochenteufelnen",
+   "Knochenteufels"
+  ],
+  "Kobold": [
+   "Kobolde",
+   "Kobolden",
+   "Kobolder",
+   "Koboldern",
+   "Koboldn",
+   "Koboldnen",
+   "Kobolds"
+  ],
+  "Krabbe": [
+   "Krabbee",
+   "Krabbeen",
+   "Krabbeer",
+   "Krabbeern",
+   "Krabben",
+   "Krabbenen",
+   "Krabbes"
+  ],
+  "Kraken": [
+   "Krakene",
+   "Krakenen",
+   "Krakener",
+   "Krakenern",
+   "Krakenn",
+   "Krakennen",
+   "Krakens"
+  ],
+  "Kreischer": [
+   "Kreischere",
+   "Kreischeren",
+   "Kreischerer",
+   "Kreischerern",
+   "Kreischern",
+   "Kreischernen",
+   "Kreischers"
+  ],
+  "Krokodil": [
+   "Krokodile",
+   "Krokodilen",
+   "Krokodiler",
+   "Krokodilern",
+   "Krokodiln",
+   "Krokodilnen",
+   "Krokodils"
+  ],
+  "Kultfanatiker": [
+   "Kultfanatikere",
+   "Kultfanatikeren",
+   "Kultfanatikerer",
+   "Kultfanatikerern",
+   "Kultfanatikern",
+   "Kultfanatikernen",
+   "Kultfanatikers"
+  ],
+  "Kultist": [
+   "Kultiste",
+   "Kultisten",
+   "Kultister",
+   "Kultistern",
+   "Kultistn",
+   "Kultistnen",
+   "Kultists",
+   "Kultränker"
+  ],
+  "Kupferdrachennestling": [
+   "Kupferdrachennestlinge",
+   "Kupferdrachennestlingen",
+   "Kupferdrachennestlinger",
+   "Kupferdrachennestlingern",
+   "Kupferdrachennestlingn",
+   "Kupferdrachennestlingnen",
+   "Kupferdrachennestlings"
+  ],
+  "Lamia": [
+   "Lamiae",
+   "Lamiaen",
+   "Lamiaer",
+   "Lamiaern",
+   "Lamian",
+   "Lamianen",
+   "Lamias",
+   "Lamien"
+  ],
+  "Landhai": [
+   "Landhaie",
+   "Landhaien",
+   "Landhaier",
+   "Landhaiern",
+   "Landhain",
+   "Landhainen",
+   "Landhais"
+  ],
+  "Lehmgolem": [
+   "Lehmgoleme",
+   "Lehmgolemen",
+   "Lehmgolemer",
+   "Lehmgolemern",
+   "Lehmgolemn",
+   "Lehmgolemnen",
+   "Lehmgolems"
+  ],
+  "Lemure": [
+   "Lemuree",
+   "Lemureen",
+   "Lemureer",
+   "Lemureern",
+   "Lemuren",
+   "Lemurenen",
+   "Lemures"
+  ],
+  "Lich": [
+   "Liche",
+   "Lichen",
+   "Licher",
+   "Lichern",
+   "Lichn",
+   "Lichnen",
+   "Lichs"
+  ],
+  "Luftelementar": [
+   "Luftelementare",
+   "Luftelementaren",
+   "Luftelementarer",
+   "Luftelementarern",
+   "Luftelementarn",
+   "Luftelementarnen",
+   "Luftelementars"
+  ],
+  "Löwe": [
+   "Löwee",
+   "Löween",
+   "Löweer",
+   "Löweern",
+   "Löwen",
+   "Löwenen",
+   "Löwes"
+  ],
+  "Magier": [
+   "Magi",
+   "Magiere",
+   "Magieren",
+   "Magierer",
+   "Magierern",
+   "Magiern",
+   "Magiernen",
+   "Magiers",
+   "Magus"
+  ],
+  "Magma-Mephit": [
+   "Magma-Mephite",
+   "Magma-Mephiten",
+   "Magma-Mephiter",
+   "Magma-Mephitern",
+   "Magma-Mephitn",
+   "Magma-Mephitnen",
+   "Magma-Mephits"
+  ],
+  "Magmin": [
+   "Magmine",
+   "Magminen",
+   "Magminer",
+   "Magminern",
+   "Magminn",
+   "Magminnen",
+   "Magmins"
+  ],
+  "Mammut": [
+   "Mammute",
+   "Mammuten",
+   "Mammuter",
+   "Mammutern",
+   "Mammutn",
+   "Mammutnen",
+   "Mammuts"
+  ],
+  "Mantikor": [
+   "Mantikore",
+   "Mantikoren",
+   "Mantikorer",
+   "Mantikorern",
+   "Mantikorn",
+   "Mantikornen",
+   "Mantikors"
+  ],
+  "Mantler": [
+   "Mantlere",
+   "Mantleren",
+   "Mantlerer",
+   "Mantlerern",
+   "Mantlern",
+   "Mantlernen",
+   "Mantlers"
+  ],
+  "Marilith": [
+   "Marilithe",
+   "Marilithen",
+   "Marilither",
+   "Marilithern",
+   "Marilithn",
+   "Marilithnen",
+   "Mariliths"
+  ],
+  "Maultier": [
+   "Maultiere",
+   "Maultieren",
+   "Maultierer",
+   "Maultierern",
+   "Maultiern",
+   "Maultiernen",
+   "Maultiers"
+  ],
+  "Medusa": [
+   "Medusae",
+   "Medusaen",
+   "Medusaer",
+   "Medusaern",
+   "Medusan",
+   "Medusanen",
+   "Medusas",
+   "Medusen"
+  ],
+  "Meervolk": [
+   "Meervolke",
+   "Meervolken",
+   "Meervolker",
+   "Meervolkern",
+   "Meervolkn",
+   "Meervolknen",
+   "Meervolks"
+  ],
+  "Menschenaffe": [
+   "Menschenaffee",
+   "Menschenaffeen",
+   "Menschenaffeer",
+   "Menschenaffeern",
+   "Menschenaffen",
+   "Menschenaffenen",
+   "Menschenaffes"
+  ],
+  "Messingdrachennestling": [
+   "Messingdrachennestlinge",
+   "Messingdrachennestlingen",
+   "Messingdrachennestlinger",
+   "Messingdrachennestlingern",
+   "Messingdrachennestlingn",
+   "Messingdrachennestlingnen",
+   "Messingdrachennestlings"
+  ],
+  "Mimik": [
+   "Mimike",
+   "Mimiken",
+   "Mimiker",
+   "Mimikern",
+   "Mimikn",
+   "Mimiknen",
+   "Mimiks"
+  ],
+  "Minotaurus": [
+   "Minotauren",
+   "Minotauruse",
+   "Minotaurusen",
+   "Minotauruser",
+   "Minotaurusern",
+   "Minotaurusn",
+   "Minotaurusnen",
+   "Minotauruss"
+  ],
+  "Minotaurus-Skelett": [
+   "Minotaurus-Skelette",
+   "Minotaurus-Skeletten",
+   "Minotaurus-Skeletter",
+   "Minotaurus-Skelettern",
+   "Minotaurus-Skelettn",
+   "Minotaurus-Skelettnen",
+   "Minotaurus-Skeletts"
+  ],
+  "Modernder Schlurfer": [
+   "Modernde Schlurfer",
+   "Moderndem Schlurfer",
+   "Modernder Schlurfere",
+   "Modernder Schlurferen",
+   "Modernder Schlurferer",
+   "Modernder Schlurferern",
+   "Modernder Schlurfern",
+   "Modernder Schlurfernen",
+   "Modernder Schlurfers"
+  ],
+  "Mumie": [
+   "Mumiee",
+   "Mumieen",
+   "Mumieer",
+   "Mumieern",
+   "Mumien",
+   "Mumienen",
+   "Mumies"
+  ],
+  "Mumienfürst": [
+   "Mumienfürste",
+   "Mumienfürsten",
+   "Mumienfürster",
+   "Mumienfürstern",
+   "Mumienfürstn",
+   "Mumienfürstnen",
+   "Mumienfürsts"
+  ],
+  "Nachtmahr": [
+   "Nachtmahre",
+   "Nachtmahren",
+   "Nachtmahrer",
+   "Nachtmahrern",
+   "Nachtmahrn",
+   "Nachtmahrnen",
+   "Nachtmahrs"
+  ],
+  "Nachtvettel": [
+   "Nachtvettele",
+   "Nachtvettelen",
+   "Nachtvetteler",
+   "Nachtvettelern",
+   "Nachtvetteln",
+   "Nachtvettelnen",
+   "Nachtvettels"
+  ],
+  "Nalfeshnee": [
+   "Nalfeshneee",
+   "Nalfeshneeen",
+   "Nalfeshneeer",
+   "Nalfeshneeern",
+   "Nalfeshneen",
+   "Nalfeshneenen",
+   "Nalfeshnees"
+  ],
+  "Nashorn": [
+   "Nashorne",
+   "Nashornen",
+   "Nashorner",
+   "Nashornern",
+   "Nashornn",
+   "Nashornnen",
+   "Nashorns",
+   "Nashörner"
+  ],
+  "Ockergallerte": [
+   "Ockergallertee",
+   "Ockergallerteen",
+   "Ockergallerteer",
+   "Ockergallerteern",
+   "Ockergallerten",
+   "Ockergallertenen",
+   "Ockergallertes"
+  ],
+  "Oger": [
+   "Ogere",
+   "Ogeren",
+   "Ogerer",
+   "Ogerern",
+   "Ogern",
+   "Ogernen",
+   "Ogers"
+  ],
+  "Ogerzombie": [
+   "Ogerzombiee",
+   "Ogerzombieen",
+   "Ogerzombieer",
+   "Ogerzombieern",
+   "Ogerzombien",
+   "Ogerzombienen",
+   "Ogerzombies"
+  ],
+  "Oktopus": [
+   "Oktopuse",
+   "Oktopusen",
+   "Oktopuser",
+   "Oktopusern",
+   "Oktopusn",
+   "Oktopusnen",
+   "Oktopuss"
+  ],
+  "Oni": [
+   "Onie",
+   "Onien",
+   "Onier",
+   "Oniern",
+   "Onin",
+   "Oninen",
+   "Onis"
+  ],
+  "Ork": [
+   "Orke",
+   "Orken",
+   "Orker",
+   "Orkern",
+   "Orkn",
+   "Orknen",
+   "Orks"
+  ],
+  "Otyugh": [
+   "Otyughe",
+   "Otyughen",
+   "Otyugher",
+   "Otyughern",
+   "Otyughn",
+   "Otyughnen",
+   "Otyughs"
+  ],
+  "Panther": [
+   "Panthere",
+   "Pantheren",
+   "Pantherer",
+   "Pantherern",
+   "Panthern",
+   "Panthernen",
+   "Panthers"
+  ],
+  "Pavian": [
+   "Paviane",
+   "Pavianen",
+   "Pavianer",
+   "Pavianern",
+   "Paviann",
+   "Paviannen",
+   "Pavians"
+  ],
+  "Pegasus": [
+   "Pegasi",
+   "Pegasuse",
+   "Pegasusen",
+   "Pegasuser",
+   "Pegasusern",
+   "Pegasusn",
+   "Pegasusnen",
+   "Pegasuss"
+  ],
+  "Pferdegreif": [
+   "Pferdegreife",
+   "Pferdegreifen",
+   "Pferdegreifer",
+   "Pferdegreifern",
+   "Pferdegreifn",
+   "Pferdegreifnen",
+   "Pferdegreifs"
+  ],
+  "Phasenspinne": [
+   "Phasenspinnee",
+   "Phasenspinneen",
+   "Phasenspinneer",
+   "Phasenspinneern",
+   "Phasenspinnen",
+   "Phasenspinnenen",
+   "Phasenspinnes"
+  ],
+  "Planetar": [
+   "Planetare",
+   "Planetaren",
+   "Planetarer",
+   "Planetarern",
+   "Planetarn",
+   "Planetarnen",
+   "Planetars"
+  ],
+  "Plapperndes Hundertmaul": [
+   "Plappernde Hundertmäuler",
+   "Plapperndes Hundertmaule",
+   "Plapperndes Hundertmaulen",
+   "Plapperndes Hundertmauler",
+   "Plapperndes Hundertmaulern",
+   "Plapperndes Hundertmauln",
+   "Plapperndes Hundertmaulnen",
+   "Plapperndes Hundertmauls"
+  ],
+  "Plesiosaurier": [
+   "Plesiosauriere",
+   "Plesiosaurieren",
+   "Plesiosaurierer",
+   "Plesiosaurierern",
+   "Plesiosauriern",
+   "Plesiosauriernen",
+   "Plesiosauriers",
+   "Plesiosaurus"
+  ],
+  "Pony": [
+   "Ponye",
+   "Ponyen",
+   "Ponyer",
+   "Ponyern",
+   "Ponyn",
+   "Ponynen",
+   "Ponys"
+  ],
+  "Priester": [
+   "Priestere",
+   "Priesteren",
+   "Priesterer",
+   "Priesterern",
+   "Priestern",
+   "Priesternen",
+   "Priesters"
+  ],
+  "Pseudodrache": [
+   "Pseudodrachee",
+   "Pseudodracheen",
+   "Pseudodracheer",
+   "Pseudodracheern",
+   "Pseudodrachen",
+   "Pseudodrachenen",
+   "Pseudodraches"
+  ],
+  "Purpurwurm": [
+   "Purpurwurme",
+   "Purpurwurmen",
+   "Purpurwurmer",
+   "Purpurwurmern",
+   "Purpurwurmn",
+   "Purpurwurmnen",
+   "Purpurwurms",
+   "Purpurwürmer"
+  ],
+  "Quasit": [
+   "Quasite",
+   "Quasiten",
+   "Quasiter",
+   "Quasitern",
+   "Quasitn",
+   "Quasitnen",
+   "Quasits"
+  ],
+  "Quipper": [
+   "Quippere",
+   "Quipperen",
+   "Quipperer",
+   "Quipperern",
+   "Quippern",
+   "Quippernen",
+   "Quippers"
+  ],
+  "Quippernschwarm": [
+   "Quippernschwarme",
+   "Quippernschwarmen",
+   "Quippernschwarmer",
+   "Quippernschwarmern",
+   "Quippernschwarmn",
+   "Quippernschwarmnen",
+   "Quippernschwarms",
+   "Schwarm von Quippern",
+   "Schwärme von Quippern",
+   "Schwärmen von Quippern"
+  ],
+  "Rabe": [
+   "Rabee",
+   "Rabeen",
+   "Rabeer",
+   "Rabeern",
+   "Raben",
+   "Rabenen",
+   "Rabes"
+  ],
+  "Rabenschwarm": [
+   "Rabenschwarme",
+   "Rabenschwarmen",
+   "Rabenschwarmer",
+   "Rabenschwarmern",
+   "Rabenschwarmn",
+   "Rabenschwarmnen",
+   "Rabenschwarms",
+   "Rabenschwärme",
+   "Schwarm von Raben",
+   "Schwärme von Raben",
+   "Schwärmen von Raben"
+  ],
+  "Rakshasa": [
+   "Rakshasae",
+   "Rakshasaen",
+   "Rakshasaer",
+   "Rakshasaern",
+   "Rakshasan",
+   "Rakshasanen",
+   "Rakshasas"
+  ],
+  "Ratte": [
+   "Rattee",
+   "Ratteen",
+   "Ratteer",
+   "Ratteern",
+   "Ratten",
+   "Rattenen",
+   "Rattes"
+  ],
+  "Rattenschwarm": [
+   "Rattenschwarme",
+   "Rattenschwarmen",
+   "Rattenschwarmer",
+   "Rattenschwarmern",
+   "Rattenschwarmn",
+   "Rattenschwarmnen",
+   "Rattenschwarms",
+   "Schwarm von Ratten",
+   "Schwärme von Ratten",
+   "Schwärmen von Ratten"
+  ],
+  "Reh": [
+   "Rehe",
+   "Rehen",
+   "Reher",
+   "Rehern",
+   "Rehn",
+   "Rehnen",
+   "Rehs"
+  ],
+  "Reitpferd": [
+   "Reitpferde",
+   "Reitpferden",
+   "Reitpferder",
+   "Reitpferdern",
+   "Reitpferdn",
+   "Reitpferdnen",
+   "Reitpferds"
+  ],
+  "Remorhaz": [
+   "Remorhaze",
+   "Remorhazen",
+   "Remorhazer",
+   "Remorhazern",
+   "Remorhazn",
+   "Remorhaznen",
+   "Remorhazs"
+  ],
+  "Riesenadler": [
+   "Riesenadlere",
+   "Riesenadleren",
+   "Riesenadlerer",
+   "Riesenadlerern",
+   "Riesenadlern",
+   "Riesenadlernen",
+   "Riesenadlers"
+  ],
+  "Riesenaffe": [
+   "Riesenaffee",
+   "Riesenaffeen",
+   "Riesenaffeer",
+   "Riesenaffeern",
+   "Riesenaffen",
+   "Riesenaffenen",
+   "Riesenaffes",
+   "Riesenmenschenaffe",
+   "Riesenmenschenaffen"
+  ],
+  "Riesendachs": [
+   "Riesendachse",
+   "Riesendachsen",
+   "Riesendachser",
+   "Riesendachsern",
+   "Riesendachsn",
+   "Riesendachsnen",
+   "Riesendachss"
+  ],
+  "Rieseneber": [
+   "Riesenebere",
+   "Rieseneberen",
+   "Rieseneberer",
+   "Rieseneberern",
+   "Riesenebern",
+   "Riesenebernen",
+   "Riesenebers",
+   "Riesenreber"
+  ],
+  "Rieseneidechse": [
+   "Rieseneidechsee",
+   "Rieseneidechseen",
+   "Rieseneidechseer",
+   "Rieseneidechseern",
+   "Rieseneidechsen",
+   "Rieseneidechsenen",
+   "Rieseneidechses"
+  ],
+  "Riesenelch": [
+   "Riesenelche",
+   "Riesenelchen",
+   "Riesenelcher",
+   "Riesenelchern",
+   "Riesenelchn",
+   "Riesenelchnen",
+   "Riesenelchs"
+  ],
+  "Rieseneule": [
+   "Rieseneulee",
+   "Rieseneuleen",
+   "Rieseneuleer",
+   "Rieseneuleern",
+   "Rieseneulen",
+   "Rieseneulenen",
+   "Rieseneules"
+  ],
+  "Riesenfeuerkäfer": [
+   "Riesenfeuerkäfere",
+   "Riesenfeuerkäferen",
+   "Riesenfeuerkäferer",
+   "Riesenfeuerkäferern",
+   "Riesenfeuerkäfern",
+   "Riesenfeuerkäfernen",
+   "Riesenfeuerkäfers"
+  ],
+  "Riesenfledermaus": [
+   "Riesenfledermause",
+   "Riesenfledermausen",
+   "Riesenfledermauser",
+   "Riesenfledermausern",
+   "Riesenfledermausn",
+   "Riesenfledermausnen",
+   "Riesenfledermauss",
+   "Riesenfledermäuse"
+  ],
+  "Riesenfrosch": [
+   "Riesenfrosche",
+   "Riesenfroschen",
+   "Riesenfroscher",
+   "Riesenfroschern",
+   "Riesenfroschn",
+   "Riesenfroschnen",
+   "Riesenfroschs",
+   "Riesenfrösche",
+   "Riesenfröschen"
+  ],
+  "Riesengeier": [
+   "Riesengeiere",
+   "Riesengeieren",
+   "Riesengeierer",
+   "Riesengeierern",
+   "Riesengeiern",
+   "Riesengeiernen",
+   "Riesengeiers"
+  ],
+  "Riesengiftschlange": [
+   "Riesengiftschlangee",
+   "Riesengiftschlangeen",
+   "Riesengiftschlangeer",
+   "Riesengiftschlangeern",
+   "Riesengiftschlangen",
+   "Riesengiftschlangenen",
+   "Riesengiftschlanges"
+  ],
+  "Riesenhai": [
+   "Riesenhaie",
+   "Riesenhaien",
+   "Riesenhaier",
+   "Riesenhaiern",
+   "Riesenhain",
+   "Riesenhainen",
+   "Riesenhais"
+  ],
+  "Riesenhyäne": [
+   "Riesenhyänee",
+   "Riesenhyäneen",
+   "Riesenhyäneer",
+   "Riesenhyäneern",
+   "Riesenhyänen",
+   "Riesenhyänenen",
+   "Riesenhyänes"
+  ],
+  "Riesenkrabbe": [
+   "Riesenkrabbee",
+   "Riesenkrabbeen",
+   "Riesenkrabbeer",
+   "Riesenkrabbeern",
+   "Riesenkrabben",
+   "Riesenkrabbenen",
+   "Riesenkrabbes"
+  ],
+  "Riesenkrokodil": [
+   "Riesenkrokodile",
+   "Riesenkrokodilen",
+   "Riesenkrokodiler",
+   "Riesenkrokodilern",
+   "Riesenkrokodiln",
+   "Riesenkrokodilnen",
+   "Riesenkrokodils"
+  ],
+  "Riesenkröte": [
+   "Riesenkrote",
+   "Riesenkrötee",
+   "Riesenkröteen",
+   "Riesenkröteer",
+   "Riesenkröteern",
+   "Riesenkröten",
+   "Riesenkrötenen",
+   "Riesenkrötes"
+  ],
+  "Riesenoktopus": [
+   "Riesenoktopuse",
+   "Riesenoktopusen",
+   "Riesenoktopuser",
+   "Riesenoktopusern",
+   "Riesenoktopusn",
+   "Riesenoktopusnen",
+   "Riesenoktopuss"
+  ],
+  "Riesenratte": [
+   "Riesenrattee",
+   "Riesenratteen",
+   "Riesenratteer",
+   "Riesenratteern",
+   "Riesenratten",
+   "Riesenrattenen",
+   "Riesenrattes"
+  ],
+  "Riesenseepferdchen": [
+   "Riesenseepferdchene",
+   "Riesenseepferdchenen",
+   "Riesenseepferdchener",
+   "Riesenseepferdchenern",
+   "Riesenseepferdchenn",
+   "Riesenseepferdchennen",
+   "Riesenseepferdchens"
+  ],
+  "Riesenskorpion": [
+   "Riesenskorpione",
+   "Riesenskorpionen",
+   "Riesenskorpioner",
+   "Riesenskorpionern",
+   "Riesenskorpionn",
+   "Riesenskorpionnen",
+   "Riesenskorpions"
+  ],
+  "Riesenspinne": [
+   "Riesenspinnee",
+   "Riesenspinneen",
+   "Riesenspinneer",
+   "Riesenspinneern",
+   "Riesenspinnen",
+   "Riesenspinnenen",
+   "Riesenspinnes"
+  ],
+  "Riesentausendfüßler": [
+   "Riesentausendfüßlere",
+   "Riesentausendfüßleren",
+   "Riesentausendfüßlerer",
+   "Riesentausendfüßlerern",
+   "Riesentausendfüßlern",
+   "Riesentausendfüßlernen",
+   "Riesentausendfüßlers"
+  ],
+  "Riesenwespe": [
+   "Riesenwespee",
+   "Riesenwespeen",
+   "Riesenwespeer",
+   "Riesenwespeern",
+   "Riesenwespen",
+   "Riesenwespenen",
+   "Riesenwespes"
+  ],
+  "Riesenwiesel": [
+   "Riesenwiesele",
+   "Riesenwieselen",
+   "Riesenwieseler",
+   "Riesenwieselern",
+   "Riesenwieseln",
+   "Riesenwieselnen",
+   "Riesenwiesels"
+  ],
+  "Riesenwolfsspinne": [
+   "Riesenwolfspinne",
+   "Riesenwolfspinnen",
+   "Riesenwolfsspinnee",
+   "Riesenwolfsspinneen",
+   "Riesenwolfsspinneer",
+   "Riesenwolfsspinneern",
+   "Riesenwolfsspinnen",
+   "Riesenwolfsspinnenen",
+   "Riesenwolfsspinnes"
+  ],
+  "Riesenwürgeschlange": [
+   "Riesenwürgeschlangee",
+   "Riesenwürgeschlangeen",
+   "Riesenwürgeschlangeer",
+   "Riesenwürgeschlangeern",
+   "Riesenwürgeschlangen",
+   "Riesenwürgeschlangenen",
+   "Riesenwürgeschlanges"
+  ],
+  "Riesenziege": [
+   "Riesenziegee",
+   "Riesenziegeen",
+   "Riesenziegeer",
+   "Riesenziegeern",
+   "Riesenziegen",
+   "Riesenziegenen",
+   "Riesenzieges"
+  ],
+  "Riffhai": [
+   "Rifffhaie",
+   "Riffhaie",
+   "Riffhaien",
+   "Riffhaier",
+   "Riffhaiern",
+   "Riffhain",
+   "Riffhainen",
+   "Riffhais"
+  ],
+  "Ritter": [
+   "Rittere",
+   "Ritteren",
+   "Ritterer",
+   "Ritterern",
+   "Rittern",
+   "Ritternen",
+   "Ritters"
+  ],
+  "Roch": [
+   "Roche",
+   "Rochen",
+   "Rocher",
+   "Rochern",
+   "Rochn",
+   "Rochnen",
+   "Rochs"
+  ],
+  "Rostmonster": [
+   "Rostmonstere",
+   "Rostmonsteren",
+   "Rostmonsterer",
+   "Rostmonsterern",
+   "Rostmonstern",
+   "Rostmonsternen",
+   "Rostmonsters"
+  ],
+  "Roter Drachennestling": [
+   "Roter Drachennestlinge",
+   "Roter Drachennestlingen",
+   "Roter Drachennestlinger",
+   "Roter Drachennestlingern",
+   "Roter Drachennestlingn",
+   "Roter Drachennestlingnen",
+   "Roter Drachennestlings"
+  ],
+  "Sahuagin": [
+   "Sahaugin",
+   "Sahuagine",
+   "Sahuaginen",
+   "Sahuaginer",
+   "Sahuaginern",
+   "Sahuaginn",
+   "Sahuaginnen",
+   "Sahuagins"
+  ],
+  "Salamander": [
+   "Salamandere",
+   "Salamanderen",
+   "Salamanderer",
+   "Salamanderern",
+   "Salamandern",
+   "Salamandernen",
+   "Salamanders"
+  ],
+  "Satyr": [
+   "Satyre",
+   "Satyren",
+   "Satyrer",
+   "Satyrern",
+   "Satyrn",
+   "Satyrnen",
+   "Satyrs"
+  ],
+  "Schakal": [
+   "Schakale",
+   "Schakalen",
+   "Schakaler",
+   "Schakalern",
+   "Schakaln",
+   "Schakalnen",
+   "Schakals"
+  ],
+  "Schatten": [
+   "Schattene",
+   "Schattenen",
+   "Schattener",
+   "Schattenern",
+   "Schattenn",
+   "Schattennen",
+   "Schattens"
+  ],
+  "Schildwächter": [
+   "Schildwächtere",
+   "Schildwächteren",
+   "Schildwächterer",
+   "Schildwächterern",
+   "Schildwächtern",
+   "Schildwächternen",
+   "Schildwächters"
+  ],
+  "Schläger": [
+   "Schlägere",
+   "Schlägeren",
+   "Schlägerer",
+   "Schlägerern",
+   "Schlägern",
+   "Schlägernen",
+   "Schlägers"
+  ],
+  "Schreckenswolf": [
+   "Schreckenswolfe",
+   "Schreckenswolfen",
+   "Schreckenswolfer",
+   "Schreckenswolfern",
+   "Schreckenswolfn",
+   "Schreckenswolfnen",
+   "Schreckenswolfs",
+   "Schreckenswölfe",
+   "Schreckenswölfen"
+  ],
+  "Schreckgespenst": [
+   "Schreckgespenste",
+   "Schreckgespensten",
+   "Schreckgespenster",
+   "Schreckgespenstern",
+   "Schreckgespenstn",
+   "Schreckgespenstnen",
+   "Schreckgespensts"
+  ],
+  "Schreckhahn": [
+   "Schreckhahne",
+   "Schreckhahnen",
+   "Schreckhahner",
+   "Schreckhahnern",
+   "Schreckhahnn",
+   "Schreckhahnnen",
+   "Schreckhahns",
+   "Schreckhähne"
+  ],
+  "Schwarzbär": [
+   "Schwarzbäre",
+   "Schwarzbären",
+   "Schwarzbärer",
+   "Schwarzbärern",
+   "Schwarzbärn",
+   "Schwarzbärnen",
+   "Schwarzbärs"
+  ],
+  "Schwarzer Blob": [
+   "Schwarze Blobs",
+   "Schwarzer Blobe",
+   "Schwarzer Bloben",
+   "Schwarzer Blober",
+   "Schwarzer Blobern",
+   "Schwarzer Blobn",
+   "Schwarzer Blobnen",
+   "Schwarzer Blobs"
+  ],
+  "Schwarzer Drachennestling": [
+   "Schwarzer Drachennestlinge",
+   "Schwarzer Drachennestlingen",
+   "Schwarzer Drachennestlinger",
+   "Schwarzer Drachennestlingern",
+   "Schwarzer Drachennestlingn",
+   "Schwarzer Drachennestlingnen",
+   "Schwarzer Drachennestlings"
+  ],
+  "Seeoger": [
+   "Seeger",
+   "Seegern",
+   "Seeoger",
+   "Seeogere",
+   "Seeogeren",
+   "Seeogerer",
+   "Seeogerern",
+   "Seeogern",
+   "Seeogernen",
+   "Seeogers"
+  ],
+  "Seepferdchen": [
+   "Seepferdchene",
+   "Seepferdchenen",
+   "Seepferdchener",
+   "Seepferdchenern",
+   "Seepferdchenn",
+   "Seepferdchennen",
+   "Seepferdchens"
+  ],
+  "Seevettel": [
+   "Seevettele",
+   "Seevettelen",
+   "Seevetteler",
+   "Seevettelern",
+   "Seevetteln",
+   "Seevettelnen",
+   "Seevettels"
+  ],
+  "Seiler": [
+   "Seilere",
+   "Seileren",
+   "Seilerer",
+   "Seilerern",
+   "Seilern",
+   "Seilernen",
+   "Seilers"
+  ],
+  "Silberdrachennestling": [
+   "Silberdrachennestlinge",
+   "Silberdrachennestlingen",
+   "Silberdrachennestlinger",
+   "Silberdrachennestlingern",
+   "Silberdrachennestlingn",
+   "Silberdrachennestlingnen",
+   "Silberdrachennestlings"
+  ],
+  "Skelett": [
+   "Skelette",
+   "Skeletten",
+   "Skeletter",
+   "Skelettern",
+   "Skelettn",
+   "Skelettnen",
+   "Skeletts"
+  ],
+  "Skorpion": [
+   "Skorpione",
+   "Skorpionen",
+   "Skorpioner",
+   "Skorpionern",
+   "Skorpionn",
+   "Skorpionnen",
+   "Skorpions"
+  ],
+  "Solar": [
+   "Solare",
+   "Solaren",
+   "Solarer",
+   "Solarern",
+   "Solarn",
+   "Solarnen",
+   "Solars"
+  ],
+  "Spinne": [
+   "Spinnee",
+   "Spinneen",
+   "Spinneer",
+   "Spinneern",
+   "Spinnen",
+   "Spinnenen",
+   "Spinnes"
+  ],
+  "Spion": [
+   "Spione",
+   "Spionen",
+   "Spioner",
+   "Spionern",
+   "Spionn",
+   "Spionnen",
+   "Spions"
+  ],
+  "Späher": [
+   "Kundschafter",
+   "Kundschaftern",
+   "Spähere",
+   "Späheren",
+   "Späherer",
+   "Späherern",
+   "Spähern",
+   "Spähernen",
+   "Spähers"
+  ],
+  "Stammeskrieger": [
+   "Stammeskriegere",
+   "Stammeskriegeren",
+   "Stammeskriegerer",
+   "Stammeskriegerern",
+   "Stammeskriegern",
+   "Stammeskriegernen",
+   "Stammeskriegers"
+  ],
+  "Staub-Mephit": [
+   "Staub-Mephite",
+   "Staub-Mephiten",
+   "Staub-Mephiter",
+   "Staub-Mephitern",
+   "Staub-Mephitn",
+   "Staub-Mephitnen",
+   "Staub-Mephits"
+  ],
+  "Steingolem": [
+   "Steingoleme",
+   "Steingolemen",
+   "Steingolemer",
+   "Steingolemern",
+   "Steingolemn",
+   "Steingolemnen",
+   "Steingolems"
+  ],
+  "Steinriese": [
+   "Steinriesee",
+   "Steinrieseen",
+   "Steinrieseer",
+   "Steinrieseern",
+   "Steinriesen",
+   "Steinriesenen",
+   "Steinrieses"
+  ],
+  "Streitross": [
+   "Streitrosse",
+   "Streitrossen",
+   "Streitrosser",
+   "Streitrossern",
+   "Streitrossn",
+   "Streitrossnen",
+   "Streitrosss"
+  ],
+  "Streitross-Skelett": [
+   "Streitross-Skelette",
+   "Streitross-Skeletten",
+   "Streitross-Skeletter",
+   "Streitross-Skelettern",
+   "Streitross-Skelettn",
+   "Streitross-Skelettnen",
+   "Streitross-Skeletts"
+  ],
+  "Sturmriese": [
+   "Sturmriesee",
+   "Sturmrieseen",
+   "Sturmrieseer",
+   "Sturmrieseern",
+   "Sturmriesen",
+   "Sturmriesenen",
+   "Sturmrieses"
+  ],
+  "Sukkubus/Inkubus": [
+   "Inkubi",
+   "Inkubus",
+   "Sukkubi",
+   "Sukkubus"
+  ],
+  "Säbelzahntiger": [
+   "Säbelzahntigere",
+   "Säbelzahntigeren",
+   "Säbelzahntigerer",
+   "Säbelzahntigerern",
+   "Säbelzahntigern",
+   "Säbelzahntigernen",
+   "Säbelzahntigers"
+  ],
+  "Tarraske": [
+   "Tarraskee",
+   "Tarraskeen",
+   "Tarraskeer",
+   "Tarraskeern",
+   "Tarrasken",
+   "Tarraskenen",
+   "Tarraskes"
+  ],
+  "Teppich des Erstickens": [
+   "Teppich des Erstickense",
+   "Teppich des Erstickensen",
+   "Teppich des Erstickenser",
+   "Teppich des Erstickensern",
+   "Teppich des Erstickensn",
+   "Teppich des Erstickensnen",
+   "Teppich des Erstickenss"
+  ],
+  "Teufelchen": [
+   "Teufelchene",
+   "Teufelchenen",
+   "Teufelchener",
+   "Teufelchenern",
+   "Teufelchenn",
+   "Teufelchennen",
+   "Teufelchens"
+  ],
+  "Tiger": [
+   "Tigere",
+   "Tigeren",
+   "Tigerer",
+   "Tigerern",
+   "Tigern",
+   "Tigernen",
+   "Tigers"
+  ],
+  "Todesalb": [
+   "Todesalbe",
+   "Todesalben",
+   "Todesalber",
+   "Todesalbern",
+   "Todesalbn",
+   "Todesalbnen",
+   "Todesalbs"
+  ],
+  "Todeshund": [
+   "Todeshunde",
+   "Todeshunden",
+   "Todeshunder",
+   "Todeshundern",
+   "Todeshundn",
+   "Todeshundnen",
+   "Todeshunds"
+  ],
+  "Triceratops": [
+   "Triceratopse",
+   "Triceratopsen",
+   "Triceratopser",
+   "Triceratopsern",
+   "Triceratopsn",
+   "Triceratopsnen",
+   "Triceratopss"
+  ],
+  "Troll": [
+   "Trolle",
+   "Trollen",
+   "Troller",
+   "Trollern",
+   "Trolln",
+   "Trollnen",
+   "Trolls"
+  ],
+  "Tyrannosaurus Rex": [
+   "Tyrannosaurus Rexe",
+   "Tyrannosaurus Rexen",
+   "Tyrannosaurus Rexer",
+   "Tyrannosaurus Rexern",
+   "Tyrannosaurus Rexn",
+   "Tyrannosaurus Rexnen",
+   "Tyrannosaurus Rexs"
+  ],
+  "Unsichtbarer Pirscher": [
+   "Unsichtbare Pirscher",
+   "Unsichtbarer Pirschere",
+   "Unsichtbarer Pirscheren",
+   "Unsichtbarer Pirscherer",
+   "Unsichtbarer Pirscherern",
+   "Unsichtbarer Pirschern",
+   "Unsichtbarer Pirschernen",
+   "Unsichtbarer Pirscherr",
+   "Unsichtbarer Pirschers"
+  ],
+  "Uralter Bronzedrache": [
+   "Uralte Bronzdrache",
+   "Uralte Bronzdrachen",
+   "Uralte Bronzedrache",
+   "Uralte Bronzedrachen",
+   "Uralten Bronzdrache",
+   "Uralten Bronzdrachen",
+   "Uralten Bronzedrache",
+   "Uralten Bronzedrachen",
+   "Uralter Bronzdrache",
+   "Uralter Bronzdrachen",
+   "Uralter Bronzedrache",
+   "Uralter Bronzedrachee",
+   "Uralter Bronzedracheen",
+   "Uralter Bronzedracheer",
+   "Uralter Bronzedracheern",
+   "Uralter Bronzedrachen",
+   "Uralter Bronzedrachenen",
+   "Uralter Bronzedraches"
+  ],
+  "Uralter Golddrache": [
+   "Uralte Golddrache",
+   "Uralte Golddrachen",
+   "Uralten Golddrache",
+   "Uralten Golddrachen",
+   "Uralter Golddrache",
+   "Uralter Golddrachee",
+   "Uralter Golddracheen",
+   "Uralter Golddracheer",
+   "Uralter Golddracheern",
+   "Uralter Golddrachen",
+   "Uralter Golddrachenen",
+   "Uralter Golddraches"
+  ],
+  "Uralter Kupferdrache": [
+   "Uralte Kupferdrache",
+   "Uralte Kupferdrachen",
+   "Uralten Kupferdrache",
+   "Uralten Kupferdrachen",
+   "Uralter Kupferdrache",
+   "Uralter Kupferdrachee",
+   "Uralter Kupferdracheen",
+   "Uralter Kupferdracheer",
+   "Uralter Kupferdracheern",
+   "Uralter Kupferdrachen",
+   "Uralter Kupferdrachenen",
+   "Uralter Kupferdraches"
+  ],
+  "Uralter Messingdrache": [
+   "Uralte Messingdrache",
+   "Uralte Messingdrachen",
+   "Uralten Messingdrache",
+   "Uralten Messingdrachen",
+   "Uralter Messingdrache",
+   "Uralter Messingdrachee",
+   "Uralter Messingdracheen",
+   "Uralter Messingdracheer",
+   "Uralter Messingdracheern",
+   "Uralter Messingdrachen",
+   "Uralter Messingdrachenen",
+   "Uralter Messingdraches"
+  ],
+  "Uralter Silberdrache": [
+   "Uralte Silberdrache",
+   "Uralte Silberdrachen",
+   "Uralten Silberdrache",
+   "Uralten Silberdrachen",
+   "Uralter Silberdrache",
+   "Uralter Silberdrachee",
+   "Uralter Silberdracheen",
+   "Uralter Silberdracheer",
+   "Uralter Silberdracheern",
+   "Uralter Silberdrachen",
+   "Uralter Silberdrachenen",
+   "Uralter Silberdraches"
+  ],
+  "Uralter blauer Drache": [
+   "Uralte blaue Drache",
+   "Uralte blaue Drachen",
+   "Uralte blauen Drache",
+   "Uralte blauen Drachen",
+   "Uralte blauer Drache",
+   "Uralte blauer Drachen",
+   "Uralten blaue Drache",
+   "Uralten blaue Drachen",
+   "Uralten blauen Drache",
+   "Uralten blauen Drachen",
+   "Uralten blauer Drache",
+   "Uralten blauer Drachen",
+   "Uralter blaue Drache",
+   "Uralter blaue Drachen",
+   "Uralter blauen Drache",
+   "Uralter blauen Drachen",
+   "Uralter blauer Drache",
+   "Uralter blauer Drachee",
+   "Uralter blauer Dracheen",
+   "Uralter blauer Dracheer",
+   "Uralter blauer Dracheern",
+   "Uralter blauer Drachen",
+   "Uralter blauer Drachenen",
+   "Uralter blauer Draches"
+  ],
+  "Uralter grüner Drache": [
+   "Uralte grüne Drache",
+   "Uralte grüne Drachen",
+   "Uralte grünen Drache",
+   "Uralte grünen Drachen",
+   "Uralte grüner Drache",
+   "Uralte grüner Drachen",
+   "Uralten grüne Drache",
+   "Uralten grüne Drachen",
+   "Uralten grünen Drache",
+   "Uralten grünen Drachen",
+   "Uralten grüner Drache",
+   "Uralten grüner Drachen",
+   "Uralter grüne Drache",
+   "Uralter grüne Drachen",
+   "Uralter grünen Drache",
+   "Uralter grünen Drachen",
+   "Uralter grüner Drache",
+   "Uralter grüner Drachee",
+   "Uralter grüner Dracheen",
+   "Uralter grüner Dracheer",
+   "Uralter grüner Dracheern",
+   "Uralter grüner Drachen",
+   "Uralter grüner Drachenen",
+   "Uralter grüner Draches"
+  ],
+  "Uralter roter Drache": [
+   "Uralte rote Drache",
+   "Uralte rote Drachen",
+   "Uralte roten Drache",
+   "Uralte roten Drachen",
+   "Uralte roter Drache",
+   "Uralte roter Drachen",
+   "Uralten rote Drache",
+   "Uralten rote Drachen",
+   "Uralten roten Drache",
+   "Uralten roten Drachen",
+   "Uralten roter Drache",
+   "Uralten roter Drachen",
+   "Uralter rote Drache",
+   "Uralter rote Drachen",
+   "Uralter roten Drache",
+   "Uralter roten Drachen",
+   "Uralter roter Drache",
+   "Uralter roter Drachee",
+   "Uralter roter Dracheen",
+   "Uralter roter Dracheer",
+   "Uralter roter Dracheern",
+   "Uralter roter Drachen",
+   "Uralter roter Drachenen",
+   "Uralter roter Draches"
+  ],
+  "Uralter schwarzer Drache": [
+   "Uralte schwarze Drache",
+   "Uralte schwarze Drachen",
+   "Uralte schwarzen Drache",
+   "Uralte schwarzen Drachen",
+   "Uralte schwarzer Drache",
+   "Uralte schwarzer Drachen",
+   "Uralten schwarze Drache",
+   "Uralten schwarze Drachen",
+   "Uralten schwarzen Drache",
+   "Uralten schwarzen Drachen",
+   "Uralten schwarzer Drache",
+   "Uralten schwarzer Drachen",
+   "Uralter schwarze Drache",
+   "Uralter schwarze Drachen",
+   "Uralter schwarzen Drache",
+   "Uralter schwarzen Drachen",
+   "Uralter schwarzer Drache",
+   "Uralter schwarzer Drachee",
+   "Uralter schwarzer Dracheen",
+   "Uralter schwarzer Dracheer",
+   "Uralter schwarzer Dracheern",
+   "Uralter schwarzer Drachen",
+   "Uralter schwarzer Drachenen",
+   "Uralter schwarzer Draches"
+  ],
+  "Uralter weißer Drache": [
+   "Uralte weiße Drache",
+   "Uralte weiße Drachen",
+   "Uralte weißen Drache",
+   "Uralte weißen Drachen",
+   "Uralte weißer Drache",
+   "Uralte weißer Drachen",
+   "Uralten weiße Drache",
+   "Uralten weiße Drachen",
+   "Uralten weißen Drache",
+   "Uralten weißen Drachen",
+   "Uralten weißer Drache",
+   "Uralten weißer Drachen",
+   "Uralter weiße Drache",
+   "Uralter weiße Drachen",
+   "Uralter weißen Drache",
+   "Uralter weißen Drachen",
+   "Uralter weißer Drache",
+   "Uralter weißer Drachee",
+   "Uralter weißer Dracheen",
+   "Uralter weißer Dracheer",
+   "Uralter weißer Dracheern",
+   "Uralter weißer Drachen",
+   "Uralter weißer Drachenen",
+   "Uralter weißer Draches"
+  ],
+  "Vampir": [
+   "Vampire",
+   "Vampiren",
+   "Vampirer",
+   "Vampirern",
+   "Vampirn",
+   "Vampirnen",
+   "Vampirs"
+  ],
+  "Vampirbrut": [
+   "Vampirbrute",
+   "Vampirbruten",
+   "Vampirbruter",
+   "Vampirbrutern",
+   "Vampirbrutn",
+   "Vampirbrutnen",
+   "Vampirbruts"
+  ],
+  "Veteran": [
+   "Veterane",
+   "Veteranen",
+   "Veteraner",
+   "Veteranern",
+   "Veterann",
+   "Veterannen",
+   "Veterans"
+  ],
+  "Violetter Pilz": [
+   "Violette Pilze",
+   "Violetter Pilze",
+   "Violetter Pilzen",
+   "Violetter Pilzer",
+   "Violetter Pilzern",
+   "Violetter Pilzn",
+   "Violetter Pilznen",
+   "Violetter Pilzs"
+  ],
+  "Vrock": [
+   "Vrocke",
+   "Vrocken",
+   "Vrocker",
+   "Vrockern",
+   "Vrockn",
+   "Vrocknen",
+   "Vrocks"
+  ],
+  "Wache": [
+   "Wachee",
+   "Wacheen",
+   "Wacheer",
+   "Wacheern",
+   "Wachen",
+   "Wachenen",
+   "Waches",
+   "Wächter"
+  ],
+  "Wasserelementar": [
+   "Wasserelementare",
+   "Wasserelementaren",
+   "Wasserelementarer",
+   "Wasserelementarern",
+   "Wasserelementarn",
+   "Wasserelementarnen",
+   "Wasserelementars"
+  ],
+  "Weißer Drachennestling": [
+   "Weißer Drachennestlinge",
+   "Weißer Drachennestlingen",
+   "Weißer Drachennestlinger",
+   "Weißer Drachennestlingern",
+   "Weißer Drachennestlingn",
+   "Weißer Drachennestlingnen",
+   "Weißer Drachennestlings"
+  ],
+  "Werbär": [
+   "Werbäre",
+   "Werbären",
+   "Werbärer",
+   "Werbärern",
+   "Werbärn",
+   "Werbärnen",
+   "Werbärs"
+  ],
+  "Wereber": [
+   "Werebere",
+   "Wereberen",
+   "Wereberer",
+   "Wereberern",
+   "Werebern",
+   "Werebernen",
+   "Werebers"
+  ],
+  "Werratte": [
+   "Weratte",
+   "Weratten",
+   "Werrattee",
+   "Werratteen",
+   "Werratteer",
+   "Werratteern",
+   "Werratten",
+   "Werrattenen",
+   "Werrattes",
+   "Wertratten"
+  ],
+  "Wertiger": [
+   "Weriger",
+   "Wertigere",
+   "Wertigeren",
+   "Wertigerer",
+   "Wertigerern",
+   "Wertigern",
+   "Wertigernen",
+   "Wertigers"
+  ],
+  "Werwolf": [
+   "Werwolfe",
+   "Werwolfen",
+   "Werwolfer",
+   "Werwolfern",
+   "Werwolfn",
+   "Werwolfnen",
+   "Werwolfs",
+   "Werwölfe"
+  ],
+  "Wiesel": [
+   "Wiesele",
+   "Wieselen",
+   "Wieseler",
+   "Wieselern",
+   "Wieseln",
+   "Wieselnen",
+   "Wiesels"
+  ],
+  "Winterwolf": [
+   "Winterwolfe",
+   "Winterwolfen",
+   "Winterwolfer",
+   "Winterwolfern",
+   "Winterwolfn",
+   "Winterwolfnen",
+   "Winterwolfs",
+   "Winterwölfe"
+  ],
+  "Wolf": [
+   "Wolfe",
+   "Wolfen",
+   "Wolfer",
+   "Wolfern",
+   "Wolfn",
+   "Wolfnen",
+   "Wolfs",
+   "Wölfe",
+   "Wölfen"
+  ],
+  "Wolkenriese": [
+   "Wolkenriesee",
+   "Wolkenrieseen",
+   "Wolkenrieseer",
+   "Wolkenrieseern",
+   "Wolkenriesen",
+   "Wolkenriesenen",
+   "Wolkenrieses"
+  ],
+  "Worg": [
+   "Worge",
+   "Worgen",
+   "Worger",
+   "Worgern",
+   "Worgn",
+   "Worgnen",
+   "Worgs"
+  ],
+  "Wyvern": [
+   "Wyverne",
+   "Wyvernen",
+   "Wyverner",
+   "Wyvernern",
+   "Wyvernn",
+   "Wyvernnen",
+   "Wyverns"
+  ],
+  "Wächternaga": [
+   "Wächternagae",
+   "Wächternagaen",
+   "Wächternagaer",
+   "Wächternagaern",
+   "Wächternagan",
+   "Wächternaganen",
+   "Wächternagas",
+   "Wächternagi"
+  ],
+  "Würgeschlange": [
+   "Würgeschlangee",
+   "Würgeschlangeen",
+   "Würgeschlangeer",
+   "Würgeschlangeern",
+   "Würgeschlangen",
+   "Würgeschlangenen",
+   "Würgeschlanges"
+  ],
+  "Xorn": [
+   "Xorne",
+   "Xornen",
+   "Xorner",
+   "Xornern",
+   "Xornn",
+   "Xornnen",
+   "Xorns"
+  ],
+  "Zentaur": [
+   "Zentaure",
+   "Zentauren",
+   "Zentaurer",
+   "Zentaurern",
+   "Zentaurn",
+   "Zentaurnen",
+   "Zentaurs"
+  ],
+  "Ziege": [
+   "Ziegee",
+   "Ziegeen",
+   "Ziegeer",
+   "Ziegeern",
+   "Ziegen",
+   "Ziegenen",
+   "Zieges"
+  ],
+  "Zombie": [
+   "Zombiee",
+   "Zombieen",
+   "Zombieer",
+   "Zombieern",
+   "Zombien",
+   "Zombienen",
+   "Zombies"
+  ],
+  "Zugpferd": [
+   "Zugpferde",
+   "Zugpferden",
+   "Zugpferder",
+   "Zugpferdern",
+   "Zugpferdn",
+   "Zugpferdnen",
+   "Zugpferds"
+  ]
+ },
+ "ersatz": {
+  "Aboleth": [
+   "Betrachter",
+   "Gedankenschinder",
+   "Gedankenschinder-Arkanist",
+   "Gedankenschinder-Arkanisten",
+   "Gedankenschindern"
+  ],
+  "Ausgewachsener blauer Drache": [
+   "Ausgewachsene blaue Drakoliche",
+   "ausgewachsener blauer Drakolich"
+  ],
+  "Bandit": [
+   "Kenku"
+  ],
+  "Braunbär": [
+   "Riesenbär",
+   "Riesenbären"
+  ],
+  "Chuul": [
+   "Grell",
+   "Grells"
+  ],
+  "Dampf-Mephit": [
+   "Rauch-Mephit",
+   "Rauch-Mephiten"
+  ],
+  "Drow (Elf)": [
+   "Drow-Elitekrieger",
+   "Drow-Elitekriegern"
+  ],
+  "Druide": [
+   "Echsenmenschen-Schamane",
+   "Echsenmenschen-Schamanen",
+   "Halbork-Druidin"
+  ],
+  "Dschinni": [
+   "Marid",
+   "Mariden"
+  ],
+  "Düstermantel": [
+   "Falldorn",
+   "Falldorne",
+   "Flumph",
+   "Flumphs"
+  ],
+  "Echsenmensch": [
+   "Bullywug",
+   "Bullywugs",
+   "Troglodyt",
+   "Troglodyten"
+  ],
+  "Eisbär": [
+   "Yeti",
+   "Yetis"
+  ],
+  "Erdelementar": [
+   "Galeb Duhr"
+  ],
+  "Erwachter Busch": [
+   "Nadelplage",
+   "Nadelplagen",
+   "Rankenplage",
+   "Rankenplagen",
+   "Zweigplage",
+   "Zweigplagen"
+  ],
+  "Eulenbär": [
+   "Hakenschreck",
+   "Hakenschrecken"
+  ],
+  "Feengeist": [
+   "Pixie",
+   "Pixies"
+  ],
+  "Geist": [
+   "Todesfee",
+   "Todesfeen"
+  ],
+  "Geisternaga": [
+   "Knochennaga",
+   "Knochennagas",
+   "Knochenraga",
+   "Yuan-ti Scheusal",
+   "Yuan-ti Scheusale",
+   "Yuan-ti-Scheusal",
+   "Yuan-ti-Scheusale"
+  ],
+  "Gemeiner": [
+   "Elfen"
+  ],
+  "Ghul": [
+   "Vogelscheuche",
+   "Vogelscheuchen"
+  ],
+  "Glabrezu": [
+   "Graue Slaadi",
+   "Grauer Slaad"
+  ],
+  "Gnoll": [
+   "Gnoll-Reißzahn",
+   "Gnoll-Reißzahn des Yeenoghu",
+   "Gnoll-Reißzähne",
+   "Gnoll-Rudelfürst",
+   "Thri-kreen",
+   "Trittkrieger"
+  ],
+  "Goblin": [
+   "Goblin-Boss",
+   "Goblin-Bosse"
+  ],
+  "Greif": [
+   "Peryton",
+   "Perytone",
+   "Perytons"
+  ],
+  "Grick": [
+   "Aaskriecher",
+   "Grick-Alpha",
+   "Grick-Alphas"
+  ],
+  "Grottenschrat": [
+   "Quaggoth",
+   "Quaggoth-Thonot",
+   "Quaggoth-Thonots",
+   "Quaggoths"
+  ],
+  "Gruftschrecken": [
+   "Wiedergänger"
+  ],
+  "Hobgoblin": [
+   "Hobgoblin-Hauptmann",
+   "Hobgoblin-Hauptmänner"
+  ],
+  "Hügelriese": [
+   "Zyklop",
+   "Zyklopen"
+  ],
+  "Ifriti": [
+   "Dao"
+  ],
+  "Irrlicht": [
+   "Flammenschädel"
+  ],
+  "Junger roter Drache": [
+   "Junge rote Schattendrachen",
+   "junger roter Schattendrache"
+  ],
+  "Kobold": [
+   "Geflügelte Kobolde",
+   "Geflügelten Kobolden",
+   "Geflügelter Kobold"
+  ],
+  "Kreischer": [
+   "Gasspore",
+   "Gassporen",
+   "Myconid-Spross",
+   "Myconid-Sprossen"
+  ],
+  "Kultfanatiker": [
+   "Yuan-ti Reinblütige",
+   "Yuan-ti Reinblütigen",
+   "Yuan-ti Reinblütiger",
+   "Yuan-ti-Reinblütige",
+   "Yuan-ti-Reinblütigen",
+   "Yuan-ti-Reinblütiger"
+  ],
+  "Magier": [
+   "Drow-Magi",
+   "Drow-Magus"
+  ],
+  "Magmin": [
+   "Feuerschlange",
+   "Feuerschlangen"
+  ],
+  "Medusa": [
+   "Yuan-ti Halbblütige",
+   "Yuan-ti Halbblütiger",
+   "Yuan-ti-Halbblütige",
+   "Yuan-ti-Halbblütigen",
+   "Yuan-ti-Halbblütiger"
+  ],
+  "Modernder Schlurfer": [
+   "Echtschlurf",
+   "Echtschlurfs"
+  ],
+  "Mumienfürst": [
+   "Todesrann",
+   "Todestyrann",
+   "Todestyrannen"
+  ],
+  "Oger": [
+   "Halboger",
+   "Halbogern",
+   "Halbogers"
+  ],
+  "Ogerzombie": [
+   "Betrachter-Zombie",
+   "Betrachter-Zombies"
+  ],
+  "Ork": [
+   "Orgen",
+   "Orgs",
+   "Orgus",
+   "Ork - Auge des Gruumsh",
+   "Ork - Augen des Gruumsh",
+   "Ork-Auge des Grumsh",
+   "Ork-Auge des Gruumsh",
+   "Ork-Augen des Gruumsh",
+   "Orog",
+   "Orogs"
+  ],
+  "Panther": [
+   "Tatzenschreiter"
+  ],
+  "Plapperndes Hundertmaul": [
+   "Beobachter",
+   "Intellektverschlinger",
+   "Nothic",
+   "Nothics"
+  ],
+  "Pseudodrache": [
+   "Feendrache",
+   "Feendrachen"
+  ],
+  "Remorhaz": [
+   "Junge Remorhazzen",
+   "Jungen Remorhazzen",
+   "Junger Remorhaz",
+   "Remorhazzen"
+  ],
+  "Riesenadler": [
+   "Aarakocra",
+   "Aarakocras"
+  ],
+  "Riesenaffe": [
+   "Abscheuliche Yetis",
+   "Abscheulicher Yeti"
+  ],
+  "Riesendachs": [
+   "Riesenbiber"
+  ],
+  "Riesengeier": [
+   "Pteranodon",
+   "Pteranodons",
+   "Pteranodonten"
+  ],
+  "Sahuagin": [
+   "Kuo-toa",
+   "Kuo-toa-Geißel",
+   "Kuo-toa-Geißeln",
+   "Kuo-toa-Monitor",
+   "Kuo-toa-Monitore",
+   "Sahaugin-Baron",
+   "Sahaugin-Barone",
+   "Sahaugin-Priesterin",
+   "Sahaugin-Priesterinnen",
+   "Sahuagin-Baron",
+   "Sahuagin-Barone",
+   "Sahuagin-Priesterin",
+   "Sahuagin-Priesterinnen"
+  ],
+  "Staub-Mephit": [
+   "Schlamm-Mephit",
+   "Schlamm-Mephiten"
+  ],
+  "Steinriese": [
+   "Fomorianer",
+   "Formianer"
+  ],
+  "Sukkubus/Inkubus": [
+   "Cambion",
+   "Cambions"
+  ],
+  "Säbelzahntiger": [
+   "Allosaurier",
+   "Allosaurus",
+   "Täuschungsbestie",
+   "Täuschungsbestien"
+  ],
+  "Todeshund": [
+   "Höhlenhund",
+   "Höhlenhunde"
+  ],
+  "Triceratops": [
+   "Ankylosaurier",
+   "Ankylosaurus"
+  ],
+  "Vampir": [
+   "Vampir-Krieger",
+   "Vampir-Zauberwirker"
+  ],
+  "Violetter Pilz": [
+   "Myconid-Erwachsene",
+   "Myconid-Erwachsener"
+  ],
+  "Wasserelementar": [
+   "Wassergeist",
+   "Wassergeister"
+  ],
+  "Werratte": [
+   "Schakalwer",
+   "Schakalwere"
+  ],
+  "Xorn": [
+   "Erdkloss",
+   "Erdklosse",
+   "Erdkoloss",
+   "Erdkolosse"
+  ],
+  "Zombie": [
+   "Quaggoth-Sporendiener"
+  ]
+ },
+ "eintraege": {
+  "2W6 + 10 Ziegen mit einem Hirten (Stammeskrieger)": [
+   {
+    "srd": "Ziege",
+    "anzahl": "#1",
+    "als": "Ziegen"
+   },
+   {
+    "srd": "Stammeskrieger",
+    "anzahl": 1,
+    "als": "Hirte"
+   }
+  ],
+  "Eine Gruppe von sieben Leuten (Gemeine), die Tiermasken tragen und schweigend durch den Wald trotten.": [
+   {
+    "srd": "Gemeiner",
+    "anzahl": 7,
+    "als": "Leute mit Tiermasken"
+   }
+  ],
+  "Eine Halbork-Druidin, die sich um einen verwundeten Eisbären kümmert. Wenn die Charaktere der Druidin dabei helfen, überlässt sie ihnen eine Phiole Gegengift.": [
+   {
+    "srd": "Druide",
+    "anzahl": 1,
+    "als": "Halbork-Druidin"
+   },
+   {
+    "srd": "Eisbär",
+    "anzahl": 1,
+    "als": "verwundeter Eisbär"
+   }
+  ],
+  "Zwei Bauern, die sich wegen des Preises von Kartoffeln prügeln (50 % Chance, dass einer der Bauern ein Assassine im Ruhestand ist).": [
+   {
+    "srd": "Gemeiner",
+    "anzahl": 2,
+    "als": "Bauern"
+   },
+   {
+    "srd": "Assassine",
+    "anzahl": 1,
+    "als": "einer der Bauern (50 % Chance)"
+   }
+  ],
+  "1W6 Wachen, die einen gestrandeten Adligen beschützen.": [
+   {
+    "srd": "Wache",
+    "anzahl": "#1",
+    "als": "Wachen"
+   },
+   {
+    "srd": "Adeliger",
+    "anzahl": 1,
+    "als": "gestrandeter Adliger"
+   }
+  ],
+  "Ein Nest mit 1W6 Eiern einer Drachenschildkröte": [],
+  "Zwergen-Goldgräber (Kundschafter) auf der Suche nach Gold.": [
+   {
+    "srd": "Späher",
+    "anzahl": 1,
+    "als": "Zwergen-Goldgräber"
+   }
+  ],
+  "1 zurückgelassenes Maultier": [
+   {
+    "srd": "Maultier",
+    "anzahl": 1,
+    "als": "zurückgelassenes Maultier"
+   }
+  ],
+  "1 gesprächiges Straßenkind, das Passanten anbietet, zum Preis von 1 SM als Führer durch die Stadt zu dienen.": [
+   {
+    "srd": "Gemeiner",
+    "anzahl": 1,
+    "als": "Straßenkind"
+   }
+  ],
+  "Ein heruntergekommener Gemeiner, der sich in eine Gasse duckt und einen Kauf bei einer verdächtig aussehenden Gestalt tätigt.": [
+   {
+    "srd": "Gemeiner",
+    "anzahl": 1,
+    "als": "heruntergekommener Gemeiner"
+   },
+   {
+    "srd": "Spion",
+    "anzahl": 1,
+    "als": "verdächtig aussehende Gestalt"
+   }
+  ],
+  "Ein Hausierer unter dem Gewicht seiner vielen Töpfe, Pfannen und anderen grundlegenden Gebrauchsgüter.": [
+   {
+    "srd": "Gemeiner",
+    "anzahl": 1,
+    "als": "Hausierer"
+   }
+  ],
+  "Ein Schauspieler lehnt sich im zweiten Stock aus dem Fenster, um Passanten eine Aufführung anzukündigen.": [
+   {
+    "srd": "Gemeiner",
+    "anzahl": 1,
+    "als": "Schauspieler"
+   }
+  ],
+  "Ein Weissager liest die Karten für alle, die 1 SM bezahlen.": [
+   {
+    "srd": "Gemeiner",
+    "anzahl": 1,
+    "als": "Weissager"
+   }
+  ],
+  "Ein Untergangsprophet, der an einer Straßenecke das Ende der Welt predigt.": [
+   {
+    "srd": "Gemeiner",
+    "anzahl": 1,
+    "als": "Untergangsprophet"
+   }
+  ],
+  "Ein aggressiver Händler, der Passanten Waren feilbietet und behauptet, er liefere die feinste Seide weit und breit.": [
+   {
+    "srd": "Gemeiner",
+    "anzahl": 1,
+    "als": "aggressiver Händler"
+   }
+  ],
+  "Ein verzweifelter Elternteil, der Passanten um Hilfe anfleht, weil ein Kind in die Kanalisation gefallen ist.": [
+   {
+    "srd": "Gemeiner",
+    "anzahl": 1,
+    "als": "verzweifelter Elternteil"
+   }
+  ],
+  "Ein weinendes Kind, das sich verlaufen hat. Wenn die Charaktere das Kind heimbringen, belohnen die Eltern sie mit 1W3 Heiltränken.": [
+   {
+    "srd": "Gemeiner",
+    "anzahl": 1,
+    "als": "weinendes Kind"
+   }
+  ],
+  "Ein alter Zwerg, der auf einem Baumstumpf sitzt und an einem Stück Holz schnitzt": [
+   {
+    "srd": "Gemeiner",
+    "anzahl": 1,
+    "als": "alter Zwerg"
+   }
+  ],
+  "Straßenkünstler führen ein Puppenspiel auf. Zwei Puppen schlagen sich gegenseitig mit Stöcken, zur Freude der versammelten Zuschauer.": [
+   {
+    "srd": "Gemeiner",
+    "anzahl": 2,
+    "als": "Straßenkünstler"
+   }
+  ],
+  "Ein großer und aggressiver Baum, von dessen Ästen 2W6 gepanzerte Rankenarten herabstrecken baumeln.": [
+   {
+    "srd": "Erwachter Baum",
+    "anzahl": 1,
+    "als": "aggressiver Baum"
+   }
+  ],
+  "Eine freundliche Abenteurergruppe aus 1W6 + 1 Charakteren verschiedener Völker, Klassen und Stufen (durchschnittliche Stufe 1W6 + 2). Sie teilen Informationen über ihre jüngsten Reisen.": [
+   {
+    "srd": "Veteran",
+    "anzahl": "#1",
+    "als": "Abenteurer (gemischte Klassen)",
+    "ersatz": true
+   }
+  ],
+  "1 Banditenhauptmann mit 5W10 Banditen, alle auf Reitpferden": [
+   {
+    "srd": "Banditenhauptmann",
+    "anzahl": 1
+   },
+   {
+    "srd": "Bandit",
+    "anzahl": "#2",
+    "als": "Banditen"
+   },
+   {
+    "srd": "Reitpferd",
+    "anzahl": "#2+1",
+    "als": "Reitpferde"
+   }
+  ],
+  "1W10 Ritter auf Streitrossen (ein Ritter ist ein Doppelgänger)": [
+   {
+    "srd": "Ritter",
+    "anzahl": "#1"
+   },
+   {
+    "srd": "Streitross",
+    "anzahl": "#1",
+    "als": "Streitrosse"
+   },
+   {
+    "srd": "Doppelgänger",
+    "anzahl": 1,
+    "als": "einer der Ritter"
+   }
+  ],
+  "1W3 + 2 Adelige auf Reitpferden mit einer Eskorte aus 1W10 Wachen": [
+   {
+    "srd": "Adeliger",
+    "anzahl": "#1",
+    "als": "Adelige"
+   },
+   {
+    "srd": "Reitpferd",
+    "anzahl": "#1",
+    "als": "Reitpferde"
+   },
+   {
+    "srd": "Wache",
+    "anzahl": "#2",
+    "als": "Wachen"
+   }
+  ],
+  "1W4 + 1 Veteranen auf Reitpferden": [
+   {
+    "srd": "Veteran",
+    "anzahl": "#1",
+    "als": "Veteranen"
+   },
+   {
+    "srd": "Reitpferd",
+    "anzahl": "#1",
+    "als": "Reitpferde"
+   }
+  ],
+  "1W4 Ritter auf Streitrossen": [
+   {
+    "srd": "Ritter",
+    "anzahl": "#1"
+   },
+   {
+    "srd": "Streitross",
+    "anzahl": "#1",
+    "als": "Streitrosse"
+   }
+  ],
+  "1W6 + 3 Goblins, die auf Wölfen reiten": [
+   {
+    "srd": "Goblin",
+    "anzahl": "#1",
+    "als": "Goblins"
+   },
+   {
+    "srd": "Wolf",
+    "anzahl": "#1",
+    "als": "Wölfe"
+   }
+  ],
+  "1W6 Wachen, die einen Adeligen zum Rand der Wüste bringen sollen. Alle reiten auf Kamelen.": [
+   {
+    "srd": "Wache",
+    "anzahl": "#1",
+    "als": "Wachen"
+   },
+   {
+    "srd": "Adeliger",
+    "anzahl": 1
+   },
+   {
+    "srd": "Kamel",
+    "anzahl": "#1+1",
+    "als": "Kamele"
+   }
+  ],
+  "4W4 Tempeldiener auf Zugpferden": [
+   {
+    "srd": "Akolyth",
+    "anzahl": "#1",
+    "als": "Tempeldiener"
+   },
+   {
+    "srd": "Zugpferd",
+    "anzahl": "#1",
+    "als": "Zugpferde"
+   }
+  ],
+  "Ein Stamm aus 2W20 + 20 Nomaden (Stammeskrieger) auf Reitpferden, welche einer Herde Antilopen (Reh) folgen. Die Nomaden sind bereit, Nahrung, Leder und Informationen gegen Waffen zu tauschen.": [
+   {
+    "srd": "Stammeskrieger",
+    "anzahl": "#1",
+    "als": "Nomaden"
+   },
+   {
+    "srd": "Reitpferd",
+    "anzahl": "#1",
+    "als": "Reitpferde"
+   },
+   {
+    "srd": "Reh",
+    "anzahl": 1,
+    "als": "Herde Antilopen"
+   }
+  ]
+ },
+ "zauber_aliase": {
+  "Schutzgeister": "Wächtergeister"
+ }
+}

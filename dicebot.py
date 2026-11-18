@@ -9,6 +9,7 @@ from typing import Optional, Tuple, List, Dict
 
 from aiohttp import web
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.error import RetryAfter, TelegramError
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -17,6 +18,16 @@ from telegram.ext import (
     MessageHandler,
     CallbackQueryHandler,
     filters,
+)
+
+from kreaturen import (
+    init_kreaturen,
+    build_creature_messages,
+    format_monster,
+    format_spell,
+    split_message,
+    lookup_spell,
+    MONSTERS as SRD_MONSTERS,
 )
 
 # -----------------------
@@ -723,6 +734,34 @@ def roll_inline_w_dice(text: str) -> Tuple[str, List[str]]:
     rolled_text = _W_DICE_EXPR.sub(repl, text)
     return rolled_text, details
 
+# -----------------------
+# KREATUREN AUS DEM SRD (nach jedem Encounter)
+# -----------------------
+
+async def _send_text_safe(context: ContextTypes.DEFAULT_TYPE, chat_id: int, text: str) -> None:
+    for attempt in range(3):
+        try:
+            await context.bot.send_message(chat_id=chat_id, text=text)
+            return
+        except RetryAfter as e:
+            await asyncio.sleep(float(getattr(e, "retry_after", 3)) + 0.5)
+        except TelegramError as e:
+            print(f"Kreaturen-Nachricht fehlgeschlagen: {e}")
+            return
+
+async def send_encounter_creatures(context: ContextTypes.DEFAULT_TYPE, chat_id: int, encounter_raw: str, encounter_rolled: str) -> None:
+    """Schickt nach dem Encounter je Kreatur einen Wertekasten und danach die Zauber."""
+    try:
+        messages = build_creature_messages(encounter_raw, encounter_rolled)
+    except Exception as e:  # Kreaturen sind ein Extra, der Encounter selbst soll nie scheitern
+        print(f"Kreaturen-Erkennung fehlgeschlagen: {e}")
+        return
+
+    for text in messages:
+        await _send_text_safe(context, chat_id, text)
+        await asyncio.sleep(0.4)
+
+
 async def rollencounter_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not ENCOUNTERS:
         await update.message.reply_text(
@@ -787,6 +826,9 @@ async def rollencounter_pick_level(update: Update, context: ContextTypes.DEFAULT
     level = query.data.split(":", 1)[1]
     biom_ = (context.user_data.get("enc_biome") or "").strip()
 
+    encounter_raw = None
+    encounter_rolled = None
+
     try:
         w100, encounter_raw = pick_encounter(biom_, level)
         encounter_rolled, dice_details = roll_inline_w_dice(encounter_raw)
@@ -811,6 +853,10 @@ async def rollencounter_pick_level(update: Update, context: ContextTypes.DEFAULT
         )
 
     await query.edit_message_text(msg)
+
+    if encounter_raw and query.message:
+        await send_encounter_creatures(context, query.message.chat_id, encounter_raw, encounter_rolled)
+
     return ConversationHandler.END
 
 async def rollencounter_cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -831,6 +877,68 @@ async def encdebug(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "📚 Encounter Debug\n"
         "Geladene Tabellen:\n" + "\n".join(lines)
     )
+
+# -----------------------
+# NACHSCHLAGEN: /kreatur und /zauber
+# -----------------------
+
+def _find_monster_by_name(query_text: str) -> Tuple[Optional[dict], List[str]]:
+    q = (query_text or "").strip().lower()
+    if not q:
+        return None, []
+    exact = [m for n, m in SRD_MONSTERS.items() if n.lower() == q]
+    if exact:
+        return exact[0], []
+    hits = [n for n in SRD_MONSTERS if q in n.lower()]
+    if len(hits) == 1:
+        return SRD_MONSTERS[hits[0]], []
+    return None, sorted(hits)[:20]
+
+async def kreatur_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    name = " ".join(context.args).strip() if context.args else ""
+    if not name:
+        await update.message.reply_text("Nutze z.B. /kreatur Skelett")
+        return
+    m, hits = _find_monster_by_name(name)
+    if not m:
+        if hits:
+            await update.message.reply_text("Mehrere Treffer:\n" + "\n".join(hits))
+        else:
+            await update.message.reply_text(f"Keine SRD-Kreatur gefunden für: {name}")
+        return
+    for part in split_message(format_monster(m)):
+        await update.message.reply_text(part)
+        await asyncio.sleep(0.3)
+    from kreaturen import pack_messages
+    blocks = [format_spell(s) for s in (lookup_spell(sp) for sp in (m.get("spells") or [])) if s]
+    if blocks:
+        packed = pack_messages(blocks)
+        packed[0] = f"📜 Zauber: {m['name']}\n\n{packed[0]}"
+        for part in packed:
+            await update.message.reply_text(part)
+            await asyncio.sleep(0.3)
+
+async def zauber_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    name = " ".join(context.args).strip() if context.args else ""
+    if not name:
+        await update.message.reply_text("Nutze z.B. /zauber Feuerball")
+        return
+    s = lookup_spell(name)
+    if not s:
+        from kreaturen import SPELLS
+        q = name.lower()
+        hits = sorted(v["name"] for k, v in SPELLS.items() if q in k)
+        if len(hits) == 1:
+            s = lookup_spell(hits[0])
+        elif hits:
+            await update.message.reply_text("Mehrere Treffer:\n" + "\n".join(hits[:20]))
+            return
+        else:
+            await update.message.reply_text(f"Kein SRD-Zauber gefunden für: {name}")
+            return
+    for part in split_message(format_spell(s)):
+        await update.message.reply_text(part)
+
 
 # -----------------------
 # ROLLCHANCE SYSTEM
@@ -1161,6 +1269,10 @@ async def rollwaldkarte_pick_level(update: Update, context: ContextTypes.DEFAULT
         await query.edit_message_text(msg)
     except KeyError as e:
         await query.edit_message_text(str(e))
+        return
+
+    if query.message:
+        await send_encounter_creatures(context, query.message.chat_id, encounter_raw, encounter_rolled)
 
 # -----------------------
 # ROLLPLAYERBEHAVIOUR SYSTEM
@@ -2392,7 +2504,11 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/rollbiom [Biom]  würfelt das nächste Biom (optional vorher setzen)\n\n"
         "⚔️ Encounters\n"
         "/rollencounter [Biom]  würfelt einen Encounter (nutzt sonst dein aktuelles Biom)\n"
-        "/encdebug  zeigt welche Encounter Tabellen wirklich geladen wurden\n\n"
+        "/encdebug  zeigt welche Encounter Tabellen wirklich geladen wurden\n"
+        "Nach jedem Encounter schickt der Bot die Wertekästen der Kreaturen (SRD 5.1) und ihre Zauber hinterher.\n\n"
+        "📖 Nachschlagen\n"
+        "/kreatur <Name>  zeigt den Wertekasten einer SRD-Kreatur, z.B. /kreatur Skelett\n"
+        "/zauber <Name>  zeigt eine Zauberbeschreibung, z.B. /zauber Feuerball\n\n"
         "🔮 Orakel\n"
         "/rolloracle [Frage]  Ja Nein Orakel\n"
         "/cancel  bricht Orakel, Encounter, Schatz oder Rolldungeon Auswahl ab"
@@ -2413,6 +2529,7 @@ def main():
 
     init_encounters()
     init_magic_tables()
+    init_kreaturen()
 
     ptb_app.add_handler(CommandHandler("help", help_cmd))
     ptb_app.add_handler(CommandHandler("start", help_cmd))
@@ -2467,6 +2584,8 @@ def main():
     ptb_app.add_handler(CallbackQueryHandler(setbiom_pick, pattern=r"^biom_set:"))
 
     ptb_app.add_handler(CommandHandler("encdebug", encdebug))
+    ptb_app.add_handler(CommandHandler("kreatur", kreatur_cmd))
+    ptb_app.add_handler(CommandHandler("zauber", zauber_cmd))
 
     encounter_conv = ConversationHandler(
         entry_points=[CommandHandler("rollencounter", rollencounter_start)],
